@@ -10,7 +10,6 @@ exports.readDeploymentPlan = (req, res) => {
 	});
 };
 
-
 exports.createDeploymentPlan = (req, res) => {	
 	const crisisCode = req.body.crisis_code.toUpperCase();	
 	const casualtySize = Number(req.body.casualty_size);
