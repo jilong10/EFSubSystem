@@ -2,17 +2,19 @@ const express = require('express');
 const router = express.Router();
 const deploymentPlanHelper = require('../helpers/deploymentplan-helper');
 
-router.route('/ef')
+router.route('/')
 	.get(deploymentPlanHelper.readDeploymentPlan)
-	.post(deploymentPlanHelper.createDeploymentPaln);
+	.post(deploymentPlanHelper.createDeploymentPlan);
 
-router.route('/ef/:plan_id')
+router.route('/:plan_id')
+	.post(deploymentPlanHelper.createDeploymentPlanEnemy)
 	.delete(deploymentPlanHelper.deleteDeploymentPlan);
 
 module.exports = router;
 
 // Route 						| Method	| Description
-// ---------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 // api/ef 		 	 			| GET 	 	| Read all deployment plan
 // api/ef 						| POST 	 	| Create new deployment plan
+// api/ef/:plan_id 				| POST 		| Create new enemy for the deployment plan
 // api/ef/:plan_id 				| DELETE 	| Delete deployment plan

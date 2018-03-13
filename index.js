@@ -11,7 +11,8 @@ const express = require('express'),
 const indexRoute = require('./routes/index'),
 	accountAPIRoute = require('./routes/account-api'),
 	statusUpdateAPIRoute = require('./routes/statusupdate-api'),
-	orderGeneratorAPIRoute = require('./routes/ordergenerator-api');
+	orderGeneratorAPIRoute = require('./routes/ordergenerator-api'),
+	efAPIRoute = require('./routes/ef-api');
 
 // Express Setup
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ app.use('/', indexRoute);
 app.use('/api/account', accountAPIRoute);					// For Register and Login
 app.use('/api/statusupdate', statusUpdateAPIRoute);			// For Status Update of Crisis
 app.use('/api/ordergenerator', orderGeneratorAPIRoute);		// For Deployment unit and Unit
+app.use('/api/ef', efAPIRoute); 							// For Deployment plan
 
 // Sever Listening
 app.listen(port, () => console.log('App is running on port ' + port));

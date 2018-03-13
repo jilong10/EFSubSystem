@@ -14,7 +14,7 @@ exports.createDeploymentPlan = (req, res) => {
 	const crisisCode = req.body.crisis_code.toUpperCase();	
 	const casualtySize = Number(req.body.casualty_size);
 	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format(' HH:mm:ss');
+	const time = moment().format('HH:mm:ss');
 	
 	const crisis = new Crisis(crisisCode, casualtySize, date, time);
 
@@ -22,27 +22,34 @@ exports.createDeploymentPlan = (req, res) => {
 	
 	deploymentPlanRef.child(planId)
 		.set(crisis)
-		.then(() => {
-			const enemyName = req.body.enemy_name;
-			const enemySize = Number(req.body.enemy_size);
-			const enemyType = req.body.enemy_type.toUpperCase();
-			const coordinateX = Number(req.body.coordinate_x);
-			const coordinateY = Number(req.body.coordinate_y);
-			const affectArea = Number(req.body.affect_area);
+		.then(() => res.json({
+			success: true,
+			message: 'Deployment Plan Added Successfully',
+			plan_id: planId
+		}))
+		.catch(err => res.json({
+			success: false,
+			message: 'Deployment Plan Added Failed'
+		}));
+};
 
-			const enemy = new Enemy(enemyName, enemySize, enemyType, coordinateX, coordinateY, affectArea);
+exports.createDeploymentPlanEnemy = (req, res) => {
+	const planId = req.params.plan_id;
+	const enemyName = req.body.enemy_name;
+	const enemySize = Number(req.body.enemy_size);
+	const enemyType = req.body.enemy_type.toUpperCase();
+	const coordinateX = Number(req.body.coordinate_x);
+	const coordinateY = Number(req.body.coordinate_y);
+	const affectArea = Number(req.body.affect_area);
 
-			deploymentPlanRef.child(planId).child('Enemy').child(enemyName)
-				.set(enemy)
-				.then(() => res.json({
-					success: true,
-					message: 'Deployment Plan Added Successfully'
-				}))
-				.catch(err => res.json({
-					success: false,
-					message: 'Deployment Plan Added Failed'
-				}));
-		})
+	const enemy = new Enemy(enemyName, enemySize, enemyType, coordinateX, coordinateY, affectArea);
+
+	deploymentPlanRef.child(planId).child('Enemy').child(enemyName)
+		.set(enemy)
+		.then(() => res.json({
+			success: true,
+			message: 'Deployment Plan Added Successfully'
+		}))
 		.catch(err => res.json({
 			success: false,
 			message: 'Deployment Plan Added Failed'
