@@ -56,4 +56,21 @@ router.get('/logout', middleware.isLoggedIn, (req, res) => {
 	res.redirect('/login');
 });
 
+// Deployment Plan
+router.route('/deploymentplan')
+	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentplan', { message: '' }));
+
+// Crisis
+router.route('/crisis')
+	.get(middleware.isLoggedIn, (req, res) => res.render('crisis', { message: '' }));
+
+// Deployment Unit
+router.route('/deploymentunit')
+	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentunit', { message: '' }));
+
+// EF Unit
+router.route('/unit')
+	.get(middleware.isLoggedIn, (req, res) => res.render('unit', { message: '' }));
+
+
 module.exports = router;
