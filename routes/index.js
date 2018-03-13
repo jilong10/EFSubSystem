@@ -3,10 +3,11 @@ const router = express.Router();
 const middleware = require('../middleware');
 const accountHelper = require('../helpers/account-helper');
 const axios = require('axios');
+const url = require('../config/url').serverurl;
 
 // API URL
-const registerURL = 'http://localhost:3000/api/account/register';
-const loginURL = 'http://localhost:3000/api/account/login';
+const registerURL = url + '/api/account/register';
+const loginURL = url + '/api/account/login';
 
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => res.render('index', { message: '' }));
