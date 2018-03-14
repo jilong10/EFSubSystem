@@ -7,7 +7,6 @@ router.route('/')
 	.post(deploymentPlanHelper.createDeploymentPlan);
 
 router.route('/:plan_id')
-	.post(deploymentPlanHelper.createDeploymentPlanEnemy)
 	.delete(deploymentPlanHelper.deleteDeploymentPlan);
 
 module.exports = router;
@@ -16,5 +15,4 @@ module.exports = router;
 // ------------------------------------------------------------------------------------------
 // api/ef 		 	 			| GET 	 	| Read all deployment plan
 // api/ef 						| POST 	 	| Create new deployment plan
-// api/ef/:plan_id 				| POST 		| Create new enemy for the deployment plan
 // api/ef/:plan_id 				| DELETE 	| Delete deployment plan
