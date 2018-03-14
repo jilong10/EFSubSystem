@@ -78,7 +78,7 @@ exports.login = (req, res) => {
 					if (User.validPassword(password, childSnapshot.val())) {
 						return res.json({
 							success: true,
-							message: 'Login Successfully'
+							message: 'Login Successfully'							
 						});
 					} else {
 						return res.json({

@@ -10,7 +10,7 @@ const registerURL = url + '/api/account/register';
 const loginURL = url + '/api/account/login';
 
 // Homepage
-router.get('/', middleware.isLoggedIn, (req, res) => res.render('index', { message: '' }));
+router.get('/', middleware.isLoggedIn, (req, res) => res.render('index', { message: '', user: req.session.user }));
 
 // Register Page
 router.route('/register')
@@ -58,19 +58,19 @@ router.get('/logout', middleware.isLoggedIn, (req, res) => {
 
 // Deployment Plan
 router.route('/deploymentplan')
-	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentplan', { message: '' }));
+	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentplan', { message: '', user: req.session.user }));
 
 // Crisis
 router.route('/crisis')
-	.get(middleware.isLoggedIn, (req, res) => res.render('crisis', { message: '' }));
+	.get(middleware.isLoggedIn, (req, res) => res.render('crisis', { message: '', user: req.session.user }));
 
 // Deployment Unit
 router.route('/deploymentunit')
-	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentunit', { message: '' }));
+	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentunit', { message: '', user: req.session.user }));
 
 // EF Unit
 router.route('/unit')
-	.get(middleware.isLoggedIn, (req, res) => res.render('unit', { message: '' }));
+	.get(middleware.isLoggedIn, (req, res) => res.render('unit', { message: '', user: req.session.user }));
 
 
 module.exports = router;
