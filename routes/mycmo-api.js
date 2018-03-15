@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const myCmoHelper = require('../helpers/mycmo-helper');
+const myCmoHelper = require('../helpers').MyCmoHelper;
 
 router.route('/')
 	.get(myCmoHelper.sendToCmoApi);

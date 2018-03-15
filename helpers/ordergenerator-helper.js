@@ -1,7 +1,7 @@
 const moment = require('moment');
-const DeploymentUnit = require('../models/deploymentunit');
-const Unit = require('../models/unit');
-const Firebase = require('../config/database');
+const DeploymentUnit = require('../models').DeploymentUnit;
+const Unit = require('../models').Unit;
+const Firebase = require('../config').Firebase;
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');
 const unitRef = Firebase.database().ref('Unit');
 

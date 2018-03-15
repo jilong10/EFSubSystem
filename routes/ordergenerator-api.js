@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const orderGeneratorHelper = require('../helpers/ordergenerator-helper');
+const orderGeneratorHelper = require('../helpers').OrderGeneratorHelper;
 
 router.route('/unit')
 	.post(orderGeneratorHelper.createUnit);

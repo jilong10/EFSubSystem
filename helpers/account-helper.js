@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const Firebase = require('../config/database');
+const User = require('../models').User;
+const Firebase = require('../config').Firebase;
 const userRef = Firebase.database().ref('User');
 
 exports.register = (req, res) => {
