@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const statusupdateHelper = require('../helpers/statusupdate-helper');
+const statusupdateHelper = require('../helpers').StatusUpdateHelper;
 
 router.route('/crisis')
 	.get(statusupdateHelper.readCrisis)

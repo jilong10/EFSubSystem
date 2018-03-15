@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const deploymentPlanHelper = require('../helpers/deploymentplan-helper');
+const deploymentPlanHelper = require('../helpers').DeploymentPlanHelper;
 
 router.route('/')
 	.get(deploymentPlanHelper.readDeploymentPlan)
