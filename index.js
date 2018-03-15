@@ -19,7 +19,7 @@ const indexRoute = require('./routes/index'),
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
-	secret: 'WihOSgoiwi904Hwlero38f',
+	secret: process.env.SECRET || 'WihOSgoiwi904Hwlero38f',
 	resave: false,
 	saveUninitialized: false
 }));
