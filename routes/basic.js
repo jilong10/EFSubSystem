@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const middleware = require('../middleware');
-const accountHelper = require('../helpers').AccountHelper;
+const deploymentPlanHelper = require('../helpers').DeploymentPlanHelper;
 const axios = require('axios');
 const url = require('../config').Url.serverurl;
 
 // API URL
 const registerURL = url + '/api/account/register';
 const loginURL = url + '/api/account/login';
+const deploymentplanUrl = url + '/api/ef';
 
 // Homepage
-router.get('/', middleware.isLoggedIn, (req, res) => res.render('index', { message: '', user: req.session.user }));
+router.get('/', middleware.isLoggedIn, (req, res) => {
+	res.render('index', { message: '', user: req.session.user })
+});
 
 // Register Page
 router.route('/register')
@@ -42,7 +45,8 @@ router.route('/login')
 		})
 		.then(response => {			
 			if (response.data.success) {
-				req.session.user = req.body.username;		
+				req.session.user = req.body.username;	
+				deploymentPlanHelper.liveCheckDeploymentPlan(true);
 				res.redirect('/');
 			} else {
 				res.render('login', { message: response.data.message });
@@ -53,12 +57,24 @@ router.route('/login')
 // Logout
 router.get('/logout', middleware.isLoggedIn, (req, res) => {
 	req.session.destroy();
+	deploymentPlanHelper.liveCheckDeploymentPlan(false);
 	res.redirect('/login');
 });
 
 // Deployment Plan
 router.route('/deploymentplan')
-	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentplan', { message: '', user: req.session.user }));
+	.get(middleware.isLoggedIn, (req, res) => {	
+		axios.get(deploymentplanUrl)
+			.then(response => {							
+				const deploymentPlanArr = Object.keys(response.data).map(key => {
+					response.data[key].id = key;
+					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => response.data[key].Enemy[enemyKey]);
+					response.data[key].Enemy = enemyArr;
+					return response.data[key];
+				});						
+				res.render('deploymentplan', { message: '', user: req.session.user, data: deploymentPlanArr.reverse() });
+			});			
+	});
 
 // Crisis
 router.route('/crisis')
@@ -71,6 +87,5 @@ router.route('/deploymentunit')
 // EF Unit
 router.route('/unit')
 	.get(middleware.isLoggedIn, (req, res) => res.render('unit', { message: '', user: req.session.user }));
-
 
 module.exports = router;

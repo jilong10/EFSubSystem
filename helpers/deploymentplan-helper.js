@@ -1,4 +1,5 @@
 const moment = require('moment');
+const notifier = require('node-notifier');
 const Crisis = require('../models').Crisis;
 const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
@@ -12,8 +13,8 @@ exports.readDeploymentPlan = (req, res) => {
 
 exports.createDeploymentPlan = (req, res) => {	
 	const deploymentPlan = req.body;	
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().format('DD/MM/YYYY').local();
+	const time = moment().format('HH:mm:ss').local();
 	deploymentPlan['date'] = date;
 	deploymentPlan['time'] = time;
 
@@ -55,4 +56,17 @@ exports.deleteDeploymentPlan = (req, res) => {
 				});	
 			}
 		});
+};
+
+exports.liveCheckDeploymentPlan = (turnOn) => {
+	if (turnOn) {
+		deploymentPlanRef.on('child_added', snapshot => {
+			notifier.notify({
+				  title: 'EF Notification',
+				  message: 'New deployment plan arrive',				  
+				});
+		});
+	} else {
+		deploymentPlanRef.off('child_added');
+	}
 };
