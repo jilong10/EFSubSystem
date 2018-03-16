@@ -1,4 +1,4 @@
-const moment = require('moment-timezone').tz("Asia/Singapore");
+const moment = require('moment-timezone');
 const notifier = require('node-notifier');
 const Crisis = require('../models').Crisis;
 const Enemy = require('../models').Enemy;
@@ -13,8 +13,8 @@ exports.readDeploymentPlan = (req, res) => {
 
 exports.createDeploymentPlan = (req, res) => {	
 	const deploymentPlan = req.body;	
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 	deploymentPlan['date'] = date;
 	deploymentPlan['time'] = time;
 
