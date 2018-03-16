@@ -45,8 +45,7 @@ router.route('/login')
 		})
 		.then(response => {			
 			if (response.data.success) {
-				req.session.user = req.body.username;	
-				deploymentPlanHelper.liveCheckDeploymentPlan(true);
+				req.session.user = req.body.username;
 				res.redirect('/');
 			} else {
 				res.render('login', { message: response.data.message });
@@ -57,7 +56,6 @@ router.route('/login')
 // Logout
 router.get('/logout', middleware.isLoggedIn, (req, res) => {
 	req.session.destroy();
-	deploymentPlanHelper.liveCheckDeploymentPlan(false);
 	res.redirect('/login');
 });
 

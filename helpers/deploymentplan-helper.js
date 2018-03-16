@@ -22,11 +22,17 @@ exports.createDeploymentPlan = (req, res) => {
 	
 	deploymentPlanRef.child(planId)
 		.set(deploymentPlan)
-		.then(() => res.json({
-			success: true,
-			message: 'Deployment Plan Added Successfully',
-			plan_id: planId
-		}))
+		.then(() => {
+			notifier.notify({
+				title: 'EF Notification',
+				message: 'New deployment plan arrive',				  
+			});
+			res.json({
+				success: true,
+				message: 'Deployment Plan Added Successfully',
+				plan_id: planId
+			});
+		})
 		.catch(err => res.json({
 			success: false,
 			message: 'Deployment Plan Added Failed'
@@ -56,17 +62,4 @@ exports.deleteDeploymentPlan = (req, res) => {
 				});	
 			}
 		});
-};
-
-exports.liveCheckDeploymentPlan = (turnOn) => {
-	if (turnOn) {
-		deploymentPlanRef.on('child_added', snapshot => {
-			notifier.notify({
-				  title: 'EF Notification',
-				  message: 'New deployment plan arrive',				  
-				});
-		});
-	} else {
-		deploymentPlanRef.off('child_added');
-	}
 };
