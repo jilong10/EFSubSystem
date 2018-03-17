@@ -11,7 +11,7 @@ const loginURL = url + '/api/account/login';
 const deploymentplanUrl = url + '/api/ef';
 
 // Homepage
-router.get('/', middleware.isLoggedIn, (req, res) => {
+router.get('/', middleware.isLoggedIn, (req, res) => {	
 	res.render('index', { message: '', user: req.session.user })
 });
 
@@ -71,7 +71,10 @@ router.route('/deploymentplan')
 					return response.data[key];
 				});						
 				res.render('deploymentplan', { message: '', user: req.session.user, data: deploymentPlanArr.reverse() });
-			});			
+			})
+			.catch(err => {
+				res.render('deploymentplan', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+			});	
 	});
 
 // Crisis

@@ -1,9 +1,9 @@
 const moment = require('moment-timezone');
-const notifier = require('node-notifier');
 const Crisis = require('../models').Crisis;
 const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
 const deploymentPlanRef = Firebase.database().ref('DeploymentPlan');
+const deploymentPlanStatusRef = Firebase.database().ref('DeploymentPlanStatus');
 
 exports.readDeploymentPlan = (req, res) => {
 	deploymentPlanRef.once('value', snapshot => {
@@ -22,16 +22,19 @@ exports.createDeploymentPlan = (req, res) => {
 	
 	deploymentPlanRef.child(planId)
 		.set(deploymentPlan)
-		.then(() => {
-			notifier.notify({
-				title: 'EF Notification',
-				message: 'New deployment plan arrive',				  
-			});
-			res.json({
+		.then(() => {			
+			deploymentPlanStatusRef.set({
+				'status': true
+			})
+			.then(() => res.json({
 				success: true,
 				message: 'Deployment Plan Added Successfully',
 				plan_id: planId
-			});
+			}))
+			.catch(err => res.json({
+				success: false,
+				message: 'Deployment Plan Added Failed'
+			}));		
 		})
 		.catch(err => res.json({
 			success: false,
@@ -62,4 +65,25 @@ exports.deleteDeploymentPlan = (req, res) => {
 				});	
 			}
 		});
+};
+
+exports.readDeploymentPlanStatus = (req, res) => {
+	deploymentPlanStatusRef.once('value', snapshot => {
+		res.json(snapshot);
+	});
+};
+
+exports.editDeploymentPlanStatus = (req, res) => {
+	const status = req.body.status;
+	deploymentPlanStatusRef.update({
+		"status": status
+	})
+	.then(() => res.json({
+		success: true,
+		message: 'Deployment Plan Status Updated Successfully'
+	}))
+	.catch(err => res.json({
+		success: false,
+		message: 'Deployment Plan Status Updated Failed'
+	}))
 };

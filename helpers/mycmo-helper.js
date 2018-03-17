@@ -1,4 +1,3 @@
-const moment = require('moment');
 const Firebase = require('../config').Firebase;
 const crisisRef = Firebase.database().ref('Crisis');
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');

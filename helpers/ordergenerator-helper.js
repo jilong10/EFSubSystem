@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const DeploymentUnit = require('../models').DeploymentUnit;
 const Unit = require('../models').Unit;
 const Firebase = require('../config').Firebase;
@@ -11,8 +11,8 @@ exports.createUnit = (req, res) => {
 	const unitSize = Number(req.body.unit_size);
 	const description = req.body.description;
 	const cost = Number(req.body.cost);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	unitRef.child(unitName)
 		.once('value', snapshot => {
@@ -44,8 +44,8 @@ exports.editUnit = (req, res) => {
 	const unitSize = Number(req.body.unit_size);
 	const description = req.body.description;
 	const cost = Number(req.body.cost);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	unitRef.child(unitName)
 		.once('value', snapshot => {
@@ -106,8 +106,8 @@ exports.reduceUnitSize = (req, res) => {
 				snapshot.forEach(childSnapshot => {
 					if (childSnapshot.key === 'unitSize') {
 						const totalSize = {
-							'date': moment().format('DD/MM/YYYY'),
-							'time': moment().format('HH:mm:ss'),
+							'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+							'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
 							'unitSize': Number(childSnapshot.val()) - number
 						};
 
@@ -149,8 +149,8 @@ exports.increaseUnitSize = (req, res) => {
 				snapshot.forEach(childSnapshot => {
 					if (childSnapshot.key === 'unitSize') {
 						const totalSize = {
-							'date': moment().format('DD/MM/YYYY'),
-							'time': moment().format('HH:mm:ss'),
+							'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+							'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
 							'unitSize': Number(childSnapshot.val()) + number
 						};
 
@@ -183,8 +183,8 @@ exports.createDeploymentUnit = (req, res) => {
 	const coordinateX = Number(req.body.coordinate_x);
 	const coordinateY = Number(req.body.coordinate_y);
 	const unitStatus = req.body.unit_status.toUpperCase();
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	deploymentUnitRef.child(unitName)
 		.once('value', snapshot => {
@@ -258,8 +258,8 @@ exports.editDeploymentUnit = (req, res) => {
 	const coordinateX = Number(req.body.coordinate_x);
 	const coordinateY = Number(req.body.coordinate_y);
 	const unitStatus = req.body.unit_status.toUpperCase();
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	deploymentUnitRef.child(unitName)
 		.once('value', snapshot => {
@@ -333,8 +333,8 @@ exports.deleteDeploymentUnit = (req, res) => {
 		.once('value', deploymentUnitSnapshot => {
 			if (deploymentUnitSnapshot.exists()) {
 				let totalSize = {
-					'date': moment().format('DD/MM/YYYY'),
-					'time': moment().format('HH:mm:ss'),
+					'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+					'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
 					'unitSize': 0
 				};
 
@@ -394,8 +394,8 @@ exports.deleteDeploymentUnit = (req, res) => {
 exports.increaseDeploymentUnitSize = (req, res) => {
 	const unitName = req.params.unit_name;
 	const number = Number(req.body.number);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	deploymentUnitRef.child(unitName)
 		.once('value', deploymentUnitSnapshot => {
@@ -474,8 +474,8 @@ exports.increaseDeploymentUnitSize = (req, res) => {
 exports.increaseDeploymentUnitCasualty = (req, res) => {
 	const unitName = req.params.unit_name;
 	const number = Number(req.body.number);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	deploymentUnitRef.child(unitName)
 		.once('value', deploymentUnitSnapshot => {
@@ -518,8 +518,8 @@ exports.increaseDeploymentUnitCasualty = (req, res) => {
 exports.updateDeploymentUnitStatus = (req, res) => {
 	const unitName = req.params.unit_name;
 	const unitStatus = req.body.unit_status.toUpperCase();
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
 	// Check unit name
 	deploymentUnitRef.child(unitName)
