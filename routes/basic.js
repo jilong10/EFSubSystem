@@ -95,15 +95,32 @@ router.route('/crisis')
 			.catch(err => {
 				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
 			});	
-
 	});
 
 // Deployment Unit
 router.route('/deploymentunit')
-	.get(middleware.isLoggedIn, (req, res) => res.render('deploymentunit', { message: '', user: req.session.user }));
+	.get(middleware.isLoggedIn, (req, res) => {
+		axios.get(deploymentunitUrl)
+			.then(response => {							
+				const deploymentunitArr = Object.keys(response.data).map(key => response.data[key]);						
+				res.render('deploymentunit', { message: '', user: req.session.user, data: deploymentunitArr });
+			})
+			.catch(err => {
+				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+			});	
+	});
 
 // EF Unit
 router.route('/unit')
-	.get(middleware.isLoggedIn, (req, res) => res.render('unit', { message: '', user: req.session.user }));
+	.get(middleware.isLoggedIn, (req, res) => {
+		axios.get(unitUrl)
+			.then(response => {							
+				const unitArr = Object.keys(response.data).map(key => response.data[key]);						
+				res.render('unit', { message: '', user: req.session.user, data: unitArr });
+			})
+			.catch(err => {
+				res.render('unit', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+			});	
+	});
 
 module.exports = router;

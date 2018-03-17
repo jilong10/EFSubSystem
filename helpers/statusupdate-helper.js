@@ -199,13 +199,13 @@ exports.deleteEnemy = (req, res) => {
 };
 
 exports.readDeploymentUnit = (req, res) => {
-	deploymentUnitRef.once('value', snapshot => {
+	deploymentUnitRef.orderByChild('unitType').once('value', snapshot => {
 		return res.json(snapshot);
 	});
 };
 
 exports.readUnit = (req, res) => {
-	unitRef.once('value', snapshot => {
+	unitRef.orderByChild('unitType').once('value', snapshot => {
 		return res.json(snapshot);
 	});
 };

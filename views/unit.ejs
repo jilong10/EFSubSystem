@@ -1,5 +1,17 @@
 <% include ./partials/header %>
 
-<h1>EF Unit</h1>
+<h1>EF Units</h1>
+
+<% data.forEach(unit => { %>
+	Unit Name: <%= unit.unitName %>
+	<ul>
+		<li>Date: <%= unit.date %></li>
+		<li>Time: <%= unit.time %></li>
+		<li>Unit Type: <%= unit.unitType %></li>
+		<li>Cost: $<%= unit.cost %></li>
+		<li>Unit Size: <%= unit.unitSize %></li>
+		<li>Description: <%= unit.description %></li>
+	</ul>
+<% }); %>
 
 <% include ./partials/footer %>
