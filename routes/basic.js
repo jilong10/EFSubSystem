@@ -9,6 +9,9 @@ const url = require('../config').Url.serverurl;
 const registerURL = url + '/api/account/register';
 const loginURL = url + '/api/account/login';
 const deploymentplanUrl = url + '/api/ef';
+const deploymentunitUrl = url + '/api/statusupdate/deploymentunit';
+const unitUrl = url + '/api/statusupdate/unit';
+const crisisUrl = url + '/api/statusupdate/crisis';
 
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => {	
@@ -19,7 +22,6 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 router.route('/register')
 	.get(middleware.isNotLoggedIn, (req, res) => res.render('register', { message: '' }))
 	.post((req, res) => {
-		console.log(req.body);
 		axios.post(registerURL, {
 			name: req.body.name,
 			username: req.body.username,
@@ -79,7 +81,22 @@ router.route('/deploymentplan')
 
 // Crisis
 router.route('/crisis')
-	.get(middleware.isLoggedIn, (req, res) => res.render('crisis', { message: '', user: req.session.user }));
+	.get(middleware.isLoggedIn, (req, res) => {
+		axios.get(crisisUrl)
+			.then(response => {							
+				const crisisArr = Object.keys(response.data).map(key => {
+					response.data[key].id = key;
+					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => response.data[key].Enemy[enemyKey]);
+					response.data[key].Enemy = enemyArr;
+					return response.data[key];
+				});						
+				res.render('crisis', { message: '', user: req.session.user, data: crisisArr.reverse() });
+			})
+			.catch(err => {
+				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+			});	
+
+	});
 
 // Deployment Unit
 router.route('/deploymentunit')
