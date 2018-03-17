@@ -89,7 +89,7 @@ router.route('/crisis')
 					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => response.data[key].Enemy[enemyKey]);
 					response.data[key].Enemy = enemyArr;
 					return response.data[key];
-				});						
+				});	
 				res.render('crisis', { message: '', user: req.session.user, data: crisisArr.reverse() });
 			})
 			.catch(err => {
@@ -102,7 +102,12 @@ router.route('/deploymentunit')
 	.get(middleware.isLoggedIn, (req, res) => {
 		axios.get(deploymentunitUrl)
 			.then(response => {							
-				const deploymentunitArr = Object.keys(response.data).map(key => response.data[key]);						
+				const deploymentunitArr = Object.keys(response.data).map(key => response.data[key]);	
+				deploymentunitArr.sort((a, b) => {
+					if (a.unitType < b.unitType) return -1;
+					if (a.unitType > b.unitType) return 1;
+					return 0;
+				});							
 				res.render('deploymentunit', { message: '', user: req.session.user, data: deploymentunitArr });
 			})
 			.catch(err => {
@@ -115,7 +120,12 @@ router.route('/unit')
 	.get(middleware.isLoggedIn, (req, res) => {
 		axios.get(unitUrl)
 			.then(response => {							
-				const unitArr = Object.keys(response.data).map(key => response.data[key]);						
+				const unitArr = Object.keys(response.data).map(key => response.data[key]);	
+				unitArr.sort((a, b) => {
+					if (a.unitType < b.unitType) return -1;
+					if (a.unitType > b.unitType) return 1;
+					return 0;
+				});					
 				res.render('unit', { message: '', user: req.session.user, data: unitArr });
 			})
 			.catch(err => {
