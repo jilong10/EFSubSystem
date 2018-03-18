@@ -1,27 +1,48 @@
 <% include ./partials/header %>
 
 <h1>Deployment Plan</h1>
+<div class="table-responsive">
+	<table class="table table-bordered">
+		<thead>
+			<tr class="table-active">
+				<td>Deployment Plan ID:</td>
+				<td>Date: </td>
+				<td>Time: </td>
+				<td>Crisis Code:</td>
+				<td>Casualty Size: </td>
+				<td>Enemies: </td>
+			</tr>
+		</thead>
+		<tbody>
+			<% data.forEach(deploymentplan => { %>
+            <%if(deploymentplan.crisisCode == "YELLOW"){%>
+				<tr class="table-warning">
+			<%}else if(deploymentplan.crisisCode == "RED"){%>
+				<tr class="table-danger">
+			<%}else{%>
+				<tr class="table-success">
+			<%}%>
+				<td><%= deploymentplan.id %></td>
+				<td><%= deploymentplan.date %></td>
+				<td><%= deploymentplan.time %></td>
+				<td><%= deploymentplan.crisisCode %></td>
+				<td><%= deploymentplan.casualtySize %></td>
+				<td><table>
+					<% deploymentplan.Enemy.forEach(enemy => { %>
+					<li>Name: <%= enemy.enemyName %></li>
+					<ul>
+						<li>Type: <%= enemy.enemyType %></li>
+						<li>Size: <%= enemy.enemySize %></li>
+						<li>Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</li>
+						<li>Affect Area: <%= enemy.affectArea %></li>
+					</ul>
+					<% }); %>
+				</table></td>
+			</tr>
+			<%}); %>
+		</tbody>
 
-<% data.forEach(deploymentplan => { %>
-	Deployment Plan ID: <%= deploymentplan.id %>
-	<ul>
-		<li>Date: <%= deploymentplan.date %></li>
-		<li>Time: <%= deploymentplan.time %></li>
-		<li>Crisis Code: <%= deploymentplan.crisisCode %></li>
-		<li>Casualty Size: <%= deploymentplan.casualtySize %></li>
-		<li>Enemy</li>		
-		<ul>
-		<% deploymentplan.Enemy.forEach(enemy => { %>
-			<li>Name: <%= enemy.enemyName %></li>
-			<ul>				
-				<li>Type: <%= enemy.enemyType %></li>
-				<li>Size: <%= enemy.enemySize %></li>
-				<li>Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</li>
-				<li>Affect Area: <%= enemy.affectArea %></li>				
-			</ul>
-		<% }); %>		
-		</ul>
-	</ul>
-<% }); %>
+	</table>
+</div>
 
 <% include ./partials/footer %>
