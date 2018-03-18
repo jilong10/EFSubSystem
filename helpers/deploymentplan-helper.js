@@ -1,8 +1,9 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const Crisis = require('../models').Crisis;
 const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
 const deploymentPlanRef = Firebase.database().ref('DeploymentPlan');
+const deploymentPlanStatusRef = Firebase.database().ref('DeploymentPlanStatus');
 
 exports.readDeploymentPlan = (req, res) => {
 	deploymentPlanRef.once('value', snapshot => {
@@ -12,8 +13,8 @@ exports.readDeploymentPlan = (req, res) => {
 
 exports.createDeploymentPlan = (req, res) => {	
 	const deploymentPlan = req.body;	
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format('HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 	deploymentPlan['date'] = date;
 	deploymentPlan['time'] = time;
 
@@ -21,11 +22,20 @@ exports.createDeploymentPlan = (req, res) => {
 	
 	deploymentPlanRef.child(planId)
 		.set(deploymentPlan)
-		.then(() => res.json({
-			success: true,
-			message: 'Deployment Plan Added Successfully',
-			plan_id: planId
-		}))
+		.then(() => {			
+			deploymentPlanStatusRef.set({
+				'status': true
+			})
+			.then(() => res.json({
+				success: true,
+				message: 'Deployment Plan Added Successfully',
+				plan_id: planId
+			}))
+			.catch(err => res.json({
+				success: false,
+				message: 'Deployment Plan Added Failed'
+			}));		
+		})
 		.catch(err => res.json({
 			success: false,
 			message: 'Deployment Plan Added Failed'
@@ -55,4 +65,25 @@ exports.deleteDeploymentPlan = (req, res) => {
 				});	
 			}
 		});
+};
+
+exports.readDeploymentPlanStatus = (req, res) => {
+	deploymentPlanStatusRef.once('value', snapshot => {
+		res.json(snapshot);
+	});
+};
+
+exports.editDeploymentPlanStatus = (req, res) => {
+	const status = req.body.status;
+	deploymentPlanStatusRef.update({
+		"status": status
+	})
+	.then(() => res.json({
+		success: true,
+		message: 'Deployment Plan Status Updated Successfully'
+	}))
+	.catch(err => res.json({
+		success: false,
+		message: 'Deployment Plan Status Updated Failed'
+	}))
 };

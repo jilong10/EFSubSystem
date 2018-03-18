@@ -2,4 +2,26 @@
 
 <h1>Deployment Plan</h1>
 
+<% data.forEach(deploymentplan => { %>
+	Deployment Plan ID: <%= deploymentplan.id %>
+	<ul>
+		<li>Date: <%= deploymentplan.date %></li>
+		<li>Time: <%= deploymentplan.time %></li>
+		<li>Crisis Code: <%= deploymentplan.crisisCode %></li>
+		<li>Casualty Size: <%= deploymentplan.casualtySize %></li>
+		<li>Enemy</li>		
+		<ul>
+		<% deploymentplan.Enemy.forEach(enemy => { %>
+			<li>Name: <%= enemy.enemyName %></li>
+			<ul>				
+				<li>Type: <%= enemy.enemyType %></li>
+				<li>Size: <%= enemy.enemySize %></li>
+				<li>Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</li>
+				<li>Affect Area: <%= enemy.affectArea %></li>				
+			</ul>
+		<% }); %>		
+		</ul>
+	</ul>
+<% }); %>
+
 <% include ./partials/footer %>

@@ -9,6 +9,10 @@ router.route('/')
 router.route('/:plan_id')
 	.delete(deploymentPlanHelper.deleteDeploymentPlan);
 
+router.route('/status')
+	.get(deploymentPlanHelper.readDeploymentPlanStatus)
+	.put(deploymentPlanHelper.editDeploymentPlanStatus);
+
 module.exports = router;
 
 // Route 						| Method	| Description
@@ -16,3 +20,5 @@ module.exports = router;
 // api/ef 		 	 			| GET 	 	| Read all deployment plan
 // api/ef 						| POST 	 	| Create new deployment plan
 // api/ef/:plan_id 				| DELETE 	| Delete deployment plan
+// api/ef/status 		 	 	| GET 	 	| Read deployment plan status for new update
+// api/ef/status 		 	 	| PUT 	 	| Edit the deployment plan status

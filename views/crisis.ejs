@@ -2,4 +2,26 @@
 
 <h1>Crisis</h1>
 
+<% data.forEach(crisis => { %>
+	Crisis ID: <%= crisis.id %>
+	<ul>
+		<li>Date: <%= crisis.date %></li>
+		<li>Time: <%= crisis.time %></li>
+		<li>Crisis Code: <%= crisis.crisisCode %></li>
+		<li>Casualty Size: <%= crisis.casualtySize %></li>
+		<li>Enemy</li>		
+		<ul>
+		<% crisis.Enemy.forEach(enemy => { %>
+			<li>Name: <%= enemy.enemyName %></li>
+			<ul>				
+				<li>Type: <%= enemy.enemyType %></li>
+				<li>Size: <%= enemy.enemySize %></li>
+				<li>Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</li>
+				<li>Affect Area: <%= enemy.affectArea %></li>				
+			</ul>
+		<% }); %>		
+		</ul>
+	</ul>
+<% }); %>
+
 <% include ./partials/footer %>

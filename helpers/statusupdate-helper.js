@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const Crisis = require('../models').Crisis;
 const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
@@ -15,8 +15,8 @@ exports.readCrisis = (req, res) => {
 exports.createCrisis = (req, res) => {	
 	const crisisCode = req.body.crisis_code.toUpperCase();	
 	const casualtySize = Number(req.body.casualty_size);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format(' HH:mm:ss');
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format(' HH:mm:ss');
 	
 	const crisis = new Crisis(crisisCode, casualtySize, date, time);
 	
@@ -37,8 +37,8 @@ exports.editCrisis = (req, res) => {
 	const crisisId = req.params.crisis_id;
 	const crisisCode = req.body.crisis_code.toUpperCase();
 	const casualtySize = Number(req.body.casualty_size);
-	const date = moment().format('DD/MM/YYYY');
-	const time = moment().format(' HH:mm:ss');	
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format(' HH:mm:ss');	
 
 	crisisRef.child(crisisId)
 		.once('value', snapshot => {
@@ -98,8 +98,8 @@ exports.createEnemy = (req, res) => {
 	const coordinateY = Number(req.body.coordinate_y);
 	const affectArea = Number(req.body.affect_area);
 	const timestamp = {
-		'date': moment().format('DD/MM/YYYY'),
-		'time': moment().format(' HH:mm:ss')
+		'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+		'time': moment().tz("Asia/Singapore").format(' HH:mm:ss')
 	};
 
 	crisisRef.child(crisisId).child('Enemy').child(enemyName)
@@ -137,8 +137,8 @@ exports.editEnemy = (req, res) => {
 	const coordinateY = Number(req.body.coordinate_y);
 	const affectArea = Number(req.body.affect_area);
 	const timestamp = {
-		'date': moment().format('DD/MM/YYYY'),
-		'time': moment().format(' HH:mm:ss')
+		'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+		'time': moment().tz("Asia/Singapore").format(' HH:mm:ss')
 	};
 	crisisRef.child(crisisId).child('Enemy').child(enemyName)
 		.once('value', snapshot => {
@@ -170,8 +170,8 @@ exports.deleteEnemy = (req, res) => {
 	const crisisId = req.params.crisis_id;
 	const enemyName = req.params.enemy_name;
 	const timestamp = {
-		'date': moment().format('DD/MM/YYYY'),
-		'time': moment().format(' HH:mm:ss')
+		'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+		'time': moment().tz("Asia/Singapore").format(' HH:mm:ss')
 	};
 
 	crisisRef.child(crisisId).child('Enemy').child(enemyName)
