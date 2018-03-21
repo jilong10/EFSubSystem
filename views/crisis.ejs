@@ -48,26 +48,9 @@
         <% crisis.Enemy.forEach(enemy => { %>
         <tr>
 			<td>
-				<% if (enemy.enemyName == "Normal Zombie"){ %>
-				<img src="./images/unit_icon/zombie_normal.png">
-				<% }else if(enemy.enemyName == "Balloon Zombie"){%>
-				<img src="./images/unit_icon/zombie_balloon.png">
-				<% }else if(enemy.enemyName == "BucketHead Zombie"){%>
-				<img src="./images/unit_icon/zombie_buckethead.png">
-				<% }else if(enemy.enemyName == "BackupDancer Zombie"){%>
-				<img src="./images/unit_icon/zombie_dancer.png">
-				<% }else if(enemy.enemyName == "Dolphin Rider Zombie"){%>
-				<img src="./images/unit_icon/zombie_dolphinrider.png">
-				<% }else if(enemy.enemyName == "Ducky Tube Zombie"){%>
-				<img src="./images/unit_icon/zombie_duckytube.png">
-				<% }else if(enemy.enemyName == "Gargantuar Zombie"){%>
-				<img src="./images/unit_icon/zombie_gargantuar.png">
-				<% }else if(enemy.enemyName == "Ladder Zombie"){%>
-				<img src="./images/unit_icon/zombie_ladder.png">
-				<% }else if(enemy.enemyName == "Snorkel Zombie"){%>
-				<img src="./images/unit_icon/zombie_snorkel.png">
-				<%}%>
-			<%= enemy.enemyName %></td>
+				<img src=<%= enemy.imageUrl %>>
+				<%= enemy.enemyName %>				
+			</td>
 			<td class="align-middle"><%= enemy.enemyType %></td>
 			<td class="align-middle"><%= enemy.enemySize %></td>
 			<td class="align-middle">(<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</td>
