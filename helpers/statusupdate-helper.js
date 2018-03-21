@@ -61,7 +61,7 @@ exports.editCrisis = (req, res) => {
 					message: 'Invalid crisis id'
 				});
 			}
-		})
+		});
 };
 
 exports.deleteCrisis = (req, res) => {

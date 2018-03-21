@@ -4,6 +4,7 @@ const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
 const deploymentPlanRef = Firebase.database().ref('DeploymentPlan');
 const deploymentPlanStatusRef = Firebase.database().ref('DeploymentPlanStatus');
+const crisisRef = Firebase.database().ref('Crisis');
 
 exports.readDeploymentPlan = (req, res) => {
 	deploymentPlanRef.once('value', snapshot => {
@@ -86,4 +87,38 @@ exports.editDeploymentPlanStatus = (req, res) => {
 		success: false,
 		message: 'Deployment Plan Status Updated Failed'
 	}))
+};
+
+exports.editCrisisByDeploymentPlan = async (req, res) => {
+	const deploymentPlanId = req.body.plan_id;
+	const deploymentPlanSnapshot = await deploymentPlanRef.child(deploymentPlanId).once('value');
+	const deploymentPlanObj = deploymentPlanSnapshot.val();
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
+	deploymentPlanObj['date'] = date;
+	deploymentPlanObj['time'] = time;
+
+	crisisRef.once('value', snapshot => {
+		if (snapshot.exists()) {
+			crisisRef
+				.remove()
+				.then(() => {					
+					crisisRef.child(deploymentPlanId)
+						.set(deploymentPlanObj)
+						.then(() => res.json({
+							success: true,
+							message: 'Crisis Updated Successfully'
+						}))
+						.catch(err => res.json({
+							success: false,
+							message: 'Crisis Updated Failed'
+						}));
+				});
+		} else {
+			return res.json({
+				success: false,
+				message: 'Crisis Updated Failed'
+			});
+		}
+	});
 };
