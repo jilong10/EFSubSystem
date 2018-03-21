@@ -17,6 +17,9 @@ function findDeploymentPlanStatus() {
 					status: false
 				});
 			}
+		})
+		.catch(err => {
+			console.log('The deployment plan status service is unavailable right now. Please try again later.');
 		});
 }
 
@@ -28,6 +31,9 @@ function setDeploymentPlanStatus(update) {
 	      'Accept': 'application/json',
 	      'Content-Type': 'application/json'
 	    }
+	})
+	.catch(err => {
+		console.log('The deployment plan status service is unavailable right now. Please try again later.');
 	});
 }
 
