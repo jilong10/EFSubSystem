@@ -1,0 +1,27 @@
+<%
+
+    getZombieImgUrl = function(zombieName){
+        var imgLocation = "./images/unit_icon/zombie_normal.png";
+
+        if(zombieName == "Balloon Zombie"){
+            imgLocation = "./images/unit_icon/zombie_balloon.png";
+        }else if(zombieName == "BucketHead Zombie"){
+            imgLocation = "./images/unit_icon/zombie_buckethead.png";
+        }else if(zombieName == "BackupDancer Zombie"){
+            imgLocation = "./images/unit_icon/zombie_dancer.png";
+        }else if(zombieName == "Dolphin Rider Zombie"){
+            imgLocation = "./images/unit_icon/zombie_dolphinrider.png";
+        }else if(zombieName == "Ducky Tube Zombie"){
+            imgLocation = "./images/unit_icon/zombie_duckytube.png";
+        }else if(zombieName == "Gargantuar Zombie"){
+            imgLocation = "./images/unit_icon/zombie_gargantuar.png"
+        }else if(zombieName == "Ladder Zombie"){
+            imgLocation = "./images/unit_icon/zombie_ladder.png";
+        }else if(zombieName == "Snorkel Zombie"){
+            imgLocation = "./images/unit_icon/zombie_snorkel.png";
+        }
+
+        return imgLocation;
+    }
+
+%>
