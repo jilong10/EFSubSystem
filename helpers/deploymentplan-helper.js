@@ -90,7 +90,7 @@ exports.editDeploymentPlanStatus = (req, res) => {
 };
 
 exports.editCrisisByDeploymentPlan = async (req, res) => {
-	const deploymentPlanId = req.body.plan_id;
+	const deploymentPlanId = req.params.plan_id;
 	const deploymentPlanSnapshot = await deploymentPlanRef.child(deploymentPlanId).once('value');
 	const deploymentPlanObj = deploymentPlanSnapshot.val();
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
