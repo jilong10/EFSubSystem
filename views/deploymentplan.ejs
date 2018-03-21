@@ -1,48 +1,48 @@
 <% include ./partials/header %>
+<% include ./util/geturl %>
 
 <h1>Deployment Plan</h1>
-<div class="table-responsive">
-	<table class="table table-bordered">
-		<thead>
-			<tr class="table-active">
-				<td>Deployment Plan ID:</td>
-				<td>Date: </td>
-				<td>Time: </td>
-				<td>Crisis Code:</td>
-				<td>Casualty Size: </td>
-				<td>Enemies: </td>
-			</tr>
-		</thead>
-		<tbody>
-			<% data.forEach(deploymentplan => { %>
-            <%if(deploymentplan.crisisCode == "YELLOW"){%>
-				<tr class="table-warning">
-			<%}else if(deploymentplan.crisisCode == "RED"){%>
-				<tr class="table-danger">
-			<%}else{%>
-				<tr class="table-success">
-			<%}%>
-				<td><%= deploymentplan.id %></td>
-				<td><%= deploymentplan.date %></td>
-				<td><%= deploymentplan.time %></td>
-				<td><%= deploymentplan.crisisCode %></td>
-				<td><%= deploymentplan.casualtySize %></td>
-				<td><table>
-					<% deploymentplan.Enemy.forEach(enemy => { %>
-					<li>Name: <%= enemy.enemyName %></li>
-					<ul>
-						<li>Type: <%= enemy.enemyType %></li>
-						<li>Size: <%= enemy.enemySize %></li>
-						<li>Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</li>
-						<li>Affect Area: <%= enemy.affectArea %></li>
-					</ul>
-					<% }); %>
-				</table></td>
-			</tr>
-			<%}); %>
-		</tbody>
 
-	</table>
+<% data.forEach(deploymentplan => {
+    var borderStyle = "border-success";
+    var textStyle = "text-success";
+	if(deploymentplan.crisisCode == "YELLOW"){
+		borderStyle = "border-warning";
+		textStyle = "text-warning";
+	}else if(deploymentplan.crisisCode == "RED"){
+		borderStyle = "border-danger";
+		textStyle = "text-danger";
+	}%>
+<div class="card <%= borderStyle%> mb-3">
+	<h5 class="card-header <%= textStyle%>">Deployment Plan: <%= deploymentplan.id %></h5>
+	<div class="card-body">
+		<p class="card-text">Date: <%= deploymentplan.date %></p>
+		<p class="card-text">Time: <%= deploymentplan.time %></p>
+		<p class="card-text <%= textStyle%>">Crisis Code: <%= deploymentplan.crisisCode %></p>
+		<p class="card-text">Casualty Size: <%= deploymentplan.casualtySize %></p>
+
+		<div class="card-deck">
+			<% deploymentplan.Enemy.forEach(enemy => {%>
+			<div class="card mb-3">
+				<h6 class="card-header"><%= enemy.enemyName %></h6>
+				<img class="card-img" style="max-width:150px;max-height:150px; margin-left:auto; margin-right:auto; " src="<%= getZombieImgUrl(enemy.enemyName)%>" />
+				<div class="card-body">
+					<p class="card-text">Type: <%= enemy.enemyType %></p>
+					<p class="card-text">Size: <%= enemy.enemySize %></p>
+					<p class="card-text">Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</p>
+					<p class="card-text">Affect Area: <%= enemy.affectArea %></p>
+				</div>
+			</div>
+			<%});%>
+		</div>
+		<!-- do if else here to determine which button to show -->
+		<div class="float-right">
+			<a href="#" class="btn btn-primary">Generate Crisis</a>
+			<a href="#" class="btn btn-primary">Update Crisis</a>
+		</div>
+	</div>
 </div>
+<% });%>
+
 
 <% include ./partials/footer %>
