@@ -4,7 +4,6 @@ const middleware = require('../middleware');
 const deploymentPlanHelper = require('../helpers').DeploymentPlanHelper;
 const axios = require('axios');
 const url = require('../config').Url.serverurl;
-const enemyImageUrl = require('../config').Url.enemyimageurl;
 
 // API URL
 const registerURL = url + '/api/account/register';
@@ -87,13 +86,7 @@ router.route('/crisis')
 			.then(response => {							
 				const crisisArr = Object.keys(response.data).map(key => {
 					response.data[key].id = key;
-					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => {
-						const enemy = response.data[key].Enemy[enemyKey];
-						enemy.imageUrl = enemyImageUrl[enemy.enemyName] || '';
-						console.log(enemy.imageUrl);
-						return enemy;
-					});
-
+					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => response.data[key].Enemy[enemyKey]);
 					response.data[key].Enemy = enemyArr;
 					return response.data[key];
 				});	
