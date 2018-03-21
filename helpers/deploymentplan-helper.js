@@ -122,3 +122,19 @@ exports.editCrisisByDeploymentPlan = async (req, res) => {
 		}
 	});
 };
+
+exports.checkCrisisExists = (req, res) => {
+	crisisRef.once('value', snapshot => {
+		if (snapshot.exists()) {
+			return res.json({
+				success: true,
+				message: 'Crisis Already Exists'
+			});
+		} else {
+			return res.json({
+				success: false,
+				message: 'Crisis Does Not Exists'
+			});
+		}
+	});
+};

@@ -16,6 +16,9 @@ router.route('/status')
 router.route('/updatecrisis')
 	.post(deploymentPlanHelper.editCrisisByDeploymentPlan);
 
+router.route('/checkcrisis')
+	.get(deploymentPlanHelper.checkCrisisExists);
+
 module.exports = router;
 
 // Route 						| Method	| Description
@@ -26,3 +29,4 @@ module.exports = router;
 // api/ef/status 		 	 	| GET 	 	| Read deployment plan status for new update
 // api/ef/status 		 	 	| PUT 	 	| Edit the deployment plan status
 // api/ef/updatecrisis			| POST 		| Update deployment plan to crisis based on deployment plan id (plan_id)
+// api/ef/checkcrisis			| GET 		| Check whether crisis exists in the database

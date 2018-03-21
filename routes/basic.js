@@ -15,7 +15,7 @@ const crisisUrl = url + '/api/statusupdate/crisis';
 
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => {	
-	res.render('index', { message: '', user: req.session.user })
+	res.render('index', { message: '', user: req.session.user });
 });
 
 // Register Page
@@ -63,7 +63,7 @@ router.get('/logout', middleware.isLoggedIn, (req, res) => {
 
 // Deployment Plan
 router.route('/deploymentplan')
-	.get(middleware.isLoggedIn, (req, res) => {	
+	.get(middleware.isLoggedIn, (req, res) => {		
 		axios.get(deploymentplanUrl)
 			.then(response => {							
 				const deploymentPlanArr = Object.keys(response.data).map(key => {
@@ -71,7 +71,7 @@ router.route('/deploymentplan')
 					const enemyArr = Object.keys(response.data[key].Enemy).map(enemyKey => response.data[key].Enemy[enemyKey]);
 					response.data[key].Enemy = enemyArr;
 					return response.data[key];
-				});						
+				});										
 				res.render('deploymentplan', { message: '', user: req.session.user, data: deploymentPlanArr.reverse() });
 			})
 			.catch(err => {
