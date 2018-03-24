@@ -8,7 +8,7 @@ $(document).ready(function() {
 });
 
 function findDeploymentPlanStatus() {
-	fetch('https://efsubsystem.herokuapp.com/api/ef/status')
+	fetch('./api/ef/status')
 		.then(res => res.json())
 		.then(data => {				
 			if (data.status) {
@@ -24,7 +24,7 @@ function findDeploymentPlanStatus() {
 }
 
 function setDeploymentPlanStatus(update) {
-	fetch('https://efsubsystem.herokuapp.com/api/ef/status', { 
+	fetch('./api/ef/status', {
 		method: 'PUT',
 		body: JSON.stringify(update),
 		headers: {
@@ -44,3 +44,37 @@ function showNotification(alertType, msg) {
             		</div>`;
 	$(".alert-message").prepend(htmlAlert);    
 }
+
+function updateCrisisWithPlan(plan_id){
+	var target = "./api/ef/updatecrisis/"+ plan_id;
+	$.ajax({
+		url:target,
+		type: 'POST',
+		success:function(){
+			//to check return message to confirm successful
+			window.alert("Update Successful!");
+		}
+	});
+}
+
+function updateCrisisStatus(crisis_id){
+	var target = "./api/statusupdate/crisis/" + crisis_id;
+	var casualty_size = document.getElementById("casualty_size").value;
+	var crisis_code = "GREEN";
+	if(document.getElementById("crisis_code1").checked){
+		crisis_code = "RED";
+	}else if(document.getElementById("crisis_code2").checked){
+		crisis_code = "YELLOW";
+	}
+    //window.alert(casualty_size + crisis_code);
+    $.ajax({
+        url:target,
+        type: 'PUT',
+		data:{crisis_code:crisis_code,casualty_size:casualty_size},
+        success:function(msg){
+            //to check return message to confirm successful
+            window.location.reload(true);
+        }
+    });
+}
+

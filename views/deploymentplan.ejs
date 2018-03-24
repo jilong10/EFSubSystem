@@ -1,6 +1,7 @@
 <% include ./partials/header %>
 <% include ./util/geturl %>
 
+
 <h1>Deployment Plan</h1>
 
 <% data.forEach(deploymentplan => {
@@ -21,24 +22,39 @@
 		<p class="card-text <%= textStyle%>">Crisis Code: <%= deploymentplan.crisisCode %></p>
 		<p class="card-text">Casualty Size: <%= deploymentplan.casualtySize %></p>
 
-		<div class="card-deck">
-			<% deploymentplan.Enemy.forEach(enemy => {%>
-			<div class="card mb-3">
-				<h6 class="card-header"><%= enemy.enemyName %></h6>
-				<img class="card-img" style="max-width:150px;max-height:150px; margin-left:auto; margin-right:auto; " src="<%= getZombieImgUrl(enemy.enemyName)%>" />
-				<div class="card-body">
-					<p class="card-text">Type: <%= enemy.enemyType %></p>
-					<p class="card-text">Size: <%= enemy.enemySize %></p>
-					<p class="card-text">Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</p>
-					<p class="card-text">Affect Area: <%= enemy.affectArea %></p>
-				</div>
-			</div>
-			<%});%>
+		<div class="container">
+            <div class="row">
+                <% deploymentplan.Enemy.forEach(enemy => {%>
+                <div class="col-sm-12 col-md-6">
+                    <div class="card mb-3">
+                        <h6 class="card-header"><%= enemy.enemyName %></h6>
+                        <div class="card-body">
+                            <div class="media">
+                                <img class="align-self-center" src="<%= getZombieImgUrl(enemy.enemyName)%>"/>
+                                <div class="media-body">
+                                    <p class="card-text">Type: <%= enemy.enemyType %></p>
+                                    <p class="card-text">Size: <%= enemy.enemySize %></p>
+                                    <p class="card-text">Coordinate: (<%= enemy.coordinateX %>, <%= enemy.coordinateY %>)</p>
+                                    <p class="card-text">Affect Area: <%= enemy.affectArea %></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%});%>
+            </div>
 		</div>
-		<!-- do if else here to determine which button to show -->
-		<div class="float-right">
-			<a href="#" class="btn btn-primary">Update Crisis</a>			
-		</div>
+        <!-- to be tested again
+        <form action="/api/ef/updatecrisis/<%= deploymentplan.id %>" method="POST" >
+            <div class="form-group float-right">
+                <button type="submit" class="btn btn-primary">Update Crisis</button>
+            </div>
+        </form>
+        -->
+        <div class="form-group float-right">
+            <button onclick="updateCrisisWithPlan('<%= deploymentplan.id %>')" class="btn btn-primary">Update Crisis</button>
+        </div>
+
 	</div>
 </div>
 <% });%>
