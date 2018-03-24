@@ -80,7 +80,7 @@
 			<td>Size: </td>
 			<td>Coordinates: </td>
 			<td>Affected Area: </td>
-			<td>Update: </td>
+			<td>Action: </td>
 		</tr>
 		</thead>
 		<tbody>
@@ -102,7 +102,8 @@
 				<input type="number" class="form-control mb-3" id="enemy_area<%= i %>" value="<%= enemy.affectArea %>">
 			</td>
 			<td class="align-middle">
-				<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary float-right">Update Details</button>
+				<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary mb-3 btn-block">Update Details</button>
+				<button onclick="deleteEnemy('<%= crisis.id %>','<%= enemy.enemyName %>')" class="btn btn-primary btn-block mb-3">Delete Enemy</button>
 			</td>
 		</tr>
         <%i++;}); %>
@@ -111,41 +112,31 @@
 </div>
 
 <h3>Add Enemy</h3>
-<div class="form-group">
-	<label for="enemy_name">Enemy Name: </label>
-	<select class="form-control" id="enemy_name" >
-		<option>Balloon Zombie</option>
-		<option>BucketHead Zombie</option>
-		<option>BackupDancer Zombie</option>
-		<option>Dolphin Rider Zombie</option>
-		<option>Ducky Tube Zombie</option>
-		<option>Gargantuar Zombie</option>
-		<option>Ladder Zombie</option>
-		<option>Snorkel Zombie</option>
-	</select>
-</div>
-<div class="form-group">
-	<label for="enemy_size">Enemy Size:</label>
-	<input type="number" class="form-control mb-3" id="enemy_size">
-</div>
-<div class="form-group">
-	<div class="container">
-		<div class="row">
-			<div class="col-6">
-				<label for="enemy_x">Latitude: </label>
-				<input type="number" class="form-control mb-3" id="enemy_x">
-			</div>
-			<div class="col-6">
-				<label for="enemy_y">Longtitude:</label>
-				<input type="number" class="form-control mb-3" id="enemy_y">
-			</div>
-			<div class="col-6">
-				<label for="enemy_area">Affected Area:</label>
-				<input type="number" class="form-control mb-3" id="enemy_area">
-			</div>
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="form-group col-8">
+			<label for="enemy_name">Enemy Name: </label>
+			<select class="form-control" id="enemy_name" >
+				<option>Balloon Zombie</option>
+				<option>BucketHead Zombie</option>
+				<option>BackupDancer Zombie</option>
+				<option>Dolphin Rider Zombie</option>
+				<option>Ducky Tube Zombie</option>
+				<option>Gargantuar Zombie</option>
+				<option>Ladder Zombie</option>
+				<option>Snorkel Zombie</option>
+			</select>
+			<label for="enemy_size">Enemy Size:</label>
+			<input type="number" class="form-control mb-3" id="enemy_size">
+			<label for="enemy_x">Latitude: </label>
+			<input type="number" class="form-control mb-3" id="enemy_x">
+			<label for="enemy_y">Longtitude:</label>
+			<input type="number" class="form-control mb-3" id="enemy_y">
+			<label for="enemy_area">Affected Area:</label>
+			<input type="number" class="form-control mb-3" id="enemy_area">
+			<button onclick="addEnemy('<%= crisis.id %>')" class="btn btn-primary float-right mb-3">Add Enemy</button>
 		</div>
 	</div>
-	<button onclick="addEnemy('<%= crisis.id %>')" class="btn btn-primary float-right mb-3">Add Enemy</button>
 </div>
 
 <%}); %>
