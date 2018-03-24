@@ -6,7 +6,6 @@ exports.register = (req, res) => {
 	const name = req.body.name;
 	const username = req.body.username;
 	const password = req.body.password;
-	const vPassword = req.body.v_password;
 
 	if (!name) {
 		return res.json({
@@ -23,17 +22,7 @@ exports.register = (req, res) => {
 			success: false,
 			message: 'You must enter the password'
 		});
-	} else if (!vPassword) {
-		return res.json({
-			success: false,
-			message: 'You must enter the second password'
-		});
-	} else if (password !== vPassword) {
-		return res.json({
-			success: false,
-			message: 'The password does not match'
-		});
-	}
+	} 
 
 	userRef.child(username)
 		.once('value', snapshot => {
