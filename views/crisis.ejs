@@ -36,7 +36,7 @@
 
 <h3>Update Crisis</h3>
 <div class="container">
-	<div class="row">
+	<div class="row border" style="padding: 15px;">
 		<div class="col-6">
 			<div class="form-group">
 				<legend class="col-form-label">Crisis Code: </legend>
@@ -68,7 +68,7 @@
 			<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary float-right">Update Crisis Status</button>
 		</div>
 	</div>
-</div>
+</div><br>
 
 <h3>Enemies</h3>
 <div class="table-responsive">
@@ -112,11 +112,11 @@
 </div>
 
 <h3>Add Enemy</h3>
-<div class="container">
-	<div class="row justify-content-md-center">
-		<div class="form-group col-8">
+<div class="container">	
+	<div class="row justify-content-md-left">
+		<div class="form-group col-12 col-md-6 border rounded" style="padding: 30px;">
 			<label for="enemy_name">Enemy Name: </label>
-			<select class="form-control" id="enemy_name" >
+			<select class="form-control" id="enemy_name">
 				<option>Balloon Zombie</option>
 				<option>BucketHead Zombie</option>
 				<option>BackupDancer Zombie</option>
@@ -125,7 +125,7 @@
 				<option>Gargantuar Zombie</option>
 				<option>Ladder Zombie</option>
 				<option>Snorkel Zombie</option>
-			</select>
+			</select><br>
 			<label for="enemy_size">Enemy Size:</label>
 			<input type="number" class="form-control mb-3" id="enemy_size">
 			<label for="enemy_x">Latitude: </label>
