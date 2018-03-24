@@ -55,12 +55,12 @@ function updateCrisisWithPlan(plan_id){
         		//to check return message to confirm successful			
 				showNotification('success', msg.message);
         	} else {
-        		showNotification('error', msg.message);
+        		showNotification('danger', msg.message);
         	}
 			
 		},
         error: function() {
-        	showNotification('error', 'Update Failed');
+        	showNotification('danger', 'Update Failed');
         }
 	});
 }
@@ -84,11 +84,11 @@ function updateCrisisStatus(crisis_id){
         		//to check return message to confirm successful
             	window.location.reload(true);
         	} else {
-        		showNotification('error', msg.message);
+        		showNotification('danger', msg.message);
         	}
         },
         error: function() {
-        	showNotification('error', 'Update Failed');
+        	showNotification('danger', 'Update Failed');
         }
     });
 }
@@ -108,11 +108,11 @@ function updateEnemy(crisis_id, enemy_name, enemy_type,index){
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
-                showNotification('error', msg.message);
+                showNotification('danger', msg.message);
             }
         },
         error: function() {
-            showNotification('error', 'Update Failed');
+            showNotification('danger', 'Update Failed');
         }
 	});
 }
@@ -135,11 +135,11 @@ function addEnemy(crisis_id){
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
-                showNotification('error', msg.message);
+                showNotification('danger', msg.message);
             }
         },
         error: function() {
-            showNotification('error', 'Update Failed');
+            showNotification('danger', 'Update Failed');
         }
     });
 }
@@ -155,11 +155,11 @@ function deleteEnemy(crisis_id, enemy_name){
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
-                showNotification('error', msg.message);
+                showNotification('danger', msg.message);
             }
         },
         error: function() {
-            showNotification('error', 'Update Failed');
+            showNotification('danger', 'Update Failed');
         }
     });
 }
