@@ -10,7 +10,7 @@
 		<tr class="table-active">
 			<td>Crisis ID:</td>
 			<td>Date: </td>
-			<td>Time: </td>
+			<td>Last Update: </td>
 			<td>Crisis Code:</td>
 			<td>Casualty Size: </td>
 		</tr>
@@ -34,11 +34,48 @@
 	</table>
 </div>
 
+<h3>Update Crisis</h3>
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+			<div class="form-group">
+				<legend class="col-form-label">Crisis Code: </legend>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code1" value="RED" >
+					<label class="form-check-label" for="crisis_code1">
+						RED
+					</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code2" value="YELLOW" >
+					<label class="form-check-label" for="crisis_code2">
+						YELLOW
+					</label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code3" value="GREEN" >
+					<label class="form-check-label" for="crisis_code3">
+						GREEN
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="form-group">
+				<label for="casualty_size">Casualty Size: </label>
+				<input type="number" class="form-control mb-3" id="casualty_size" value="<%= crisis.casualtySize %>">
+			</div>
+			<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary float-right">Update Crisis Status</button>
+		</div>
+	</div>
+</div>
+
+<h3>Enemies</h3>
 <div class="table-responsive">
 	<table class="table table-bordered">
 		<thead>
 		<tr class="table-active">
-			<td>Enemy: </td>
+			<td>Enemy Name: </td>
 			<td>Type: </td>
 			<td>Size: </td>
 			<td>Coordinates: </td>
