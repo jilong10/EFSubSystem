@@ -50,10 +50,18 @@ function updateCrisisWithPlan(plan_id){
 	$.ajax({
 		url:target,
 		type: 'POST',
-		success:function(){
-			//to check return message to confirm successful			
-			showNotification('primary', 'Update Successful');
-		}
+		success:function(msg){
+			if (msg.success) {
+        		//to check return message to confirm successful			
+				showNotification('primary', msg.message);
+        	} else {
+        		showNotification('error', msg.message);
+        	}
+			
+		},
+        error: function() {
+        	showNotification('error', 'Update Failed');
+        }
 	});
 }
 
@@ -72,8 +80,15 @@ function updateCrisisStatus(crisis_id){
         type: 'PUT',
 		data:{crisis_code:crisis_code,casualty_size:casualty_size},
         success:function(msg){
-            //to check return message to confirm successful
-            window.location.reload(true);
+        	if (msg.success) {
+        		//to check return message to confirm successful
+            	window.location.reload(true);
+        	} else {
+        		showNotification('error', msg.message);
+        	}
+        },
+        error: function() {
+        	showNotification('error', 'Update Failed');
         }
     });
 }
