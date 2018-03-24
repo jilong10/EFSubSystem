@@ -144,6 +144,26 @@ function addEnemy(crisis_id){
     });
 }
 
+function deleteEnemy(crisis_id, enemy_name){
+    var target = "./api/statusupdate/crisis/"+ crisis_id +"/" + enemy_name;
+
+    $.ajax({
+        url:target,
+        type: 'DELETE',
+        success:function(msg){
+            if (msg.success) {
+                //to check return message to confirm successful
+                window.location.reload(true);
+            } else {
+                showNotification('error', msg.message);
+            }
+        },
+        error: function() {
+            showNotification('error', 'Update Failed');
+        }
+    });
+}
+
 function getTypeFromName(enemy_name){
 	var type = "LAND";
 	if(enemy_name == "Dolphin Rider Zombie" || enemy_name == "Ducky Tube Zombie" || enemy_name == "Snorkel Zombie"){
