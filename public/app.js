@@ -93,3 +93,63 @@ function updateCrisisStatus(crisis_id){
     });
 }
 
+function updateEnemy(crisis_id, enemy_name, enemy_type,index){
+	var target = "./api/statusupdate/crisis/"+ crisis_id +"/" + enemy_name;
+	var enemy_size = document.getElementById("enemy_size"+index).value;
+    var coor_x = document.getElementById("enemy_x"+index).value;
+    var coor_y = document.getElementById("enemy_y"+index).value;
+    var area = document.getElementById("enemy_area"+index).value;
+    $.ajax({
+		url:target,
+		type:'PUT',
+		data:{enemy_size:enemy_size,coordinate_x:coor_x,coordinate_y:coor_y,affect_area:area,enemy_type:enemy_type},
+        success:function(msg){
+            if (msg.success) {
+                //to check return message to confirm successful
+                window.location.reload(true);
+            } else {
+                showNotification('error', msg.message);
+            }
+        },
+        error: function() {
+            showNotification('error', 'Update Failed');
+        }
+	});
+}
+
+function addEnemy(crisis_id){
+    var target = "./api/statusupdate/crisis/"+ crisis_id;
+    var name = document.getElementById("enemy_name").value;
+    var type = getTypeFromName(name);
+    var size = document.getElementById("enemy_size").value;
+    var coor_x = document.getElementById("enemy_x").value;
+    var coor_y = document.getElementById("enemy_y").value;
+    var area = document.getElementById("enemy_area").value;
+
+    $.ajax({
+        url:target,
+        type:'POST',
+        data:{enemy_name:name,enemy_size:size,enemy_type:type,coordinate_x:coor_x,coordinate_y:coor_y,affect_area:area},
+        success:function(msg){
+            if (msg.success) {
+                //to check return message to confirm successful
+                window.location.reload(true);
+            } else {
+                showNotification('error', msg.message);
+            }
+        },
+        error: function() {
+            showNotification('error', 'Update Failed');
+        }
+    });
+}
+
+function getTypeFromName(enemy_name){
+	var type = "LAND";
+	if(enemy_name == "Dolphin Rider Zombie" || enemy_name == "Ducky Tube Zombie" || enemy_name == "Snorkel Zombie"){
+		type = "SEA";
+	}else if(enemy_name == "Balloon Zombie"){
+		type = "AIR";
+	}
+	return type;
+}
