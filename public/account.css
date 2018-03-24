@@ -37,6 +37,9 @@ h2 {
 }
 
 .alert {
-    float: right;
-    width: 20em;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width:20em;
+    z-index: 1;
 }
