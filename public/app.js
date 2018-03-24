@@ -51,8 +51,8 @@ function updateCrisisWithPlan(plan_id){
 		url:target,
 		type: 'POST',
 		success:function(){
-			//to check return message to confirm successful
-			window.alert("Update Successful!");
+			//to check return message to confirm successful			
+			showNotification('primary', 'Update Successful');
 		}
 	});
 }
