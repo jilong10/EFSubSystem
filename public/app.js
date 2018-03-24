@@ -53,7 +53,7 @@ function updateCrisisWithPlan(plan_id){
 		success:function(msg){
 			if (msg.success) {
         		//to check return message to confirm successful			
-				showNotification('primary', msg.message);
+				showNotification('success', msg.message);
         	} else {
         		showNotification('error', msg.message);
         	}
