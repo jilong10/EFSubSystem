@@ -174,7 +174,7 @@ function getTypeFromName(enemy_name){
 	return type;
 }
 
-function deploy(id) {
+function deploy(id, unitType) {
     const size = document.getElementById(id + 'Input').value;
     if (size > 0) {
         const target = `./api/ordergenerator/deploymentunit/${id}/increasesize`;
@@ -188,7 +188,11 @@ function deploy(id) {
                     //to check return message to confirm successful
                     window.location.reload(true);
                 } else {
-                    showNotification('danger', msg.message);
+                    if (msg.message == 'Unit not deploy yet') {
+                        showDeploymentUnit(true, id, unitType);
+                    } else  {
+                        showNotification('danger', msg.message);
+                    }                                    
                 }
             },
             error: function() {
@@ -198,4 +202,51 @@ function deploy(id) {
     } else {
         showNotification('danger', 'Please input a number');
     }
+}
+
+function showDeploymentUnit(show, unitName, unitType) {
+    let deploymentUnitForm = document.getElementById('newDeploymentUnitForm');
+
+    if (show) {
+        newDeploymentUnitForm.classList.remove('hide'); 
+    } else {
+        newDeploymentUnitForm.classList.add('hide'); 
+    }
+
+    let unitNameLabel = document.getElementById('unit_name');
+    unitNameLabel.innerHTML = unitName;
+    let unitTypeLabel = document.getElementById('unit_type');    
+    unitTypeLabel.innerHTML = unitType;
+}
+
+function addDeploymentUnit() {
+    const unitName = document.getElementById('unit_name').innerHTML;
+    const unitType = document.getElementById('unit_type').innerHTML;
+    const currentUnitSize = document.getElementById(unitName + 'Input').value;
+    const coordinateX = document.getElementById("coordinate_x").value;
+    const coordinateY = document.getElementById("coordinate_y").value;
+    const unitStatus = 'DEPLOYED';
+
+    const target = './api/ordergenerator/deploymentunit';
+    $.ajax({
+        url: target,
+        type: 'POST',
+        data: { unit_name: unitName, unit_type: unitType, current_unit_size: currentUnitSize, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
+        success: function(msg) {
+            if (msg.success) {
+                //to check return message to confirm successful         
+                window.location.reload(true);
+            } else {
+                showNotification('danger', msg.message);
+            }
+            
+        },
+        error: function() {
+            showNotification('danger', 'Deploy Failed');
+        }
+    });
+}
+
+function cancelDeploymentUnit() {
+    showDeploymentUnit(false, '', '');
 }

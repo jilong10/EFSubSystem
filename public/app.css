@@ -5,3 +5,17 @@
  	width:20em;
  	z-index: 10;
 }
+
+#newDeploymentUnitForm {
+	position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    background-color: white;
+    padding: 30px;
+}
+
+.hide {
+	display: none;
+}

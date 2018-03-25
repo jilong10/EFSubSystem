@@ -38,7 +38,7 @@
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="basic-addon3">
-					<button type="button" onClick="deploy(this.id)" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
+					<button type="button" onClick="deploy(this.id, '<%= unit.unitType %>')" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
 				</span>
 				</div>
 				<input type="number" class="form-control" id="<%= unit.unitName + 'Input' %>" aria-describedby="basic-addon3" placeholder="Number of Units">
@@ -48,5 +48,26 @@
 <% }); %>
 	</tbody>
 </table>
+
+<div class="container">	
+	<div class="row">
+		<div class="form-group col-12 col-md-6 border rounded hide" id="newDeploymentUnitForm">
+			<label>Unit Name: </label>
+			<label id="unit_name"></label><br>
+
+			<label>Unit Type: </label>
+			<label id="unit_type"></label><br>
+
+			<label for="coordinate_x">Coordinate X: </label>
+			<input type="number" class="form-control mb-3" id="coordinate_x">
+
+			<label for="coordinate_y">Coordinate Y: </label>
+			<input type="number" class="form-control mb-3" id="coordinate_y">
+
+			<button onclick="cancelDeploymentUnit()" class="btn mb-3">Cancel</button>
+			<button onclick="addDeploymentUnit()" class="btn float-right btn-success mb-3">Deploy</button>			
+		</div>
+	</div>
+</div>
 
 <% include ./partials/footer %>

@@ -186,6 +186,39 @@ exports.createDeploymentUnit = (req, res) => {
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
 	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
+	if (!unitName) {
+		return res.json({
+			success: false,
+			message: 'Invalid Unit Name'
+		});
+	} else if (!unitType) {
+		return res.json({
+			success: false,
+			message: 'Invalid Unit Type'
+		});
+	} else if (!currentUnitSize) {
+		return res.json({
+			success: false,
+			message: 'Invalid Unit Size'
+		});
+	} else if (!coordinateX) {
+		return res.json({
+			success: false,
+			message: 'Invalid Coordinate X'
+		});
+	} else if (!coordinateY) {
+		return res.json({
+			success: false,
+			message: 'Invalid Coordinate Y'
+		});
+	} else if (!unitStatus) {
+		return res.json({
+			success: false,
+			message: 'Invalid Unit Status'
+		});
+	}
+
+
 	deploymentUnitRef.child(unitName)
 		.once('value', snapshot => {
 			// Check unit name
