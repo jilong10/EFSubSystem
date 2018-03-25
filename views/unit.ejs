@@ -1,17 +1,52 @@
 <% include ./partials/header %>
-
+<br>
 <h1>EF Units</h1>
-
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th scope="col">Name</th>
+			<th scope="col">Date</th>
+			<th scope="col">Time</th>
+			<th scope="col">Type</th>
+			<th scope="col">Cost</th>
+			<th scope="col">Size</th>
+			<th scope="col">Description</th>
+			<th scope="col">Deploy Amount</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<th scope="col">Name</th>
+		<th scope="col">Date</th>
+		<th scope="col">Time</th>
+		<th scope="col">Type</th>
+		<th scope="col">Cost</th>
+		<th scope="col">Size</th>
+		<th scope="col">Description</th>
+		<th scope="col">Deploy Amount</th>
+	</tfoot>
+	<tbody>
 <% data.forEach(unit => { %>
-	Unit Name: <%= unit.unitName %>
-	<ul>
-		<li>Date: <%= unit.date %></li>
-		<li>Time: <%= unit.time %></li>
-		<li>Unit Type: <%= unit.unitType %></li>
-		<li>Cost: $<%= unit.cost %></li>
-		<li>Unit Size: <%= unit.unitSize %></li>
-		<li>Description: <%= unit.description %></li>
-	</ul>
+	<tr>
+		<td><%= unit.unitName %></td>
+		<td><%= unit.date %></td>
+		<td><%= unit.time %></td>
+		<td><%= unit.unitType %></td>
+		<td><%= unit.cost %></td>
+		<td><%= unit.unitSize %></td>
+		<td><%= unit.description %></td>
+		<td>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon3">
+					<button type="button" class="btn btn-success">Deploy</button>
+				</span>
+				</div>
+				<input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="Number of Units">
+			</div>
+		</td>
+	</tr>
 <% }); %>
+	</tbody>
+</table>
 
 <% include ./partials/footer %>
