@@ -38,10 +38,10 @@
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
 					<span class="input-group-text" id="basic-addon3">
-					<button type="button" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
+					<button type="button" onClick="deploy(this.id)" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
 				</span>
 				</div>
-				<input type="number" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="Number of Units">
+				<input type="number" class="form-control" id="<%= unit.unitName + 'Input' %>" aria-describedby="basic-addon3" placeholder="Number of Units">
 			</div>
 		</td>
 	</tr>

@@ -403,7 +403,7 @@ exports.increaseDeploymentUnitSize = (req, res) => {
 			if (!deploymentUnitSnapshot.exists()) {
 				return res.json({
 					success: false,
-					message: 'Invalid unit name'
+					message: 'Unit not deploy yet'
 				});
 			}
 

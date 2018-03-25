@@ -173,3 +173,29 @@ function getTypeFromName(enemy_name){
 	}
 	return type;
 }
+
+function deploy(id) {
+    const size = document.getElementById(id + 'Input').value;
+    if (size > 0) {
+        const target = `./api/ordergenerator/deploymentunit/${id}/increasesize`;
+
+        $.ajax({
+            url: target,
+            type: 'PUT',
+            data: { number: size },
+            success: function(msg) {
+                if (msg.success) {
+                    //to check return message to confirm successful
+                    window.location.reload(true);
+                } else {
+                    showNotification('danger', msg.message);
+                }
+            },
+            error: function() {
+                showNotification('danger', 'Update Failed');
+            }
+        });
+    } else {
+        showNotification('danger', 'Please input a number');
+    }
+}
