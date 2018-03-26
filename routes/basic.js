@@ -12,10 +12,35 @@ const deploymentplanUrl = url + '/api/ef';
 const deploymentunitUrl = url + '/api/statusupdate/deploymentunit';
 const unitUrl = url + '/api/statusupdate/unit';
 const crisisUrl = url + '/api/statusupdate/crisis';
+const mycmoUrl = url + '/api/mycmo';
 
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => {	
-	res.render('index', { message: '', user: req.session.user });
+	axios.get(mycmoUrl)
+		.then(response => {										
+			const crisisArr = Object.keys(response.data.Crisis).map(key => {
+				response.data.Crisis[key].id = key;
+				const enemyArr = Object.keys(response.data.Crisis[key].Enemy).map(enemyKey => response.data.Crisis[key].Enemy[enemyKey]);				
+				response.data.Crisis[key].Enemy = enemyArr;
+				return response.data.Crisis[key];
+			});
+
+			const deploymentunitArr = Object.keys(response.data.DeploymentUnit).map(key => response.data.DeploymentUnit[key]);	
+			deploymentunitArr.sort((a, b) => {
+				if (a.unitType < b.unitType) return -1;
+				if (a.unitType > b.unitType) return 1;
+				return 0;
+			});	
+
+			const statusArr = {
+				'Crisis': crisisArr,
+				'DeploymentUnit': deploymentunitArr
+			};
+			res.render('index', { message: '', user: req.session.user, data: statusArr });
+		})
+		.catch(err => {
+			res.render('index', { message: '', user: req.session.user, data: '' });	
+		});	
 });
 
 // Register Page
