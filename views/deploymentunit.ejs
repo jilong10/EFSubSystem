@@ -4,16 +4,62 @@
 <h1>Deployment Units</h1>
 
 <% data.forEach(deploymentunit => { %>
-	Unit Name: <%= deploymentunit.unitName %>
-	<ul>
-		<li>Date: <%= deploymentunit.date %></li>
-		<li>Time: <%= deploymentunit.time %></li>
-		<li>Unit Type: <%= deploymentunit.unitType %></li>
-		<li>Coordinate: (<%= deploymentunit.coordinateX %>, <%= deploymentunit.coordinateY %>)</li>
-		<li>Current Unit Size: <%= deploymentunit.currentUnitSize %></li>
-		<li>Unit Casualty: <%= deploymentunit.unitCasualty %></li>
-		<li>Unit Status: <%= deploymentunit.unitStatus %></li>
-	</ul>
+
+	<div class="card">
+		<div class="card-header">
+			<% if (deploymentunit.unitStatus == 'REACHED') { %>
+				<h5><%= deploymentunit.unitName %> <span class="badge badge-success"><%= deploymentunit.unitStatus %></span></h5>
+			<% } else { %>
+				<h5><%= deploymentunit.unitName %> <span class="badge badge-warning"><%= deploymentunit.unitStatus %></span></h5>
+			<% } %>
+		</div>
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<dl class="row">
+						<dt class="col-sm-3">Date:</dt>
+						<dd class="col-sm-9"><%= deploymentunit.date %></dd>
+						<dt class="col-sm-3">Time:</dt>
+						<dd class="col-sm-9"><%= deploymentunit.time %></dd>
+						<dt class="col-sm-3">Unit Type:</dt>
+						<dd class="col-sm-9"><%= deploymentunit.unitType %></dd>
+						<dt class="col-sm-3">Coordinate:</dt>
+						<dd class="col-sm-9">(<%= deploymentunit.coordinateX %>, <%= deploymentunit.coordinateY %>)</dd>
+						<dt class="col-sm-3">Current Unit Size:</dt>
+						<dd class="col-sm-9"><%= deploymentunit.currentUnitSize %></dd>
+						<dt class="col-sm-3">Unit Casualty:</dt>
+						<dd class="col-sm-9">
+							<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'Casualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>">
+							
+						</dd>
+					</dl>
+					
+					<% var status = deploymentunit.currentUnitSize / (deploymentunit.currentUnitSize + deploymentunit.unitCasualty) * 100 %>
+					<% if (status > 70) { %>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:<%= status.toFixed(1) %>%">
+								Healthy (<%= status.toFixed(1) %>%)
+							</div>
+						</div>
+					<% } else if (status > 30) { %>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped bg-warning progress-bar-animated" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:<%= status.toFixed(1) %>%">
+								Moderate (<%= status.toFixed(1) %>%)
+							</div>
+						</div>
+					<% } else { %>
+						<div class="progress">
+							<div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+								Critically low (<%= status.toFixed(1) %>%)
+							</div>
+						</div>
+					<% } %>
+				</div>
+				<button type="submit" class="btn btn btn-outline-secondary btn-block">Update</button>
+			</form>
+		</div>
+	</div>
+	<br />
 <% }); %>
 
 <% include ./partials/footer %>
