@@ -24,13 +24,36 @@
 						<dt class="col-sm-3">Unit Type:</dt>
 						<dd class="col-sm-9"><%= deploymentunit.unitType %></dd>
 						<dt class="col-sm-3">Coordinate:</dt>
-						<dd class="col-sm-9">(<%= deploymentunit.coordinateX %>, <%= deploymentunit.coordinateY %>)</dd>
+						<dd class="col-sm-9">
+							<div class="form-row">
+								<div class="col">
+									<label for="<%= deploymentunit.unitName + '_X' %>">Latitude</label>
+									<input id="<%= deploymentunit.unitName + '_X' %>" type="text" class="form-control" placeholder="Latitude" value="<%= deploymentunit.coordinateX %>" />
+								</div>
+								<div class="col">
+									<label for="<%= deploymentunit.unitName + '_Y' %>">Longtitude</label>
+									<input id="<%= deploymentunit.unitName + '_Y' %>" type="text" class="form-control" placeholder="Longtitude" value="<%= deploymentunit.coordinateY %>" />
+								</div>
+							</div>
+						</dd>
 						<dt class="col-sm-3">Current Unit Size:</dt>
 						<dd class="col-sm-9"><%= deploymentunit.currentUnitSize %></dd>
 						<dt class="col-sm-3">Unit Casualty:</dt>
 						<dd class="col-sm-9">
-							<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'Casualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>">
-							
+							<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'Casualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>" />
+						</dd>
+						<dt class="col-sm-3">Unit Status:</dt>
+						<dd class="col-sm-9">
+							<div class="form-group">
+								<select id="<%= deploymentunit.unitName + 'UnitStatus' %>" class="form-control">
+									<option selected><%= deploymentunit.unitStatus %></option>
+									<% if (deploymentunit.unitStatus == 'REACHED') { %>
+										<option>DEPLOYED</option>
+									<% } else { %>
+										<option>REACHED</option>
+									<% } %>
+								</select>
+							</div>
 						</dd>
 					</dl>
 					
