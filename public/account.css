@@ -1,6 +1,7 @@
 html,body{height:100%;margin:0;padding:0}
 *{
     color: #ffffff;
+    font-family: 'Roboto', sans-serif;
 }
 .bg {
     background: url('https://timedotcom.files.wordpress.com/2017/03/170329-most-expensive-city-singapore.jpg')
