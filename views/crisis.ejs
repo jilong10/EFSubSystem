@@ -7,29 +7,29 @@
 <% data.forEach(crisis => { %>
 <div class="table-responsive">
 	<table class="table table-bordered">
-		<thead>
-		<tr class="table-active">
-			<td>Crisis ID:</td>
-			<td>Date: </td>
-			<td>Last Update: </td>
-			<td>Crisis Code:</td>
-			<td>Casualty Size: </td>
-		</tr>
+		<thead class="thead-dark">
+			<tr class="table-active">
+				<th>Crisis ID</th>
+				<th>Date</th>
+				<th>Last Update</th>
+				<th>Crisis Code</th>
+				<th>Casualty Size</th>
+			</tr>
 		</thead>
 		<tbody>
-		<%if(crisis.crisisCode == "YELLOW"){%>
-				<tr class="table-warning">
-		<%}else if(crisis.crisisCode == "RED"){%>
-				<tr class="table-danger">
-		<%}else{%>
-				<tr class="table-success">
-		<%}%>
-			<td><%= crisis.id %></td>
-			<td><%= crisis.date %></td>
-			<td><%= crisis.time %></td>
-			<td><%= crisis.crisisCode %></td>
-			<td><%= crisis.casualtySize %></td>
-		</tr>
+			<%if(crisis.crisisCode == "YELLOW"){%>
+					<tr class="table-warning">
+			<%}else if(crisis.crisisCode == "RED"){%>
+					<tr class="table-danger">
+			<%}else{%>
+					<tr class="table-success">
+			<%}%>
+				<td><%= crisis.id %></td>
+				<td><%= crisis.date %></td>
+				<td><%= crisis.time %></td>
+				<td><%= crisis.crisisCode %></td>
+				<td><%= crisis.casualtySize %></td>
+			</tr>
 		</tbody>
 
 	</table>
@@ -74,40 +74,40 @@
 <h3>Enemies</h3>
 <div class="table-responsive">
 	<table class="table table-bordered">
-		<thead>
-		<tr class="table-active">
-			<td>Enemy Name: </td>
-			<td>Type: </td>
-			<td>Size: </td>
-			<td>Coordinates: </td>
-			<td>Affected Area: </td>
-			<td>Action: </td>
-		</tr>
+		<thead class="thead-dark">
+			<tr class="table-active">
+				<th>Enemy Name</th>
+				<th>Type</th>
+				<th>Size</th>
+				<th>Coordinates</th>
+				<th>Affected Area</th>
+				<th>Action</th>
+			</tr>
 		</thead>
 		<tbody>
-        <%
-		var i = 0;
-		crisis.Enemy.forEach(enemy => {
-		%>
-        <tr>
-            <td><img src ="<%= getZombieImgUrl(enemy.enemyName)%>" /><br /><%= enemy.enemyName %></td>
-			<td class="align-middle"><%= enemy.enemyType %></td>
-			<td class="align-middle">
-				<input type="number" class="form-control mb-3" id="enemy_size<%= i %>" value="<%= enemy.enemySize %>">
-			</td>
-			<td class="align-middle">
-				Latitude: <input type="number" class="form-control mb-3" id="enemy_x<%= i %>" value="<%= enemy.coordinateX %>">
-				Longtitude: <input type="number" class="form-control mb-3" id="enemy_y<%= i %>" value="<%= enemy.coordinateY %>">
-			</td>
-			<td class="align-middle">
-				<input type="number" class="form-control mb-3" id="enemy_area<%= i %>" value="<%= enemy.affectArea %>">
-			</td>
-			<td class="align-middle">
-				<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary mb-3 btn-block">Update Details</button>
-				<button onclick="deleteEnemy('<%= crisis.id %>','<%= enemy.enemyName %>')" class="btn btn-primary btn-block mb-3">Delete Enemy</button>
-			</td>
-		</tr>
-        <%i++;}); %>
+	        <%
+			var i = 0;
+			crisis.Enemy.forEach(enemy => {
+			%>
+	        <tr>
+	            <td><img src ="<%= getZombieImgUrl(enemy.enemyName)%>" /><br /><%= enemy.enemyName %></td>
+				<td class="align-middle"><%= enemy.enemyType %></td>
+				<td class="align-middle">
+					<input type="number" class="form-control mb-3" id="enemy_size<%= i %>" value="<%= enemy.enemySize %>">
+				</td>
+				<td class="align-middle">
+					Latitude: <input type="number" class="form-control mb-3" id="enemy_x<%= i %>" value="<%= enemy.coordinateX %>">
+					Longtitude: <input type="number" class="form-control mb-3" id="enemy_y<%= i %>" value="<%= enemy.coordinateY %>">
+				</td>
+				<td class="align-middle">
+					<input type="number" class="form-control mb-3" id="enemy_area<%= i %>" value="<%= enemy.affectArea %>">
+				</td>
+				<td class="align-middle">
+					<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary mb-3 btn-block">Update Details</button>
+					<button onclick="deleteEnemy('<%= crisis.id %>','<%= enemy.enemyName %>')" class="btn btn-primary btn-block mb-3">Delete Enemy</button>
+				</td>
+			</tr>
+	        <%i++;}); %>
 		</tbody>
 	</table>
 </div>
