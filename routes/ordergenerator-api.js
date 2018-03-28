@@ -9,7 +9,7 @@ router.route('/deploymentunit')
 	.post(orderGeneratorHelper.createDeploymentUnit);
 
 router.route('/unit/:unit_name')
-	.put(orderGeneratorHelper.editUnit)
+	.put(orderGeneratorHelper.editSingleDeploymentUnit)
 	.delete(orderGeneratorHelper.deleteUnit);
 
 router.route('/unit/:unit_name/reduce')
