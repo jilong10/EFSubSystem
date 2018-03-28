@@ -584,3 +584,54 @@ exports.updateDeploymentUnitStatus = (req, res) => {
 			}
 		});
 };
+
+exports.editSingleDeploymentUnit = (req, res) => {
+	const unitName = req.params.unit_name;
+	const currentUnitSize = Number(req.body.current_unit_size);
+	const unitCasualty = Number(req.body.unit_casualty);
+	const totalUnitSize = Number(req.body.total_unit_size);
+	const coordinateX = Number(req.body.coordinate_x);
+	const coordinateY = Number(req.body.coordinate_y);
+	const unitStatus = req.body.unit_status.toUpperCase();
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
+
+	if (currentUnitSize - unitCasualty < 0) {
+		return res.json({
+			success: false,
+			message: 'Unit Casualty cannot be more than current unit size'
+		});
+	}	
+
+	deploymentUnitRef.child(unitName)
+		.once('value', snapshot => {
+			// Check unit name
+			if (!snapshot.exists()) {
+				return res.json({
+					success: false,
+					message: 'Invalid unit name'
+				});
+			}
+
+			const singleDeploymentUnit = {
+				'currentUnitSize': totalUnitSize - unitCasualty,
+				'unitCasualty': unitCasualty,
+				'unitStatus': unitStatus,
+				'coordinateX': coordinateX,
+				'coordinateY': coordinateY,
+				'date': date,
+				'time': time
+			}
+
+			deploymentUnitRef.child(unitName)
+				.update(singleDeploymentUnit)
+				.then(() => res.json({
+					success: true,
+					message: 'Deployment Unit Updated Successfully'
+				}))
+				.catch(err => res.json({
+					success: false,
+					message: 'Deployment Unit Updated Failed'
+				}));
+		});
+};
