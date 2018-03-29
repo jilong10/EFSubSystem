@@ -67,18 +67,13 @@ function updateCrisisWithPlan(plan_id){
 
 function updateCrisisStatus(crisis_id){
 	var target = "./api/statusupdate/crisis/" + crisis_id;
-	var casualty_size = document.getElementById("casualty_size").value;
-	var crisis_code = "GREEN";
-	if(document.getElementById("crisis_code1").checked){
-		crisis_code = "RED";
-	}else if(document.getElementById("crisis_code2").checked){
-		crisis_code = "YELLOW";
-	}
-    //window.alert(casualty_size + crisis_code);
+	var no_of_injuries = document.getElementById("no_of_injuries").value;
+    var no_of_deaths = document.getElementById("no_of_deaths").value;	
+	    
     $.ajax({
         url:target,
         type: 'PUT',
-		data:{crisis_code:crisis_code,casualty_size:casualty_size},
+		data:{no_of_injuries: no_of_injuries, no_of_deaths: no_of_deaths},
         success:function(msg){
         	if (msg.success) {
         		//to check return message to confirm successful

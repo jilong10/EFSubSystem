@@ -13,12 +13,18 @@ exports.readCrisis = (req, res) => {
 };
 
 exports.createCrisis = (req, res) => {	
-	const crisisCode = req.body.crisis_code.toUpperCase();	
-	const casualtySize = Number(req.body.casualty_size);
+	const crisisCode = req.body.crisis_code.toUpperCase();
+	const noOfInjuries = Number(req.body.no_of_injuries);
+	const noOfDeaths = Number(req.body.no_of_deaths);
+	const landTroops = Number(req.body.land_troops);
+	const seaTroops = Number(req.body.sea_troops);
+	const airTroops = Number(req.body.air_troops);
+	const budget = Number(req.body.budget);
+	const missionType = req.body.mission_type.toUpperCase();
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
 	const time = moment().tz("Asia/Singapore").format(' HH:mm:ss');
 	
-	const crisis = new Crisis(crisisCode, casualtySize, date, time);
+	const crisis = new Crisis(crisisCode, noOfInjuries, noOfDeaths, landTroops, seaTroops, airTroops, budget, missionType, date, time);
 	
 	crisisRef
 		.push()
@@ -34,17 +40,20 @@ exports.createCrisis = (req, res) => {
 };
 
 exports.editCrisis = (req, res) => {
-	const crisisId = req.params.crisis_id;
-	const crisisCode = req.body.crisis_code.toUpperCase();
-	const casualtySize = Number(req.body.casualty_size);
+	const crisisId = req.params.crisis_id;	
+	const noOfInjuries = Number(req.body.no_of_injuries);
+	const noOfDeaths = Number(req.body.no_of_deaths);
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
 	const time = moment().tz("Asia/Singapore").format(' HH:mm:ss');	
+
+	const crisis = {
+		'noOfInjuries': noOfInjuries,
+		'noOfDeaths': noOfDeaths
+	}
 
 	crisisRef.child(crisisId)
 		.once('value', snapshot => {
 			if (snapshot.exists()) {
-				const crisis = new Crisis(crisisCode, casualtySize, date, time);
-
 				crisisRef.child(crisisId)
 					.update(crisis)
 					.then(() => res.json({

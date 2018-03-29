@@ -13,7 +13,13 @@
 				<th>Date</th>
 				<th>Last Update</th>
 				<th>Crisis Code</th>
-				<th>Casualty Size</th>
+				<th>No of Injuries</th>
+				<th>No of Deaths</th>
+				<th>Suggested Land Troops</th>
+				<th>Suggested Sea Troops</th>
+				<th>Suggested Air Troops</th>
+				<th>Budget</th>
+				<th>Mission Type</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,7 +34,13 @@
 				<td><%= crisis.date %></td>
 				<td><%= crisis.time %></td>
 				<td><%= crisis.crisisCode %></td>
-				<td><%= crisis.casualtySize %></td>
+				<td><%= crisis.noOfInjuries %></td>
+				<td><%= crisis.noOfDeaths %></td>
+				<td><%= crisis.landTroops %></td>
+				<td><%= crisis.seaTroops %></td>
+				<td><%= crisis.airTroops %></td>
+				<td><%= crisis.budget %></td>
+				<td><%= crisis.missionType %></td>
 			</tr>
 		</tbody>
 
@@ -38,35 +50,16 @@
 <h3>Update Crisis</h3>
 <div class="container">
 	<div class="row border" style="padding: 15px;">
-		<div class="col-6">
-			<div class="form-group">
-				<legend class="col-form-label">Crisis Code: </legend>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code1" value="RED" >
-					<label class="form-check-label" for="crisis_code1">
-						RED
-					</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code2" value="YELLOW" >
-					<label class="form-check-label" for="crisis_code2">
-						YELLOW
-					</label>
-				</div>
-				<div class="form-check">
-					<input class="form-check-input" type="radio" name="crisis_code" id="crisis_code3" value="GREEN" >
-					<label class="form-check-label" for="crisis_code3">
-						GREEN
-					</label>
-				</div>
+		<div class="form-row">
+			<div class="col-6">					
+				<label for="no_of_injuries">No of Injuries</label>
+				<input type="number" class="form-control mb-3" id="no_of_injuries" value="<%= crisis.noOfInjuries %>">								
 			</div>
-		</div>
-		<div class="col-6">
-			<div class="form-group">
-				<label for="casualty_size">Casualty Size: </label>
-				<input type="number" class="form-control mb-3" id="casualty_size" value="<%= crisis.casualtySize %>">
+			<div class="col-6">			
+				<label for="no_of_deaths">No of Deaths</label>
+				<input type="number" class="form-control mb-3" id="no_of_deaths" value="<%= crisis.noOfDeaths %>">
 			</div>
-			<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary float-right">Update Crisis Status</button>
+			<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary">Update Crisis Status</button>			
 		</div>
 	</div>
 </div><br>

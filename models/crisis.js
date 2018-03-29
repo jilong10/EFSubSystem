@@ -1,7 +1,13 @@
 class Crisis {
-	constructor(crisisCode, casualtySize, date, time) {
+	constructor(crisisCode, noOfInjuries, noOfDeaths, landTroops, seaTroops, airTroops, budget, missionType, date, time) {
 		this.crisisCode = crisisCode;
-		this.casualtySize = casualtySize;
+		this.noOfInjuries = noOfInjuries;
+		this.noOfDeaths = noOfDeaths;
+		this.landTroops = landTroops;
+		this.seaTroops = seaTroops;
+		this.airTroops = airTroops;
+		this.budget = budget;
+		this.missionType = missionType;
 		this.date = date;
 		this.time = time;
 	}
