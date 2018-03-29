@@ -37,12 +37,12 @@
 							</div>
 						</dd>
 						<dt class="col-sm-3">Total Unit Size:</dt>
-						<dd class="col-sm-9"><%= deploymentunit.currentUnitSize + deploymentunit.unitCasualty %></dd>
+						<dd class="col-sm-9"><label id="<%= deploymentunit.unitName + 'TotalUnitSize' %>"><%= deploymentunit.currentUnitSize + deploymentunit.unitCasualty %></label></dd>
 						<dt class="col-sm-3">Current Unit Size:</dt>
-						<dd class="col-sm-9"><%= deploymentunit.currentUnitSize %></dd>
+						<dd class="col-sm-9"><label id="<%= deploymentunit.unitName + 'CurrentUnitSize' %>"><%= deploymentunit.currentUnitSize %></label></dd>
 						<dt class="col-sm-3">Unit Casualty:</dt>
 						<dd class="col-sm-9">
-							<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'Casualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>" />
+							<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'UnitCasualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>" />
 						</dd>
 						<dt class="col-sm-3">Unit Status:</dt>
 						<dd class="col-sm-9">
@@ -80,7 +80,7 @@
 						</div>
 					<% } %>
 				</div>
-				<button type="submit" class="btn btn btn-outline-secondary btn-block">Update</button>
+				<button onClick="updateDeploymentUnit('<%= deploymentunit.unitName %>')" class="btn btn btn-outline-secondary btn-block">Update</button>
 			</form>
 		</div>
 	</div>

@@ -219,19 +219,20 @@ function showDeploymentUnit(show, unitName, unitType) {
     unitTypeLabel.innerHTML = unitType;
 }
 
-function addDeploymentUnit() {
-    const unitName = document.getElementById('unit_name').innerHTML;
-    const unitType = document.getElementById('unit_type').innerHTML;
-    const currentUnitSize = document.getElementById(unitName + 'Input').value;
-    const coordinateX = document.getElementById("coordinate_x").value;
-    const coordinateY = document.getElementById("coordinate_y").value;
-    const unitStatus = 'DEPLOYED';
+function updateDeploymentUnit(unitName) {  
+    const totalUnitSize = document.getElementById(unitName + 'TotalUnitSize').innerHTML;
+    const currentUnitSize = document.getElementById(unitName + 'CurrentUnitSize').innerHTML;
+    const unitCasualty = document.getElementById(unitName + 'UnitCasualty').value;
+    const coordinateX = document.getElementById(unitName + '_X').value;
+    const coordinateY = document.getElementById(unitName + '_Y').value;
+    const unitStatus = document.getElementById(unitName + 'UnitStatus').value;
 
-    const target = './api/ordergenerator/deploymentunit';
+    const target = './api/ordergenerator/deploymentunit/' + unitName;
+
     $.ajax({
         url: target,
-        type: 'POST',
-        data: { unit_name: unitName, unit_type: unitType, current_unit_size: currentUnitSize, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
+        type: 'PUT',
+        data: { total_unit_size: totalUnitSize, current_unit_size: currentUnitSize, unit_casualty: unitCasualty, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
         success: function(msg) {
             if (msg.success) {
                 //to check return message to confirm successful         
@@ -242,7 +243,7 @@ function addDeploymentUnit() {
             
         },
         error: function() {
-            showNotification('danger', 'Deploy Failed');
+            showNotification('danger', 'Update Failed');
         }
     });
 }

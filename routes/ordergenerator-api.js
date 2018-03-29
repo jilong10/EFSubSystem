@@ -9,7 +9,7 @@ router.route('/deploymentunit')
 	.post(orderGeneratorHelper.createDeploymentUnit);
 
 router.route('/unit/:unit_name')
-	.put(orderGeneratorHelper.editSingleDeploymentUnit)
+	.put(orderGeneratorHelper.editUnit)
 	.delete(orderGeneratorHelper.deleteUnit);
 
 router.route('/unit/:unit_name/reduce')
@@ -19,7 +19,7 @@ router.route('/unit/:unit_name/increase')
 	.put(orderGeneratorHelper.increaseUnitSize);
 
 router.route('/deploymentunit/:unit_name')
-	.put(orderGeneratorHelper.editDeploymentUnit)
+	.put(orderGeneratorHelper.editSingleDeploymentUnit)
 	.delete(orderGeneratorHelper.deleteDeploymentUnit);
 
 router.route('/deploymentunit/:unit_name/increasesize')
@@ -41,7 +41,7 @@ module.exports = router;
 // api/ordergenerator/unit/:unit_name/reduce 						| PUT 		| Reduce unit size
 // api/ordergenerator/unit/:unit_name/increase 						| PUT 		| Increase unit size
 // api/ordergenerator/deploymentunit 								| POST 	 	| New deployment unit
-// api/ordergenerator/deploymentunit/:unit_name 					| PUT 	 	| Edit deployment unit
+// api/ordergenerator/deploymentunit/:unit_name 					| PUT 	 	| Edit single deployment unit
 // api/ordergenerator/deploymentunit/:unit_name 					| DELETE  	| Delete deployment unit
 // api/ordergenerator/deploymentunit/:unit_name/increasesize 		| PUT 		| Increase deployment unit size
 // api/ordergenerator/deploymentunit/:unit_name/increasecasualty 	| PUT 		| Increase deployment unit casualty
