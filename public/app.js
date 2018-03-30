@@ -1,11 +1,22 @@
 $(document).ready(function() {
 	$('.navbar-nav a[href="' + location.pathname + '"]').addClass('active');
+    loader(false);
 
 	findDeploymentPlanStatus();
 	setInterval(() => {		
 		findDeploymentPlanStatus();
 	}, 5000);
 });
+
+function loader(activate) {
+    if (activate) {
+        $('body').css({'overflow':'hidden'});
+        $('.loader').removeClass('hide');
+    } else {
+        $('body').css({'overflow':'auto'});
+        $('.loader').addClass('hide');
+    } 
+}
 
 function findDeploymentPlanStatus() {
 	fetch('./api/ef/status')
@@ -45,12 +56,14 @@ function showNotification(alertType, msg) {
 	$(".alert-message").prepend(htmlAlert);    
 }
 
-function updateCrisisWithPlan(plan_id){
+function updateCrisisWithPlan(plan_id) {
+    loader(true);
 	var target = "./api/ef/updatecrisis/"+ plan_id;
 	$.ajax({
 		url:target,
 		type: 'POST',
-		success:function(msg){
+		success: function(msg) {
+            loader(false);
 			if (msg.success) {
         		//to check return message to confirm successful			
 				showNotification('success', msg.message);
@@ -60,12 +73,14 @@ function updateCrisisWithPlan(plan_id){
 			
 		},
         error: function() {
+            loader(false);
         	showNotification('danger', 'Update Failed');
         }
 	});
 }
 
 function updateCrisisStatus(crisis_id){
+    loader(true);
 	var target = "./api/statusupdate/crisis/" + crisis_id;
 	var no_of_injuries = document.getElementById("no_of_injuries").value;
     var no_of_deaths = document.getElementById("no_of_deaths").value;	
@@ -74,45 +89,52 @@ function updateCrisisStatus(crisis_id){
         url:target,
         type: 'PUT',
 		data:{no_of_injuries: no_of_injuries, no_of_deaths: no_of_deaths},
-        success:function(msg){
+        success:function(msg) {
         	if (msg.success) {
         		//to check return message to confirm successful
             	window.location.reload(true);
         	} else {
+                loader(false);
         		showNotification('danger', msg.message);
         	}
         },
         error: function() {
+            loader(false);
         	showNotification('danger', 'Update Failed');
         }
     });
 }
 
 function updateEnemy(crisis_id, enemy_name, enemy_type,index){
+    loader(true);
 	var target = "./api/statusupdate/crisis/"+ crisis_id +"/" + enemy_name;
 	var enemy_size = document.getElementById("enemy_size"+index).value;
     var coor_x = document.getElementById("enemy_x"+index).value;
     var coor_y = document.getElementById("enemy_y"+index).value;
     var area = document.getElementById("enemy_area"+index).value;
+
     $.ajax({
 		url:target,
 		type:'PUT',
 		data:{enemy_size:enemy_size,coordinate_x:coor_x,coordinate_y:coor_y,affect_area:area,enemy_type:enemy_type},
-        success:function(msg){
+        success:function(msg) {
             if (msg.success) {
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
+                loader(false);
                 showNotification('danger', msg.message);
             }
         },
         error: function() {
+            loader(false);
             showNotification('danger', 'Update Failed');
         }
 	});
 }
 
 function addEnemy(crisis_id){
+    loader(true);
     var target = "./api/statusupdate/crisis/"+ crisis_id;
     var name = document.getElementById("enemy_name").value;
     var type = getTypeFromName(name);
@@ -125,35 +147,40 @@ function addEnemy(crisis_id){
         url:target,
         type:'POST',
         data:{enemy_name:name,enemy_size:size,enemy_type:type,coordinate_x:coor_x,coordinate_y:coor_y,affect_area:area},
-        success:function(msg){
+        success:function(msg) {
             if (msg.success) {
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
+                loader(false);
                 showNotification('danger', msg.message);
             }
         },
         error: function() {
+            loader(false);
             showNotification('danger', 'Update Failed');
         }
     });
 }
 
 function deleteEnemy(crisis_id, enemy_name){
+    loader(true);
     var target = "./api/statusupdate/crisis/"+ crisis_id +"/" + enemy_name;
 
     $.ajax({
         url:target,
         type: 'DELETE',
-        success:function(msg){
+        success:function(msg) {
             if (msg.success) {
                 //to check return message to confirm successful
                 window.location.reload(true);
             } else {
+                loader(false);
                 showNotification('danger', msg.message);
             }
         },
         error: function() {
+            loader(false);
             showNotification('danger', 'Update Failed');
         }
     });
@@ -169,28 +196,31 @@ function getTypeFromName(enemy_name){
 	return type;
 }
 
-function deploy(id, unitType) {
+function deploy(id, unitType) {    
     const size = document.getElementById(id + 'Input').value;
     if (size > 0) {
+        loader(true);
         const target = `./api/ordergenerator/deploymentunit/${id}/increasesize`;
 
         $.ajax({
             url: target,
             type: 'PUT',
             data: { number: size },
-            success: function(msg) {
+            success: function(msg) {                
                 if (msg.success) {
                     //to check return message to confirm successful
                     window.location.reload(true);
-                } else {
+                } else {     
+                    loader(false);               
                     if (msg.message == 'Unit not deploy yet') {
                         showDeploymentUnit(true, id, unitType);
-                    } else  {
+                    } else  {                        
                         showNotification('danger', msg.message);
                     }                                    
                 }
             },
             error: function() {
+                loader(false);
                 showNotification('danger', 'Update Failed');
             }
         });
@@ -214,7 +244,39 @@ function showDeploymentUnit(show, unitName, unitType) {
     unitTypeLabel.innerHTML = unitType;
 }
 
+function addDeploymentUnit() {
+    loader(true);
+    const unitName = document.getElementById('unit_name').innerHTML;
+    const unitType = document.getElementById('unit_type').innerHTML;
+    const currentUnitSize = document.getElementById(unitName + 'Input').value;
+    const coordinateX = document.getElementById("coordinate_x").value;
+    const coordinateY = document.getElementById("coordinate_y").value;
+    const unitStatus = 'DEPLOYED';
+
+    const target = './api/ordergenerator/deploymentunit';
+
+    $.ajax({
+        url: target,
+        type: 'POST',
+        data: { unit_name: unitName, unit_type: unitType, current_unit_size: currentUnitSize, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
+        success: function(msg) {
+             if (msg.success) {
+                //to check return message to confirm successful         
+                window.location.reload(true);
+            } else {
+                loader(false);
+                showNotification('danger', msg.message);
+            }
+        },
+        error: function() {
+            loader(false);
+            showNotification('danger', 'Deploy Failed');
+        }            
+    });
+}
+
 function updateDeploymentUnit(unitName) {  
+    loader(true);
     const totalUnitSize = document.getElementById(unitName + 'TotalUnitSize').innerHTML;
     const currentUnitSize = document.getElementById(unitName + 'CurrentUnitSize').innerHTML;
     const unitCasualty = document.getElementById(unitName + 'UnitCasualty').value;
@@ -228,16 +290,17 @@ function updateDeploymentUnit(unitName) {
         url: target,
         type: 'PUT',
         data: { total_unit_size: totalUnitSize, current_unit_size: currentUnitSize, unit_casualty: unitCasualty, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
-        success: function(msg) {
+        success: function(msg) {            
             if (msg.success) {
                 //to check return message to confirm successful         
                 window.location.reload(true);
             } else {
+                loader(false);
                 showNotification('danger', msg.message);
-            }
-            
+            }            
         },
         error: function() {
+            loader(false);
             showNotification('danger', 'Update Failed');
         }
     });

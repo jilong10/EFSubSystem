@@ -7,10 +7,10 @@
 <% data.forEach(deploymentplan => {
     var borderStyle = "border-success";
     var textStyle = "text-success";
-	if(deploymentplan.crisisCode == "YELLOW"){
+	if(String(deploymentplan.crisisCode).toUpperCase() === "YELLOW"){
 		borderStyle = "border-warning";
 		textStyle = "text-warning";
-	}else if(deploymentplan.crisisCode == "RED"){
+	}else if(String(deploymentplan.crisisCode).toUpperCase()  === "RED"){
 		borderStyle = "border-danger";
 		textStyle = "text-danger";
 	}%>

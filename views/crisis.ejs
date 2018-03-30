@@ -23,9 +23,9 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%if(crisis.crisisCode == "YELLOW"){%>
+			<%if(String(crisis.crisisCode).toUpperCase() === "YELLOW"){%>
 					<tr class="table-warning">
-			<%}else if(crisis.crisisCode == "RED"){%>
+			<%}else if(String(crisis.crisisCode).toUpperCase() === "RED"){%>
 					<tr class="table-danger">
 			<%}else{%>
 					<tr class="table-success">
