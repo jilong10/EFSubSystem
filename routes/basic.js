@@ -39,7 +39,7 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})
 		.catch(err => {
-			res.render('index', { message: '', user: req.session.user, data: '' });	
+			res.render('index', { message: '', user: req.session.user, data: [] });	
 		});	
 });
 
@@ -100,7 +100,7 @@ router.route('/deploymentplan')
 				res.render('deploymentplan', { message: '', user: req.session.user, data: deploymentPlanArr.reverse() });
 			})
 			.catch(err => {
-				res.render('deploymentplan', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+				res.render('deploymentplan', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
 			});	
 	});
 
@@ -118,7 +118,7 @@ router.route('/crisis')
 				res.render('crisis', { message: '', user: req.session.user, data: crisisArr.reverse() });
 			})
 			.catch(err => {
-				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
 			});	
 	});
 
@@ -136,7 +136,7 @@ router.route('/deploymentunit')
 				res.render('deploymentunit', { message: '', user: req.session.user, data: deploymentunitArr });
 			})
 			.catch(err => {
-				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
 			});	
 	});
 
@@ -154,7 +154,7 @@ router.route('/unit')
 				res.render('unit', { message: '', user: req.session.user, data: unitArr });
 			})
 			.catch(err => {
-				res.render('unit', { message: 'Error occurs. Please try again.', user: req.session.user, data: '' });
+				res.render('unit', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
 			});	
 	});
 
