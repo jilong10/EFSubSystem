@@ -1,58 +1,66 @@
 <% include ./partials/header %>
 
-<br>
-<h1>EF Units</h1>
-<table class="table table-striped table-bordered table-responsive">
-	<thead class="thead-dark">
-		<tr>
-			<th scope="col">Name</th>
-			<th scope="col">Date</th>
-			<th scope="col">Time</th>
-			<th scope="col">Type</th>
-			<th scope="col">Cost</th>
-			<th scope="col">Size</th>
-			<th scope="col">Description</th>
-			<th scope="col">Deploy Amount</th>
-		</tr>
-	</thead>
-	<tfoot class="thead-dark">
-		<th scope="col">Name</th>
-		<th scope="col">Date</th>
-		<th scope="col">Time</th>
-		<th scope="col">Type</th>
-		<th scope="col">Cost</th>
-		<th scope="col">Size</th>
-		<th scope="col">Description</th>
-		<th scope="col">Deploy Amount</th>
-	</tfoot>
-	<tbody>
-<% data.forEach(unit => { %>
-	<tr>
-		<td><%= unit.unitName %></td>
-		<td><%= unit.date %></td>
-		<td><%= unit.time %></td>
-		<td><%= unit.unitType %></td>
-		<td><%= unit.cost %></td>
-		<td><%= unit.unitSize %></td>
-		<td><%= unit.description %></td>
-		<td>
-			<div class="input-group mb-3">
-				<div class="input-group-prepend">
-					<span class="input-group-text" id="basic-addon3">
-					<button type="button" onClick="deploy(this.id, '<%= unit.unitType %>')" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
-				</span>
+<div class="row">
+	<div class="status animated fadeInDown">	
+		<div class="row">
+			<div class="col-10">
+				<h1>EF Units</h1>				
+			</div>	
+		</div>			
+	</div>	
+</div>
+
+<div class="row">
+<% data.forEach(unit => { %>	
+	<div class="col-lg-6 animated fadeInUpBig">		
+		<div class="card">
+			<div class="card-header">
+				<div class="row">
+					<div class="col-8">
+						<h3><%= unit.unitName %></h3>
+					</div>
+					<div class="col-2">
+						<button type="button" class="btn btn-secondary">
+							Unit Size <span class="badge badge-light"><label class="unit-label"><%= unit.unitSize %></label></span>
+						</button>
+					</div>
+					<div class="col-auto">
+						<%= unit.date %><br>
+						<%= unit.time %>
+					</div>	
+				</div>					
+			</div>						
+
+			<div class="card-body">
+				<div class="form-group">
+					<dl class="row">
+						<dt class="col-sm-3">Unit Type:</dt>
+						<dd class="col-sm-9"><%= unit.unitType %></dd>
+						<dt class="col-sm-3">Unit Cost:</dt>
+						<dd class="col-sm-9">$<%= unit.cost %></dd>
+						<dt class="col-sm-3">Description:</dt>
+						<dd class="col-sm-9"><%= unit.description %></dd>														
+					</dl>
+					<dl class="row">						
+						<div class="input-group col-sm-12">								
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="basic-addon3">
+									<button type="button" onClick="deploy(this.id, '<%= unit.unitType %>')" class="btn btn-success" id="<%= unit.unitName %>">Deploy</button>
+								</span>
+							</div>
+							<input type="number" class="form-control" id="<%= unit.unitName + 'Input' %>" aria-describedby="basic-addon3" placeholder="Number of Units">								
+						</div>
+					</dl>
 				</div>
-				<input type="number" class="form-control" id="<%= unit.unitName + 'Input' %>" aria-describedby="basic-addon3" placeholder="Number of Units">
 			</div>
-		</td>
-	</tr>
+		</div>
+	</div>	
 <% }); %>
-	</tbody>
-</table>
+</div>
 
 <div class="container">	
 	<div class="row">
-		<div class="form-group col-12 col-md-6 border rounded hide" id="newDeploymentUnitForm">
+		<div class="form-group col-12 col-md-6 border rounded hide animated" id="newDeploymentUnitForm">
 			<label>Unit Name: </label>
 			<label id="unit_name"></label><br>
 

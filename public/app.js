@@ -233,9 +233,11 @@ function showDeploymentUnit(show, unitName, unitType) {
     let deploymentUnitForm = document.getElementById('newDeploymentUnitForm');
 
     if (show) {
-        newDeploymentUnitForm.classList.remove('hide'); 
+        newDeploymentUnitForm.classList.remove('hide');         
+        newDeploymentUnitForm.classList.add('fadeIn');
     } else {
-        newDeploymentUnitForm.classList.add('hide'); 
+        newDeploymentUnitForm.classList.remove('fadeIn');
+        newDeploymentUnitForm.classList.add('hide');         
     }
 
     let unitNameLabel = document.getElementById('unit_name');

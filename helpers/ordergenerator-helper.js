@@ -218,7 +218,6 @@ exports.createDeploymentUnit = (req, res) => {
 		});
 	}
 
-
 	deploymentUnitRef.child(unitName)
 		.once('value', snapshot => {
 			// Check unit name
@@ -596,7 +595,7 @@ exports.editSingleDeploymentUnit = (req, res) => {
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
 	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
 
-	if (currentUnitSize - unitCasualty < 0) {
+	if (totalUnitSize - unitCasualty < 0) {
 		return res.json({
 			success: false,
 			message: 'Unit Casualty cannot be more than current unit size'

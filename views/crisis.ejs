@@ -3,10 +3,10 @@
 
 <% data.forEach(crisis => { %>
 <div class="row">
-	<div class="status">	
+	<div class="status animated fadeInDown">	
 		<div class="row">
 			<div class="col-10">
-				<h1 class="crisis-header">	
+				<h1>	
 					Crisis
 					<% if (String(crisis.crisisCode).toUpperCase() == 'GREEN') { %>
 						<span class="badge badge-secondary green"><%= crisis.id %></span>
@@ -25,7 +25,7 @@
 	</div>	
 </div>
 
-<div class="row">
+<div class="row animated fadeInUpBig">
 	<div class="col">		
 		<div class="card">
 			<div class="card-header">
@@ -48,7 +48,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row animated fadeInUpBig">
 	<div class="col">
 		<div class="card">
 			<div class="card-header">
@@ -95,7 +95,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row animated fadeInUpBig">
 	<div class="col">
 		<div class="card">
 			<div class="card-header">
@@ -138,7 +138,6 @@
 		</div>	
 	</div>
 </div>
-
 <%}); %>
 
 <% include ./partials/footer %>
