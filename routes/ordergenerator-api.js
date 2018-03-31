@@ -18,6 +18,10 @@ router.route('/unit/:unit_name/reduce')
 router.route('/unit/:unit_name/increase')
 	.put(orderGeneratorHelper.increaseUnitSize);
 
+router.route('/deploymentunit/statusrequester')
+	.get(orderGeneratorHelper.statusRequest)
+	.put(orderGeneratorHelper.statusRequester);
+
 router.route('/deploymentunit/:unit_name')
 	.put(orderGeneratorHelper.editSingleDeploymentUnit)
 	.delete(orderGeneratorHelper.deleteDeploymentUnit);
@@ -46,3 +50,5 @@ module.exports = router;
 // api/ordergenerator/deploymentunit/:unit_name/increasesize 		| PUT 		| Increase deployment unit size
 // api/ordergenerator/deploymentunit/:unit_name/increasecasualty 	| PUT 		| Increase deployment unit casualty
 // api/ordergenerator/deploymentunit/:unit_name/updatestatus	 	| PUT 		| Update deployment unit status
+// api/ordergenerator/deploymentunit/requested 					 	| GET 		| Get for deploymen unit request status
+// api/ordergenerator/deploymentunit/requested 					 	| PUT 		| Request for backup (1) or cleanup (2)

@@ -3,15 +3,47 @@
 <div class="row">
 	<div class="status animated fadeInDown">	
 		<div class="row">
-			<div class="col-10">
-				<h1>Deployment Units</h1>
-				<button type="button" class="btn btn-success">Request Cleanup</button> <button type="button" class="btn btn-danger">Request Backup</button>				
+			<div class="col-12">
+				<h1>Deployment Units</h1>								
+				<div class="btn-group btn-group-toggle" id="requested" data-toggle="buttons">
+					<% if (!data.status.backup && !data.status.cleanup) { %>
+						<label class="btn btn-secondary active" id="option0">
+							<input type="radio" name="options" id="option0" value="0" autocomplete="off" checked> None
+						</label>
+						<label class="btn btn-secondary" id="option1">
+							<input type="radio" name="options" id="option1" value="1" autocomplete="off"> Backup
+						</label>
+						<label class="btn btn-secondary" id="option2">
+							<input type="radio" name="options" id="option2" value="2" autocomplete="off"> Cleanup
+						</label>
+					<% } else if (data.status.backup && !data.status.cleanup) { %>
+						<label class="btn btn-secondary" id="option0">
+							<input type="radio" name="options" id="option0" value="0" autocomplete="off"> None
+						</label>
+						<label class="btn btn-secondary active" id="option1">
+							<input type="radio" name="options" id="option1" value="1" autocomplete="off" checked> Backup
+						</label>
+						<label class="btn btn-secondary" id="option2">
+							<input type="radio" name="options" id="option2" value="2" autocomplete="off"> Cleanup
+						</label>
+					<% } else if (!data.status.backup && data.status.cleanup) { %>
+						<label class="btn btn-secondary" id="option0">
+							<input type="radio" name="options" id="option0" value="0" autocomplete="off"> None
+						</label>
+						<label class="btn btn-secondary" id="option1">
+							<input type="radio" name="options" id="option1" value="1" autocomplete="off"> Backup
+						</label>
+						<label class="btn btn-secondary active" id="option2">
+							<input type="radio" name="options" id="option2" value="2" autocomplete="off" checked> Cleanup
+						</label>
+					<% } %>
+				</div>
 			</div>	
 		</div>			
 	</div>	
 </div>
 
-<% data.forEach(deploymentunit => { %>	
+<% data.deploymentunit.forEach(deploymentunit => { %>	
 	<div class="card animated fadeInUpBig">
 		<div class="card-header">
 			<div class="row">

@@ -5,7 +5,12 @@ $(document).ready(function() {
 	findDeploymentPlanStatus();
 	setInterval(() => {		
 		findDeploymentPlanStatus();
-	}, 5000);
+    }, 5000);    
+    
+    $('input[type=radio]').change(() => {
+        let requested = Number($('#requested input:radio:checked').val());
+        request(requested);
+    });    
 });
 
 function loader(activate) {
@@ -310,4 +315,24 @@ function updateDeploymentUnit(unitName) {
 
 function cancelDeploymentUnit() {
     showDeploymentUnit(false, '', '');
+}
+
+function request(option) {
+    const target = './api/ordergenerator/deploymentunit/statusrequester';
+
+    $.ajax({
+        url: target,
+        type: 'PUT',
+        data: { requested: option },
+        success: function(msg) {            
+            if (msg.success) {
+                
+            } else {
+                showNotification('danger', msg.message);
+            }            
+        },
+        error: function(err) {
+            showNotification('danger', 'Update Failed');
+        }
+    });
 }

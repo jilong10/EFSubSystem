@@ -126,14 +126,20 @@ router.route('/crisis')
 router.route('/deploymentunit')
 	.get(middleware.isLoggedIn, (req, res) => {
 		axios.get(deploymentunitUrl)
-			.then(response => {							
-				const deploymentunitArr = Object.keys(response.data).map(key => response.data[key]);	
+			.then(response => {
+				const deploymentunitArr = Object.keys(response.data.deploymentunit).map(key => response.data.deploymentunit[key]);	
 				deploymentunitArr.sort((a, b) => {
 					if (a.unitType < b.unitType) return -1;
 					if (a.unitType > b.unitType) return 1;
 					return 0;
-				});							
-				res.render('deploymentunit', { message: '', user: req.session.user, data: deploymentunitArr });
+				});
+
+				const obj = {
+					'status': response.data.status,
+					'deploymentunit': deploymentunitArr
+				}
+				
+				res.render('deploymentunit', { message: '', user: req.session.user, data: obj });
 			})
 			.catch(err => {
 				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });

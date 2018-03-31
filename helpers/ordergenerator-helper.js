@@ -4,6 +4,7 @@ const Unit = require('../models').Unit;
 const Firebase = require('../config').Firebase;
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');
 const unitRef = Firebase.database().ref('Unit');
+const deploymentUnitStatusRef = Firebase.database().ref('DeploymentUnitStatus');
 
 exports.createUnit = (req, res) => {
 	const unitName = req.body.unit_name;
@@ -633,4 +634,36 @@ exports.editSingleDeploymentUnit = (req, res) => {
 					message: 'Deployment Unit Updated Failed'
 				}));
 		});
+};
+
+exports.statusRequester = (req, res) => {
+	const requested = Number(req.body.requested);
+	const status = {		
+		'backup': false,
+		'cleanup': false
+	};
+
+	if (requested === 1) {
+		status['backup'] = true;
+	} else if (requested === 2) {
+		status['cleanup'] = true;
+	}
+
+	deploymentUnitStatusRef
+		.update(status)
+		.then(() => res.json({
+			success: true,
+			message: 'Request Updated Successfully'
+		}))
+		.catch(err => res.json({
+			success: false,
+			message: 'Request Updated Failed'
+		}));
+};
+
+exports.statusRequest = (req, res) => {
+	deploymentUnitStatusRef
+		.once('value', snapshot => {
+			return res.json(snapshot);
+		})
 };

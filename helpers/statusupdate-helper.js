@@ -5,6 +5,7 @@ const Firebase = require('../config').Firebase;
 const crisisRef = Firebase.database().ref('Crisis');
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');
 const unitRef = Firebase.database().ref('Unit');
+const deploymentUnitStatusRef = Firebase.database().ref('DeploymentUnitStatus');
 
 exports.readCrisis = (req, res) => {	
 	crisisRef.once('value', snapshot => {		
@@ -209,7 +210,14 @@ exports.deleteEnemy = (req, res) => {
 
 exports.readDeploymentUnit = (req, res) => {
 	deploymentUnitRef.once('value', snapshot => {
-		return res.json(snapshot);
+		deploymentUnitStatusRef.once('value', statusSnapshot => {
+			const obj = {
+				'status': statusSnapshot,
+				'deploymentunit': snapshot
+			};
+
+			return res.json(obj);
+		});		
 	});
 };
 
