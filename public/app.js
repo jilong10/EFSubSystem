@@ -326,7 +326,7 @@ function request(option) {
         data: { requested: option },
         success: function(msg) {            
             if (msg.success) {
-                
+                showNotification('success', msg.message);
             } else {
                 showNotification('danger', msg.message);
             }            
