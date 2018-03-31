@@ -3,7 +3,7 @@
 <div class="row">
 	<div class="status animated fadeInDown">	
 		<div class="row">
-			<div class="col-12">
+			<div class="col-lg-10 col-md-8">
 				<h1>Deployment Units</h1>								
 				<div class="btn-group btn-group-toggle" id="requested" data-toggle="buttons">
 					<% if (!data.status.backup && !data.status.cleanup) { %>
@@ -47,14 +47,14 @@
 	<div class="card animated fadeInUpBig">
 		<div class="card-header">
 			<div class="row">
-				<div class="col-8">
+				<div class="col-lg-8">
 				<% if (deploymentunit.unitStatus == 'REACHED') { %>
 					<h3><%= deploymentunit.unitName %> <span class="badge badge-success"><%= deploymentunit.unitStatus %></span></h3>
 				<% } else { %>
 					<h3><%= deploymentunit.unitName %> <span class="badge badge-warning"><%= deploymentunit.unitStatus %></span></h3>
 				<% } %>
 				</div>
-				<div class="col-2">
+				<div class="col-lg-2">
 					<button type="button" class="btn btn-secondary">
 						Unit Size <span class="badge badge-light"><label class="unit-label" id="<%= deploymentunit.unitName + 'CurrentUnitSize' %>"><%= deploymentunit.currentUnitSize %></label>/<label class="unit-label" id="<%= deploymentunit.unitName + 'TotalUnitSize' %>"><%= deploymentunit.currentUnitSize + deploymentunit.unitCasualty %></label></span>
 					</button>
