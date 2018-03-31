@@ -34,7 +34,8 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 
 			const statusArr = {
 				'Crisis': crisisArr,
-				'DeploymentUnit': deploymentunitArr
+				'DeploymentUnit': deploymentunitArr,
+				'DeploymentUnitStatus': response.data.DeploymentUnitStatus
 			};
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})

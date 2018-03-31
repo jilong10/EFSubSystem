@@ -1,6 +1,9 @@
 <% include ./partials/header %>
 
 <br>
+<%= data.DeploymentUnitStatus.backup %>
+<%= data.DeploymentUnitStatus.cleanup %>
+
 <% data.Crisis.forEach(crisis => { %>
 	<% crisis.Enemy.forEach(enemy => { %>
 		<%= enemy.affectArea %>
