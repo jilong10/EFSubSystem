@@ -1,135 +1,141 @@
 <% include ./partials/header %>
 <% include ./util/geturl %>
 
-<br>
-<h1>Crisis</h1>
-
 <% data.forEach(crisis => { %>
-<div class="table-responsive">
-	<table class="table table-bordered">
-		<thead class="thead-dark">
-			<tr class="table-active">
-				<th>Crisis ID</th>
-				<th>Date</th>
-				<th>Last Update</th>
-				<th>Crisis Code</th>
-				<th>No of Injuries</th>
-				<th>No of Deaths</th>
-				<th>Suggested Land Troops</th>
-				<th>Suggested Sea Troops</th>
-				<th>Suggested Air Troops</th>
-				<th>Budget</th>
-				<th>Mission Type</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%if(String(crisis.crisisCode).toUpperCase() === "YELLOW"){%>
-					<tr class="table-warning">
-			<%}else if(String(crisis.crisisCode).toUpperCase() === "RED"){%>
-					<tr class="table-danger">
-			<%}else{%>
-					<tr class="table-success">
-			<%}%>
-				<td><%= crisis.id %></td>
-				<td><%= crisis.date %></td>
-				<td><%= crisis.time %></td>
-				<td><%= crisis.crisisCode %></td>
-				<td><%= crisis.noOfInjuries %></td>
-				<td><%= crisis.noOfDeaths %></td>
-				<td><%= crisis.landTroops %></td>
-				<td><%= crisis.seaTroops %></td>
-				<td><%= crisis.airTroops %></td>
-				<td><%= crisis.budget %></td>
-				<td><%= crisis.missionType %></td>
-			</tr>
-		</tbody>
-
-	</table>
+<div class="row">
+	<div class="status">	
+		<div class="row">
+			<div class="col-10">
+				<h1 class="crisis-header">	
+					Crisis
+					<% if (String(crisis.crisisCode).toUpperCase() == 'GREEN') { %>
+						<span class="badge badge-secondary green"><%= crisis.id %></span>
+					<% } else if (String(crisis.crisisCode).toUpperCase() == 'YELLOW') { %>
+						<span class="badge badge-secondary yellow"><%= crisis.id %></span>
+					<% } else if (String(crisis.crisisCode).toUpperCase() == 'RED') { %>
+						<span class="badge badge-secondary red"><%= crisis.id %></span>
+					<% } %>
+				</h1>		
+			</div>
+			<div class="col-auto">
+				<%= crisis.date %><br>
+				<%= crisis.time %>
+			</div>		
+		</div>			
+	</div>	
 </div>
 
-<h3>Update Crisis</h3>
-<div class="container">
-	<div class="row border" style="padding: 15px;">
-		<div class="form-row">
-			<div class="col-6">					
-				<label for="no_of_injuries">No of Injuries</label>
-				<input type="number" class="form-control mb-3" id="no_of_injuries" value="<%= crisis.noOfInjuries %>">								
+<div class="row">
+	<div class="col">		
+		<div class="card">
+			<div class="card-header">
+				<h3>Update Crisis</h3>				
+			</div>			
+			<div class="card-body">
+				<div class="form-row">
+					<div class="col-6">					
+						<label for="no_of_injuries">No of Injuries</label>
+						<input type="number" class="form-control mb-3" id="no_of_injuries" value="<%= crisis.noOfInjuries %>">
+					</div>
+					<div class="col-6">			
+						<label for="no_of_deaths">No of Deaths</label>
+						<input type="number" class="form-control mb-3" id="no_of_deaths" value="<%= crisis.noOfDeaths %>">
+					</div>
+				</div>
+				<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary float-right">Update Crisis Status</button>
 			</div>
-			<div class="col-6">			
-				<label for="no_of_deaths">No of Deaths</label>
-				<input type="number" class="form-control mb-3" id="no_of_deaths" value="<%= crisis.noOfDeaths %>">
-			</div>
-			<button onclick="updateCrisisStatus('<%= crisis.id %>')" class="btn btn-primary">Update Crisis Status</button>			
 		</div>
 	</div>
-</div><br>
-
-<h3>Enemies</h3>
-<div class="table-responsive">
-	<table class="table table-bordered">
-		<thead class="thead-dark">
-			<tr class="table-active">
-				<th>Enemy Name</th>
-				<th>Type</th>
-				<th>Size</th>
-				<th>Coordinates</th>
-				<th>Affected Area</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-	        <%
-			var i = 0;
-			crisis.Enemy.forEach(enemy => {
-			%>
-	        <tr>
-	            <td><img src ="<%= getZombieImgUrl(enemy.enemyName)%>" /><br /><%= enemy.enemyName %></td>
-				<td class="align-middle"><%= enemy.enemyType %></td>
-				<td class="align-middle">
-					<input type="number" class="form-control mb-3" id="enemy_size<%= i %>" value="<%= enemy.enemySize %>">
-				</td>
-				<td class="align-middle">
-					Latitude: <input type="number" class="form-control mb-3" id="enemy_x<%= i %>" value="<%= enemy.coordinateX %>">
-					Longtitude: <input type="number" class="form-control mb-3" id="enemy_y<%= i %>" value="<%= enemy.coordinateY %>">
-				</td>
-				<td class="align-middle">
-					<input type="number" class="form-control mb-3" id="enemy_area<%= i %>" value="<%= enemy.affectArea %>">
-				</td>
-				<td class="align-middle">
-					<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary mb-3 btn-block">Update Details</button>
-					<button onclick="deleteEnemy('<%= crisis.id %>','<%= enemy.enemyName %>')" class="btn btn-primary btn-block mb-3">Delete Enemy</button>
-				</td>
-			</tr>
-	        <%i++;}); %>
-		</tbody>
-	</table>
 </div>
 
-<h3>Add Enemy</h3>
-<div class="container">	
-	<div class="row justify-content-md-left">
-		<div class="form-group col-12 col-md-6 border rounded" style="padding: 30px;">
-			<label for="enemy_name">Enemy Name: </label>
-			<select class="form-control" id="enemy_name">
-				<option>Balloon Zombie</option>
-				<option>BucketHead Zombie</option>
-				<option>BackupDancer Zombie</option>
-				<option>Dolphin Rider Zombie</option>
-				<option>Ducky Tube Zombie</option>
-				<option>Gargantuar Zombie</option>
-				<option>Ladder Zombie</option>
-				<option>Snorkel Zombie</option>
-			</select><br>
-			<label for="enemy_size">Enemy Size:</label>
-			<input type="number" class="form-control mb-3" id="enemy_size">
-			<label for="enemy_x">Latitude: </label>
-			<input type="number" class="form-control mb-3" id="enemy_x">
-			<label for="enemy_y">Longtitude:</label>
-			<input type="number" class="form-control mb-3" id="enemy_y">
-			<label for="enemy_area">Affected Area:</label>
-			<input type="number" class="form-control mb-3" id="enemy_area">
-			<button onclick="addEnemy('<%= crisis.id %>')" class="btn btn-primary float-right mb-3">Add Enemy</button>
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-header">
+				<h3>Enemies</h3>
+			</div>
+			<div class="card-body">
+			<%
+				let i = 0;
+				crisis.Enemy.forEach(enemy => {
+			%>
+				<div class="row">
+					<div class="col-lg-3">
+						<%= enemy.enemyName %> <span class="badge badge-secondary"><%= enemy.enemyType %></span><br><img src ="<%= getZombieImgUrl(enemy.enemyName)%>" />
+					</div>
+					<div class="col-lg-2">
+						<div class="row">
+							<div class="col-auto">
+								Enemy Size<input type="number" class="form-control mb-3" id="enemy_size<%= i %>" value="<%= enemy.enemySize %>">
+								Lat<input type="number" class="form-control mb-3" id="enemy_x<%= i %>" value="<%= enemy.coordinateX %>">
+							</div>							
+						</div>
+					</div>
+					<div class="col-lg-2">
+						<div class="row">
+							<div class="col-auto">
+								Affected Area<input type="number" class="form-control mb-3" id="enemy_area<%= i %>" value="<%= enemy.affectArea %>">
+								Long<input type="number" class="form-control mb-3" id="enemy_y<%= i %>" value="<%= enemy.coordinateY %>">
+							</div>
+						</div>
+					</div>									
+				</div><br>
+				<div class="row">					
+					<div class="col-lg-2 col-sm-6">
+						<button onclick="deleteEnemy('<%= crisis.id %>','<%= enemy.enemyName %>')" class="btn btn-primary btn-block mb-3">Delete Enemy</button>
+					</div>
+					<div class="col-lg-2 col-sm-6">
+						<button onclick="updateEnemy('<%= crisis.id %>','<%= enemy.enemyName %>','<%= enemy.enemyType %>','<%= i %>')" class="btn btn-primary mb-3 btn-block">Update Details</button>
+					</div>
+				</div>		
+				<hr>	
+			<% i++;}); %>
+			</div>
 		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<div class="card">
+			<div class="card-header">
+				<h3>Add Enemy</h3>		
+			</div>
+			<div class="card-body">
+				<div class="form-row">
+					<div class="col-lg-4">					
+						<label for="enemy_name">Enemy Name</label>
+						<select class="form-control" id="enemy_name">
+							<option>Balloon Zombie</option>
+							<option>BucketHead Zombie</option>
+							<option>BackupDancer Zombie</option>
+							<option>Dolphin Rider Zombie</option>
+							<option>Ducky Tube Zombie</option>
+							<option>Gargantuar Zombie</option>
+							<option>Ladder Zombie</option>
+							<option>Snorkel Zombie</option>
+						</select>
+					</div>
+					<div class="col-lg-2 col-sm-4">			
+						<label for="enemy_size">Enemy Size</label>
+						<input type="number" class="form-control mb-3" id="enemy_size">
+					</div>
+					<div class="col-lg-2 col-sm-4">			
+						<label for="enemy_area">Affected Area</label>
+						<input type="number" class="form-control mb-3" id="enemy_area">
+					</div>	
+					<div class="col-lg-2 col-sm-4">			
+						<label for="enemy_x">Latitude</label>
+						<input type="number" class="form-control mb-3" id="enemy_x">
+					</div>
+					<div class="col-lg-2 col-sm-4">			
+						<label for="enemy_y">Longtitude</label>
+						<input type="number" class="form-control mb-3" id="enemy_y">
+					</div>									
+				</div>				
+				<button onclick="addEnemy('<%= crisis.id %>')" class="btn btn-primary float-right">Add Enemy</button>
+			</div>				
+		</div>	
 	</div>
 </div>
 

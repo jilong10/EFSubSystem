@@ -1,6 +1,62 @@
 body {
     font-family: 'Roboto', sans-serif;     
+    color: #8E96A5;
     overflow: hidden;   
+    background-color: #D5DAE7;
+}
+
+nav {
+    background-color: #364760;
+}
+
+.card {
+    background-color: #EEF1F6;
+    margin-top: 20px;
+}
+
+.card-header {
+    background-color: #EEF1F6;
+    padding: 15px;
+    padding-bottom: 0;
+    border-bottom: 3px solid #E5E9EF;
+}
+
+.card-body {
+    background-color: #FEFEFE;
+    padding: 15px;
+}
+
+tr {
+    background-color: white;
+}
+
+.unit-label {
+    margin: 0;
+}
+
+.status {   
+    background-color: #EEF1F6;
+    width: 100%;
+    padding: 20px;
+}
+
+.crisis-box {
+    width: 20px;
+    height: 20px;
+    margin: 5px;    
+    display: inline-block;
+}
+
+.green {
+    background-color: #4BBBA5;
+}
+
+.yellow {
+    background-color: #F1B91A;
+}
+
+.red {
+    background-color: #FF4136;
 }
 
 .alert {

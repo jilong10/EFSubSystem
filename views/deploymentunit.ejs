@@ -1,26 +1,41 @@
 <% include ./partials/header %>
 
-<br>
-<h1>Deployment Units</h1>
-<button type="button" class="btn btn-success">Request Cleanup</button> <button type="button" class="btn btn-danger">Request Backup</button>
-<br><br>
-<% data.forEach(deploymentunit => { %>
+<div class="row">
+	<div class="status">	
+		<div class="row">
+			<div class="col-10">
+				<h1>Deployment Units</h1>
+				<button type="button" class="btn btn-success">Request Cleanup</button> <button type="button" class="btn btn-danger">Request Backup</button>				
+			</div>	
+		</div>			
+	</div>	
+</div>
 
+<% data.forEach(deploymentunit => { %>	
 	<div class="card">
 		<div class="card-header">
-			<% if (deploymentunit.unitStatus == 'REACHED') { %>
-				<h5><%= deploymentunit.unitName %> <span class="badge badge-success"><%= deploymentunit.unitStatus %></span></h5>
-			<% } else { %>
-				<h5><%= deploymentunit.unitName %> <span class="badge badge-warning"><%= deploymentunit.unitStatus %></span></h5>
-			<% } %>
+			<div class="row">
+				<div class="col-8">
+				<% if (deploymentunit.unitStatus == 'REACHED') { %>
+					<h3><%= deploymentunit.unitName %> <span class="badge badge-success"><%= deploymentunit.unitStatus %></span></h3>
+				<% } else { %>
+					<h3><%= deploymentunit.unitName %> <span class="badge badge-warning"><%= deploymentunit.unitStatus %></span></h3>
+				<% } %>
+				</div>
+				<div class="col-2">
+					<button type="button" class="btn btn-secondary">
+						Unit Size <span class="badge badge-light"><label class="unit-label" id="<%= deploymentunit.unitName + 'CurrentUnitSize' %>"><%= deploymentunit.currentUnitSize %></label>/<label class="unit-label" id="<%= deploymentunit.unitName + 'TotalUnitSize' %>"><%= deploymentunit.currentUnitSize + deploymentunit.unitCasualty %></label></span>
+					</button>
+				</div>
+				<div class="col-auto">
+					<%= deploymentunit.date %><br>
+					<%= deploymentunit.time %>
+				</div>	
+			</div>
 		</div>
 		<div class="card-body">
 			<div class="form-group">
 				<dl class="row">
-					<dt class="col-sm-3">Date:</dt>
-					<dd class="col-sm-9"><%= deploymentunit.date %></dd>
-					<dt class="col-sm-3">Time:</dt>
-					<dd class="col-sm-9"><%= deploymentunit.time %></dd>
 					<dt class="col-sm-3">Unit Type:</dt>
 					<dd class="col-sm-9"><%= deploymentunit.unitType %></dd>
 					<dt class="col-sm-3">Coordinate:</dt>
@@ -36,10 +51,6 @@
 							</div>
 						</div>
 					</dd>
-					<dt class="col-sm-3">Total Unit Size:</dt>
-					<dd class="col-sm-9"><label id="<%= deploymentunit.unitName + 'TotalUnitSize' %>"><%= deploymentunit.currentUnitSize + deploymentunit.unitCasualty %></label></dd>
-					<dt class="col-sm-3">Current Unit Size:</dt>
-					<dd class="col-sm-9"><label id="<%= deploymentunit.unitName + 'CurrentUnitSize' %>"><%= deploymentunit.currentUnitSize %></label></dd>
 					<dt class="col-sm-3">Unit Casualty:</dt>
 					<dd class="col-sm-9">
 						<input type="number" class="form-control" id="<%= deploymentunit.unitName + 'UnitCasualty' %>" aria-describedby="basic-addon3" placeholder="Number of Casualty" value="<%= deploymentunit.unitCasualty %>" />
@@ -80,10 +91,9 @@
 					</div>
 				<% } %>
 			</div>
-			<button onClick="updateDeploymentUnit('<%= deploymentunit.unitName %>')" class="btn btn btn-outline-secondary btn-block">Update</button>			
+			<button onClick="updateDeploymentUnit('<%= deploymentunit.unitName %>')" class="btn btn-primary float-right">Update</button>
 		</div>
 	</div>
-	<br />
 <% }); %>
 
 <% include ./partials/footer %>
