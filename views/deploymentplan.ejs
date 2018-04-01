@@ -28,8 +28,10 @@
                                     <span class="badge badge-danger"><%= deploymentplan.id %></span>
                                 <% } %>                                
                             </h3>
-                            <span class="badge badge-info"><%= deploymentplan.missionType %></span>
-                            <span class="badge badge-info">$<%= deploymentplan.budget %></span>
+                            <div class="p-2">
+                                <span class="badge badge-info"><%= deploymentplan.missionType %></span>
+                                <span class="badge badge-info">$<%= deploymentplan.budget %></span>
+                            </div>
                         </div>
                         <div class="col-auto">
                             <%= deploymentplan.date %><br>
@@ -39,30 +41,32 @@
                 </div>			
                 <div class="card-body">                    
                     <div class="row">
-                        <div class="col-lg-4">
-                            <h5>
-                                Casualty
-                                <button type="button" class="btn btn-secondary">
-                                    Injuries <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.noOfInjuries %></label></span>
-                                </button>
-                                <button type="button" class="btn btn-dark">
-                                    Deaths <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.noOfDeaths %></label></span>
-                                </button>
-                            </h5>
+                        <div class="col-md-4">
+                            <h5>Casualty</h5>
+                            <button type="button" class="btn btn-secondary">
+                                Injuries <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.noOfInjuries %></label></span>
+                            </button>
+                            <button type="button" class="btn btn-dark">
+                                Deaths <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.noOfDeaths %></label></span>
+                            </button>
                         </div>
-                        <div class="col-lg-6">
-                            <h5>
-                                Suggested Troops
-                                <button type="button" class="btn btn-secondary" style="background-color: #AAAAAA; border-color: #AAAAAA;">
-                                    Air <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.airTroops %></label></span>
-                                </button>
-                                <button type="button" class="btn btn-success">
-                                    Land <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.landTroops %></label></span>
-                                </button>
-                                <button type="button" class="btn btn-primary">
-                                    Sea <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.seaTroops %></label></span>
-                                </button>                                
-                            </h5>
+                        <div class="col-md-6">
+                            <h5>Suggested Troops</h5>
+                            <button type="button" class="btn btn-secondary" style="background-color: #AAAAAA; border-color: #AAAAAA;">
+                                Air <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.airTroops %></label></span>
+                            </button>
+                            <button type="button" class="btn btn-success">
+                                Land <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.landTroops %></label></span>
+                            </button>
+                            <button type="button" class="btn btn-primary">
+                                Sea <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.seaTroops %></label></span>
+                            </button>   
+                        </div>
+                        <div class="col-md-2">
+                            &nbsp
+                            <div class="form-group">
+                                <button onclick="updateCrisisWithPlan('<%= deploymentplan.id %>')" class="btn btn-primary">Update Crisis</button>
+                            </div>
                         </div>
                     </div>                                                       
                 </div>
