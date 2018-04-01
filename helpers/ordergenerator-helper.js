@@ -642,22 +642,25 @@ exports.statusRequester = (req, res) => {
 		'backup': false,
 		'cleanup': false
 	};
+	let statusType = 'Cancel';
 
 	if (requested === 1) {
 		status['backup'] = true;
+		statusType = 'Backup';
 	} else if (requested === 2) {
 		status['cleanup'] = true;
+		statusType = 'Cleanup';
 	}
 
 	deploymentUnitStatusRef
 		.update(status)
 		.then(() => res.json({
 			success: true,
-			message: 'Request Updated Successfully'
+			message: statusType + ' Successfully'
 		}))
 		.catch(err => res.json({
 			success: false,
-			message: 'Request Updated Failed'
+			message: statusType + ' Failed'
 		}));
 };
 

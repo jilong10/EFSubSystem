@@ -21,11 +21,12 @@
         <title>EF Subsystem</title>
     </head>  
     <body>
-    	<% if (message.length > 0) { %>
-    		<div class="alert alert-danger alert-dismissible">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <%= message %>
-            </div>  
+    	<% if (message.length > 0) { %>  
+            <div class="alert-message">
+                <div class="notice notice-danger animated slideInUp">
+                    <strong>Alert</strong>&nbsp&nbsp <%= message %>
+                </div>
+            </div> 
     	<% } %>
 
         <div class="loader animated fadeIn">
@@ -33,6 +34,6 @@
                 <div class="double-bounce1"></div>
                 <div class="double-bounce2"></div>
             </div>
-        </div>
+        </div>        
 
     	<div class="container-fluid bg">

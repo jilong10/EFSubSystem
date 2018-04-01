@@ -10,7 +10,7 @@ $(document).ready(function() {
     $('input[type=radio]').change(() => {
         let requested = Number($('#requested input:radio:checked').val());
         request(requested);
-    });    
+    });
 });
 
 function loader(activate) {
@@ -54,11 +54,20 @@ function setDeploymentPlanStatus(update) {
 }
 
 function showNotification(alertType, msg) {
-	var htmlAlert = `<div class="alert alert-${alertType} alert-dismissible">
-                		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                		${msg}
-            		</div>`;
-	$(".alert-message").prepend(htmlAlert);    
+    const alertName = (alertType === 'danger') ? 'alert' : alertType;
+    const alert = `<div class="notice notice-${alertType} hide">
+                        <strong>${upperCaseFirstChar(alertName)}</strong>&nbsp&nbsp ${msg}
+                    </div>`;
+        
+    $(".alert-message").append(alert).show();
+    $(".notice").delay(500).slideDown();    
+    $(".notice").delay(3000).slideUp(300, () => {
+        $('.alert-message').find('div').first().remove();
+    });
+}
+
+function upperCaseFirstChar(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function updateCrisisWithPlan(plan_id) {
@@ -95,11 +104,11 @@ function updateCrisisStatus(crisis_id){
         type: 'PUT',
 		data:{no_of_injuries: no_of_injuries, no_of_deaths: no_of_deaths},
         success:function(msg) {
+            loader(false);
         	if (msg.success) {
-        		//to check return message to confirm successful
-            	window.location.reload(true);
-        	} else {
-                loader(false);
+                //to check return message to confirm successful                
+            	showNotification('success', msg.message);
+        	} else {                
         		showNotification('danger', msg.message);
         	}
         },
@@ -123,11 +132,11 @@ function updateEnemy(crisis_id, enemy_name, enemy_type,index){
 		type:'PUT',
 		data:{enemy_size:enemy_size,coordinate_x:coor_x,coordinate_y:coor_y,affect_area:area,enemy_type:enemy_type},
         success:function(msg) {
+            loader(false);
             if (msg.success) {
                 //to check return message to confirm successful
-                window.location.reload(true);
-            } else {
-                loader(false);
+                showNotification('success', msg.message);
+            } else {                
                 showNotification('danger', msg.message);
             }
         },
@@ -299,7 +308,7 @@ function updateDeploymentUnit(unitName) {
         data: { total_unit_size: totalUnitSize, current_unit_size: currentUnitSize, unit_casualty: unitCasualty, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
         success: function(msg) {            
             if (msg.success) {
-                //to check return message to confirm successful         
+                //to check return message to confirm successful
                 window.location.reload(true);
             } else {
                 loader(false);
