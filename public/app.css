@@ -42,10 +42,6 @@ nav {
     padding: 15px;
 }
 
-tr {
-    background-color: white;
-}
-
 .unit-label {
     margin: 0;
     font-size: 15px;    
@@ -89,10 +85,6 @@ tr {
 
 .hide {
 	display: none;
-}
-
-.table > tbody > tr > td {
-    vertical-align: middle;
 }
 
 .loader {
