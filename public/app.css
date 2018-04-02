@@ -73,6 +73,31 @@ nav {
     background-color: #FF4136;
 }
 
+.air-color {
+    background-color: #BDC3C7;
+    border-color: #BDC3C7;
+}
+
+.sea-color {
+    background-color: #446CB3;
+    border-color: #446CB3;
+}
+
+.land-color {
+    background-color: #1BBC9B;
+    border-color: #1BBC9B;
+}
+
+.quarantine-color {
+    background-color: #F7CA18;
+    border-color: #F7CA18;
+}
+
+.cleanup-color {
+    background-color: #6C7A89;
+    border-color: #6C7A89;
+}
+
 #newDeploymentUnitForm {
 	position: fixed;
     top: 50%;

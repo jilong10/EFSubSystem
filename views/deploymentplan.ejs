@@ -11,8 +11,11 @@
 	</div>	
 </div>
 
-<% data.forEach(deploymentplan => { %>
-   <div class="row animated fadeInUpBig">
+<% 
+    if (data[0] != null) {
+        data.forEach(deploymentplan => { 
+%>
+    <div class="row animated fadeInUpBig">
         <div class="col">		
             <div class="card">
                 <div class="card-header">                    
@@ -52,15 +55,21 @@
                         </div>
                         <div class="col-md-6">
                             <h5>Suggested Troops</h5>
-                            <button type="button" class="btn btn-secondary" style="background-color: #AAAAAA; border-color: #AAAAAA;">
+                            <button type="button" class="btn btn-secondary air-color">
                                 Air <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.airTroops %></label></span>
                             </button>
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-success land-color">
                                 Land <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.landTroops %></label></span>
                             </button>
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary sea-color">
                                 Sea <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.seaTroops %></label></span>
                             </button>   
+                            <button type="button" class="btn btn-primary quarantine-color">
+                                Quarantine <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.quarantineTroops %></label></span>
+                            </button> 
+                            <button type="button" class="btn btn-primary cleanup-color">
+                                Cleanup <span class="badge badge-light"><label class="unit-label"><%= deploymentplan.cleanupTroops %></label></span>
+                            </button> 
                         </div>
                         <div class="col-md-2">
                             &nbsp
@@ -73,6 +82,32 @@
             </div>
         </div>
     </div>
-<% });%>
+<% 
+        });
+    } else {
+%>
+    <div class="row animated fadeInUpBig">
+        <div class="col">		
+            <div class="card">
+                <div class="card-header">                    
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <h3>
+                                No Plan                                                           
+                            </h3>
+                        </div>	
+                    </div>			
+                </div>			
+                <div class="card-body">                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>No deployment plan available...</h5>
+                        </div>
+                    </div>                                                       
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>
 
 <% include ./partials/footer %>

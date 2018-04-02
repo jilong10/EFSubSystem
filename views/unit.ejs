@@ -11,7 +11,10 @@
 </div>
 
 <div class="row unit-row">
-<% data.forEach(unit => { %>	
+<% 
+	if (data[0] != null) {
+		data.forEach(unit => { 
+%>	
 	<div class="col-lg-6 animated fadeInUpBig default">
 		<div class="card unit-card">
 			<div class="card-header">
@@ -55,7 +58,27 @@
 			</div>
 		</div>
 	</div>	
-<% }); %>
+<% 
+		}); 
+	} else {
+%>
+	<div class="card animated fadeInUpBig">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-lg-8">
+					<h3>No unit</h3>
+				</div>	
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-lg-8">
+					<h5>No unit available...</h5>
+				</div>
+			</div>				
+		</div>
+	</div>
+<% } %>
 </div>
 
 <div class="container">	

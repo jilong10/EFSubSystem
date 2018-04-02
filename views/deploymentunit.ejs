@@ -1,6 +1,7 @@
 <% include ./partials/header %>
 
 <div class="row">
+	<% if (data.status != null) { %>
 	<div class="status animated fadeInDown">	
 		<div class="row">
 			<div class="col-lg-10 col-md-8">
@@ -41,9 +42,21 @@
 			</div>	
 		</div>			
 	</div>	
+	<% } else { %>
+	<div class="status animated fadeInDown">	
+		<div class="row">
+			<div class="col-lg-10 col-md-8">
+				<h1>Deployment Units</h1>
+			</div>	
+		</div>			
+	</div>	
+	<% } %>
 </div>
 
-<% data.deploymentunit.forEach(deploymentunit => { %>	
+<% 
+	if (data.deploymentunit != null) {
+		data.deploymentunit.forEach(deploymentunit => { 
+%>	
 	<div class="card animated fadeInUpBig">
 		<div class="card-header">
 			<div class="row">
@@ -102,7 +115,7 @@
 					</dd>
 				</dl>
 				
-				<% var status = deploymentunit.currentUnitSize / (deploymentunit.currentUnitSize + deploymentunit.unitCasualty) * 100 %>
+				<% let status = deploymentunit.currentUnitSize / (deploymentunit.currentUnitSize + deploymentunit.unitCasualty) * 100 %>
 				<% if (status > 70) { %>
 					<div class="progress">
 						<div class="progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:<%= status.toFixed(1) %>%">
@@ -126,6 +139,26 @@
 			<button onClick="updateDeploymentUnit('<%= deploymentunit.unitName %>')" class="btn btn-primary float-right">Update</button>
 		</div>
 	</div>
-<% }); %>
+<% 
+		}); 
+	} else {
+%>
+	<div class="card animated fadeInUpBig">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-lg-8">
+					<h3>No deployment</h3>
+				</div>	
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-lg-8">
+					<h5>No deployment unit available...</h5>
+				</div>
+			</div>				
+		</div>
+	</div>
+<% } %>
 
 <% include ./partials/footer %>

@@ -177,7 +177,7 @@ function addEnemy(crisis_id){
     });
 }
 
-function deleteEnemy(crisis_id, enemy_name){
+function deleteEnemy(crisis_id, enemy_name) {
     loader(true);
     var target = "./api/statusupdate/crisis/"+ crisis_id +"/" + enemy_name;
 
@@ -198,6 +198,30 @@ function deleteEnemy(crisis_id, enemy_name){
             showNotification('danger', 'Update Failed');
         }
     });
+}
+
+function closeCrisis(id) {
+    loader(true);
+    
+    let target = "./api/statusupdate/crisis/"+ id; 
+    
+    $.ajax({
+		url:target,
+		type:'DELETE',		
+        success: function(msg) {            
+            if (msg.success) {
+                //to check return message to confirm successful
+                window.location.reload(true);
+            } else {            
+                loader(false);    
+                showNotification('danger', msg.message);
+            }
+        },
+        error: function() {
+            loader(false);
+            showNotification('danger', 'Update Failed');
+        }
+	});
 }
 
 function getTypeFromName(enemy_name){

@@ -359,7 +359,7 @@ exports.editDeploymentUnit = (req, res) => {
 };
 
 exports.deleteDeploymentUnit = (req, res) => {
-	const unitName = req.params.unit_name;	
+	const unitName = req.params.unit_name;
 
 	// Check unit name
 	deploymentUnitRef.child(unitName)

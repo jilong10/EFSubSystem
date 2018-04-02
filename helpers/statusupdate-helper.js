@@ -20,12 +20,14 @@ exports.createCrisis = (req, res) => {
 	const landTroops = Number(req.body.land_troops);
 	const seaTroops = Number(req.body.sea_troops);
 	const airTroops = Number(req.body.air_troops);
+	const quarantineTroops = Number(req.body.quarantine_troops);
+	const cleanupTroops = Number(req.body.cleanup_troops);
 	const budget = Number(req.body.budget);
 	const missionType = req.body.mission_type.toUpperCase();
 	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
 	const time = moment().tz("Asia/Singapore").format(' HH:mm:ss');
 	
-	const crisis = new Crisis(crisisCode, noOfInjuries, noOfDeaths, landTroops, seaTroops, airTroops, budget, missionType, date, time);
+	const crisis = new Crisis(crisisCode, noOfInjuries, noOfDeaths, landTroops, seaTroops, airTroops, quarantineTroops, cleanupTroops, budget, missionType, date, time);
 	
 	crisisRef
 		.push()
@@ -82,10 +84,90 @@ exports.deleteCrisis = (req, res) => {
 			if (snapshot.exists()) {
 				crisisRef.child(crisisId)
 					.remove()
-					.then(() => res.json({
-						success: true,
-						message: 'Crisis Deleted Successfully'
-					}))
+					.then(() => {
+						deploymentUnitRef
+							.once('value', deploymentUnitData => {								
+								if (deploymentUnitData.exists()) {									
+									deploymentUnitData.forEach(deploymentUnitSnapshot => {										
+										if (deploymentUnitSnapshot.exists()) {
+											let totalSize = {
+												'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+												'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
+												'unitSize': 0
+											};
+
+											let unitName = '';
+		
+											// Add currntUnitSize and unitCasualty
+											deploymentUnitSnapshot.forEach(childDeploymentUnitSnapshot => {					
+												if (childDeploymentUnitSnapshot.key === 'currentUnitSize') {
+													totalSize['unitSize'] += childDeploymentUnitSnapshot.val();
+												} else if (childDeploymentUnitSnapshot.key === 'unitName') {
+													unitName = childDeploymentUnitSnapshot.val();
+												}
+											});		
+											
+											unitRef.child(unitName)
+												.once('value', unitSnapshot => {
+													// Add unit size
+													if (unitSnapshot.exists()) {
+														unitSnapshot.forEach(childUnitSnapshot => {
+															if (childUnitSnapshot.key === 'unitSize') {
+																totalSize['unitSize'] += childUnitSnapshot.val();
+															}
+														});
+
+														// Update unit size
+														unitRef.child(unitName)
+															.update(totalSize)
+															.then(() => {
+																// Remove deployment unit
+																deploymentUnitRef.child(unitName)
+																.remove()
+																.then(() => {
+																	deploymentUnitRef
+																		.once('value', data => {
+																			if (!data.exists()) {
+																				return;
+																			}
+																		})
+																		.catch(err => res.json({
+																			success: false,
+																			message: 'Deployment Unit Deleted Failed'
+																		}));
+																});
+															})
+															.catch(err => res.json({
+																success: false,
+																message: 'Unit Size Updated Failed'
+															}))
+													} else {
+														return res.json({
+															success: false,
+															message: 'Unit name does not exists'
+														})
+													}
+												});																		
+										} else {
+											return res.json({
+												success: false,
+												message: 'Invalid unit name'
+											});	
+										}
+									});
+
+									return res.json({
+										success: true,
+										message: 'Deployment Unit Deleted Successfully'
+									});
+								} else {
+									return res.json({
+										success: true,
+										message: 'No deployment unit'
+									});
+								}
+							});							
+					})
 					.catch(err => res.json({
 						success: false,
 						message: 'Crisis Deleted Failed'

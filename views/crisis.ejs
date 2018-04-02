@@ -1,7 +1,10 @@
 <% include ./partials/header %>
 <% include ./util/geturl %>
 
-<% data.forEach(crisis => { %>
+<% 
+	if (data[0] != null) {
+		data.forEach(crisis => { 
+%>
 <div class="row">
 	<div class="status animated fadeInDown">	
 		<div class="row">
@@ -22,6 +25,11 @@
 				<%= crisis.time %>
 			</div>		
 		</div>			
+		<div class="row">
+			<div class="col-lg-10 col-md-8">
+				<button type="button" class="btn btn-secondary" onclick="closeCrisis('<%= crisis.id %>')">Close Crisis</button>			
+			</div>			
+		</div>
 	</div>	
 </div>
 
@@ -138,6 +146,38 @@
 		</div>	
 	</div>
 </div>
-<%}); %>
+<% 
+		}); 
+	} else {
+%>
+<div class="row">
+	<div class="status animated fadeInDown">	
+		<div class="row">
+			<div class="col-lg-10 col-md-8">
+				<h1>	
+					Crisis
+				</h1>		
+			</div>	
+		</div>
+	</div>	
+</div>
+
+<div class="row animated fadeInUpBig">
+	<div class="col">		
+		<div class="card">
+			<div class="card-header">
+				<h3>No Crisis</h3>				
+			</div>			
+			<div class="card-body">
+				<div class="form-row">
+					<div class="col-6">					
+						<h5>No enemy available...</h5>
+					</div>
+				</div>				
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
 
 <% include ./partials/footer %>

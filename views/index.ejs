@@ -2,6 +2,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <div class="row">
+	<% if (data.Crisis != null) { %>
 	<div class="status animated fadeInDown">	
 		<% data.Crisis.forEach(crisis => { %>	
 		<div class="row">			
@@ -16,14 +17,24 @@
 		</div>
 		<% }); %>	
 	</div>	
+	<% } else { %>
+		<div class="status animated fadeInDown">		
+			<div class="row">			
+				<div class="col-lg-6">
+					<h1>Current Status</h1>				
+				</div>			
+			</div>	
+		</div>	
+	<% } %>
 </div>
 
+<% if (data.Crisis != null) { %>
 <div class="card mb-3 animated fadeInUpBig">
 	<div class="card-header">
 		<% data.Crisis.forEach(crisis => { %>	
 		<div class="row">
 			<div class="col-lg-8">
-				<h1>
+				<h3>
 					Code 													
 					<% if (String(crisis.crisisCode).toUpperCase() == 'GREEN') { %>
 						<span class="badge badge-secondary green"><%= crisis.crisisCode %></span>
@@ -32,17 +43,17 @@
 					<% } else if (String(crisis.crisisCode).toUpperCase() == 'RED') { %>
 						<span class="badge badge-danger"><%= crisis.crisisCode %></span>
 					<% } %>									
-				</h1>				
+				</h3>				
 			</div>
 			<div class="col-auto">
-				<h1>
+				<h3>
 					<button type="button" class="btn btn-secondary">
 						Injuries <span class="badge badge-light"><label class="unit-label"><%= crisis.noOfInjuries %></label></span>
 					</button>
 					<button type="button" class="btn btn-dark">
 						Deaths <span class="badge badge-light"><label class="unit-label"><%= crisis.noOfDeaths %></label></span>
 					</button>
-				</h1>
+				</h3>
 			</div>
 		</div>	
 		<% }); %>			
@@ -58,7 +69,29 @@
 		</div>
 	</div>
 </div>
+<% } else {%>
+	<div class="card mb-3 animated fadeInUpBig">
+	<div class="card-header">
+		
+		<div class="row">
+			<div class="col-lg-8">
+				<h3>
+					No crisis								
+				</h3>				
+			</div>	
+		</div>				
+	</div>	
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-6">
+				<h5>No deployment unit and enemy</h5>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
 
+<% if (data.DeploymentUnit != null && data.Crisis != null) { %>
 <script>
 	var ctx = document.getElementById("myDoughnutChart");
 	//Total Deployed Units
@@ -75,7 +108,7 @@
 					backgroundColor: [
 						<% data.DeploymentUnit.forEach(deploymentunit => { 
 							if (String(deploymentunit.unitType).toUpperCase() === 'AIR') { %>
-								"rgba(228, 241, 254, 0.7)",
+								"rgba(189, 195, 199, 0.7)",
 							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'SEA') { %>
 								"rgba(68, 108, 179, 0.7)",
 							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'LAND') { %>								
@@ -174,5 +207,6 @@
 	);
 
 </script>
+<% } %>
 
 <% include ./partials/footer %>

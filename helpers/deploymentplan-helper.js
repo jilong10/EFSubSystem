@@ -98,29 +98,20 @@ exports.editCrisisByDeploymentPlan = async (req, res) => {
 	deploymentPlanObj['date'] = date;
 	deploymentPlanObj['time'] = time;
 
-	crisisRef.once('value', snapshot => {
-		if (snapshot.exists()) {
-			crisisRef
-				.remove()
-				.then(() => {					
-					crisisRef.child(deploymentPlanId)
-						.set(deploymentPlanObj)
-						.then(() => res.json({
-							success: true,
-							message: 'Crisis Updated Successfully'
-						}))
-						.catch(err => res.json({
-							success: false,
-							message: 'Crisis Updated Failed'
-						}));
-				});
-		} else {
-			return res.json({
-				success: false,
-				message: 'Crisis Updated Failed'
-			});
-		}
-	});
+	crisisRef
+		.remove()
+		.then(() => {					
+			crisisRef.child(deploymentPlanId)
+				.set(deploymentPlanObj)
+				.then(() => res.json({
+					success: true,
+					message: 'Crisis Updated Successfully'
+				}))
+				.catch(err => res.json({
+					success: false,
+					message: 'Crisis Updated Failed'
+				}));
+		});	
 };
 
 exports.checkCrisisExists = (req, res) => {
