@@ -7,7 +7,14 @@
 		<% data.Crisis.forEach(crisis => { %>	
 		<div class="row">			
 			<div class="col-lg-6">
-				<h1>Current Status</h1>				
+				<h1>
+					Current Status
+					<% if (data.DeploymentUnitStatus.backup) { %>
+						<span class="badge badge-danger">Request Backup</span>
+					<% } else if (data.DeploymentUnitStatus.cleanup) { %>
+						<span class="badge badge-warning">Request Cleanup</span>
+					<% } %>
+				</h1>				
 			</div>			
 		</div>	
 		<div class="row">
@@ -42,7 +49,8 @@
 						<span class="badge badge-secondary yellow"><%= crisis.crisisCode %></span>
 					<% } else if (String(crisis.crisisCode).toUpperCase() == 'RED') { %>
 						<span class="badge badge-danger"><%= crisis.crisisCode %></span>
-					<% } %>									
+					<% } %>		
+					<span class="badge badge-info">$<%= data.DeploymentUnitCost.totalCost %></span>
 				</h3>				
 			</div>
 			<div class="col-auto">
@@ -54,12 +62,7 @@
 						Deaths <span class="badge badge-light"><label class="unit-label"><%= crisis.noOfDeaths %></label></span>
 					</button>
 				</h3>
-			</div>
-			<div class="row">			
-				<div class="col-lg-6">
-					<span class="badge badge-info">$<%= data.DeploymentUnitCost.totalCost %></span>
-				</div>			
-			</div>				
+			</div>						
 		</div>	
 		<% }); %>			
 	</div>	
@@ -145,7 +148,8 @@
 				},
 				title: {
 					display: true,
-					text: 'Total Deployed Units'
+					text: 'Total Deployed Units',
+					fontSize: 25
 				},
 				animation: {
 					animateScale: true,
@@ -208,7 +212,8 @@
 				},
 				title: {
 					display: true,
-					text: 'Total Enemies'
+					text: 'Total Enemies',
+					fontSize: 25
 				},
 				animation: {
 					animateScale: true,
