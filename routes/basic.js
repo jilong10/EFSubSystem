@@ -12,11 +12,11 @@ const deploymentplanUrl = url + '/api/ef';
 const deploymentunitUrl = url + '/api/statusupdate/deploymentunit';
 const unitUrl = url + '/api/statusupdate/unit';
 const crisisUrl = url + '/api/statusupdate/crisis';
-const mycmoUrl = url + '/api/mycmo';
+const statusUrl = url + '/api/status';
 
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => {	
-	axios.get(mycmoUrl)
+	axios.get(statusUrl)
 		.then(response => {										
 			const crisisArr = Object.keys(response.data.Crisis).map(key => {
 				response.data.Crisis[key].id = key;

@@ -5,8 +5,12 @@ const myCmoHelper = require('../helpers').MyCmoHelper;
 router.route('/')
 	.get(myCmoHelper.sendToCmoApi);
 
+router.route('/status')
+	.get(myCmoHelper.statusUpdate);
+
 module.exports = router;
 
 // Route 							| Method	| Description
 // ---------------------------------------------------------------------------------------------------------------
 // api/mycmo 		 	 			| GET 	 	| Get all status update for crisis, deployment unit, unit, enemy
+// api/status 		 	 			| GET 	 	| Get all status update for crisis, deployment unit, unit, enemy
