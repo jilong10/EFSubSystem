@@ -55,21 +55,28 @@
 					</button>
 				</h3>
 			</div>
+			<div class="row">			
+				<div class="col-lg-6">
+					<span class="badge badge-info">$<%= data.DeploymentUnitCost.totalCost %></span>
+				</div>			
+			</div>				
 		</div>	
 		<% }); %>			
 	</div>	
 	<div class="card-body">
 		<div class="row">
+			<% if (data.DeploymentUnit != null) { %>
 			<div class="col-md-6">
 				<canvas id="myDoughnutChart" width="100" height="100"></canvas>
 			</div>
+			<% } %>
 			<div class="col-md-6">
 				<canvas id="myDoughnutChart2" width="100" height="100"></canvas>
 			</div>
 		</div>
 	</div>
 </div>
-<% } else {%>
+<% } else { %>
 	<div class="card mb-3 animated fadeInUpBig">
 	<div class="card-header">
 		
@@ -91,8 +98,8 @@
 </div>
 <% } %>
 
-<% if (data.DeploymentUnit != null && data.Crisis != null) { %>
 <script>
+	<% if (data.DeploymentUnit != null) { %>
 	var ctx = document.getElementById("myDoughnutChart");
 	//Total Deployed Units
 	var myLineChart = new Chart(ctx, {
@@ -148,6 +155,11 @@
 		}
 	);
 	
+	<% 
+	} 
+
+	if (data.Crisis != null) { 		
+	%>
 	//Enemy Units
 	var ctx = document.getElementById("myDoughnutChart2");
 	var myLineChart = new Chart(ctx, {
@@ -205,8 +217,8 @@
 			}
 		}
 	);
+	<% } %>
 
 </script>
-<% } %>
 
 <% include ./partials/footer %>

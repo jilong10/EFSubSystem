@@ -203,15 +203,19 @@ function deleteEnemy(crisis_id, enemy_name) {
 function closeCrisis(id) {
     loader(true);
     
-    let target = "./api/statusupdate/crisis/"+ id; 
+    let target = "./api/statusupdate/crisis/"+ id;     
     
     $.ajax({
 		url:target,
 		type:'DELETE',		
         success: function(msg) {            
-            if (msg.success) {
-                //to check return message to confirm successful
-                window.location.reload(true);
+            if (msg.success) {     
+                setTimeout(() => {
+                    calculateDeploymentUnitCost();  
+
+                    //to check return message to confirm successful
+                    window.location.reload(true);
+                }, 1000);
             } else {            
                 loader(false);    
                 showNotification('danger', msg.message);
@@ -245,9 +249,10 @@ function deploy(id, unitType) {
             type: 'PUT',
             data: { number: size },
             success: function(msg) {                
-                if (msg.success) {
+                if (msg.success) {               
+                    calculateDeploymentUnitCost();     
                     //to check return message to confirm successful
-                    window.location.reload(true);
+                    window.location.reload(true);                    
                 } else {     
                     loader(false);               
                     if (msg.message == 'Unit not deploy yet') {
@@ -265,6 +270,19 @@ function deploy(id, unitType) {
     } else {
         showNotification('danger', 'Please input a number');
     }
+}
+
+function calculateDeploymentUnitCost() {
+    const target = `./api/ordergenerator/deploymentunit/calculate`;
+
+    $.ajax({
+        url: target,
+        type: 'PUT',
+        success: function(msg) {                             
+        },
+        error: function() {            
+        }
+    });
 }
 
 function showDeploymentUnit(show, unitName, unitType) {
@@ -301,6 +319,7 @@ function addDeploymentUnit() {
         data: { unit_name: unitName, unit_type: unitType, current_unit_size: currentUnitSize, coordinate_x: coordinateX, coordinate_y: coordinateY, unit_status: unitStatus },
         success: function(msg) {
              if (msg.success) {
+                calculateDeploymentUnitCost();  
                 //to check return message to confirm successful         
                 window.location.reload(true);
             } else {

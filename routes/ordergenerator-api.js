@@ -5,7 +5,7 @@ const orderGeneratorHelper = require('../helpers').OrderGeneratorHelper;
 router.route('/unit')
 	.post(orderGeneratorHelper.createUnit);
 
-router.route('/deploymentunit')
+router.route('/deploymentunit')	
 	.post(orderGeneratorHelper.createDeploymentUnit);
 
 router.route('/unit/:unit_name')
@@ -17,6 +17,9 @@ router.route('/unit/:unit_name/reduce')
 
 router.route('/unit/:unit_name/increase')
 	.put(orderGeneratorHelper.increaseUnitSize);
+
+router.route('/deploymentunit/calculate')
+	.put(orderGeneratorHelper.calculateDeploymentUnitCost)
 
 router.route('/deploymentunit/statusrequester')
 	.get(orderGeneratorHelper.statusRequest)
@@ -45,6 +48,7 @@ module.exports = router;
 // api/ordergenerator/unit/:unit_name/reduce 						| PUT 		| Reduce unit size
 // api/ordergenerator/unit/:unit_name/increase 						| PUT 		| Increase unit size
 // api/ordergenerator/deploymentunit 								| POST 	 	| New deployment unit
+// api/ordergenerator/deploymentunit/calculate 						| PUT 	 	| Calculate deployment unit costs
 // api/ordergenerator/deploymentunit/:unit_name 					| PUT 	 	| Edit single deployment unit
 // api/ordergenerator/deploymentunit/:unit_name 					| DELETE  	| Delete deployment unit
 // api/ordergenerator/deploymentunit/:unit_name/increasesize 		| PUT 		| Increase deployment unit size

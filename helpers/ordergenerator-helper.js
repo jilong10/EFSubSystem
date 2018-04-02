@@ -5,6 +5,7 @@ const Firebase = require('../config').Firebase;
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');
 const unitRef = Firebase.database().ref('Unit');
 const deploymentUnitStatusRef = Firebase.database().ref('DeploymentUnitStatus');
+const deploymentUnitCostRef = Firebase.database().ref('DeploymentUnitCost');
 
 exports.createUnit = (req, res) => {
 	const unitName = req.body.unit_name;
@@ -668,5 +669,37 @@ exports.statusRequest = (req, res) => {
 	deploymentUnitStatusRef
 		.once('value', snapshot => {
 			return res.json(snapshot);
-		})
+		});
+};
+
+exports.calculateDeploymentUnitCost = async (req, res) => {
+	const deploymentUnitSnapshot = await deploymentUnitRef.once('value');
+	const deploymentUnitObj = deploymentUnitSnapshot.val();
+
+	const unitSnapshot = await unitRef.once('value');
+	const unitObj = unitSnapshot.val();
+
+	let cost = 0;
+
+	if (deploymentUnitObj != null) {
+		const deploymentunitArr = Object.keys(deploymentUnitObj).map(key => {
+			return deploymentUnitObj[key].currentUnitSize * unitObj[key].cost;		
+		});	
+		cost = deploymentunitArr.reduce((total, amount) => total + amount);
+	}
+
+	const totalCost = {
+		'totalCost': cost
+	};
+
+	deploymentUnitCostRef
+		.update(totalCost)
+		.then(() => res.json({
+			success: true,
+			message: 'Calculated Successfully'
+		}))
+		.catch(err => res.json({
+			success: false,
+			message: 'Calculated Failed'
+		}));
 };

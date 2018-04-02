@@ -17,7 +17,7 @@ const mycmostatusUrl = url + '/api/mycmo/status';
 // Homepage
 router.get('/', middleware.isLoggedIn, (req, res) => {	
 	axios.get(mycmostatusUrl)
-		.then(response => {										
+		.then(response => {			
 			const crisisArr = Object.keys(response.data.Crisis).map(key => {
 				response.data.Crisis[key].id = key;
 				const enemyArr = Object.keys(response.data.Crisis[key].Enemy).map(enemyKey => response.data.Crisis[key].Enemy[enemyKey]);				
@@ -31,11 +31,12 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 				if (a.unitType > b.unitType) return 1;
 				return 0;
 			});	
-
+			console.log(response.data);
 			const statusArr = {
 				'Crisis': crisisArr,
 				'DeploymentUnit': deploymentunitArr,
-				'DeploymentUnitStatus': response.data.DeploymentUnitStatus
+				'DeploymentUnitStatus': response.data.DeploymentUnitStatus,
+				'DeploymentUnitCost': response.data.DeploymentUnitCost
 			};
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})
