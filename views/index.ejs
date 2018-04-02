@@ -3,112 +3,61 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <div class="row">
 	<div class="status animated fadeInDown">	
+		<% data.Crisis.forEach(crisis => { %>	
+		<div class="row">			
+			<div class="col-lg-6">
+				<h1>Current Status</h1>				
+			</div>			
+		</div>	
 		<div class="row">
 			<div class="col-lg-10 col-md-8">
-				<h1>Current Status</h1>		
-				
-			</div>
-		</div>			
+				<button type="button" class="btn btn-primary">Send Status Update</button>			
+			</div>			
+		</div>
+		<% }); %>	
 	</div>	
 </div>
-<br>
 
-
-
-<div class="card animated fadeInUpBig">
+<div class="card mb-3 animated fadeInUpBig">
 	<div class="card-header">
-		<h3>Enemy Status</h3>
-	</div>
+		<% data.Crisis.forEach(crisis => { %>	
+		<div class="row">
+			<div class="col-lg-8">
+				<h1>
+					Code 													
+					<% if (String(crisis.crisisCode).toUpperCase() == 'GREEN') { %>
+						<span class="badge badge-secondary green"><%= crisis.crisisCode %></span>
+					<% } else if (String(crisis.crisisCode).toUpperCase() == 'YELLOW') { %>
+						<span class="badge badge-secondary yellow"><%= crisis.crisisCode %></span>
+					<% } else if (String(crisis.crisisCode).toUpperCase() == 'RED') { %>
+						<span class="badge badge-danger"><%= crisis.crisisCode %></span>
+					<% } %>									
+				</h1>				
+			</div>
+			<div class="col-auto">
+				<h1>
+					<button type="button" class="btn btn-secondary">
+						Injuries <span class="badge badge-light"><label class="unit-label"><%= crisis.noOfInjuries %></label></span>
+					</button>
+					<button type="button" class="btn btn-dark">
+						Deaths <span class="badge badge-light"><label class="unit-label"><%= crisis.noOfDeaths %></label></span>
+					</button>
+				</h1>
+			</div>
+		</div>	
+		<% }); %>			
+	</div>	
 	<div class="card-body">
 		<div class="row">
-			<div class="col-md-3">
-				<canvas id="myDoughnutChart2" width="100" height="100"></canvas>
-			</div>
-						<div class="col-md-9 table-responsive">
-				<% data.Crisis.forEach(crisis => { %>					
-					<table class="table table-bordered" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th>Affected Area</th>
-								<th>Coordinate X</th>
-								<th>Coordinate Y</th>
-								<th>Enemy Name</th>
-								<th>Size</th>
-								<th>Type</th>
-							</tr>
-						</thead>
-						<tbody>	
-							<% crisis.Enemy.forEach(enemy => { %>
-								<tr>
-									<td><%= enemy.affectArea %></td>
-									<td><%= enemy.coordinateX %></td>
-									<td><%= enemy.coordinateY %></td>
-									<td><%= enemy.enemyName %></td>
-									<td><%= enemy.enemySize %></td>
-									<td><%= enemy.enemyType %></td>
-								</tr>
-							<% }); %>
-					</table>
-					<table class="table table-bordered" width="100%" cellspacing="0">
-						<thead>
-							<tr>
-								<th>Casaulty Size</th>
-								<th>Crisis Code</th>
-								<th>Date</th>
-								<th>Time</th>
-							</tr>
-						</thead>
-						<tfoot>
-						<tbody>	
-							<tr>
-								<td><%= crisis.casualtySize %></td>
-								<td><%= crisis.crisisCode %></td>
-								<td><%= crisis.date %></td>
-								<td><%= crisis.time %></td>
-							</tr>
-					</table>
-					<% }); %>
-			</div>
-		</div>
-	</div>
-</div>
-<br>
-
-<br><br>
-<div class="card mb-3">
-	<div class="card-header">
-		<h3>Deployment</h3>
-	</div>
-	<div class="card-body">
-		<div class="row">
-
 			<div class="col-md-6">
 				<canvas id="myDoughnutChart" width="100" height="100"></canvas>
 			</div>
 			<div class="col-md-6">
-				<div class="row">
-					<div class="col-md-6">
-						<canvas id="myLand" width="100" height="100"></canvas>
-					</div>
-					<div class="col-md-6">
-						<canvas id="myAir" width="100" height="100"></canvas>		
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<canvas id="myQuanrantine" width="100" height="100"></canvas>
-					</div>
-					<div class="col-md-6">	
-						<canvas id="mySea" width="100" height="100"></canvas>
-					</div>
-				</div>	
+				<canvas id="myDoughnutChart2" width="100" height="100"></canvas>
 			</div>
 		</div>
 	</div>
 </div>
-
-
-<button type="button" class="btn btn-primary">Send Status Update</button>
 
 <script>
 	var ctx = document.getElementById("myDoughnutChart");
@@ -124,61 +73,26 @@
 						<% }); %>
 					],
 					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
+						<% data.DeploymentUnit.forEach(deploymentunit => { 
+							if (String(deploymentunit.unitType).toUpperCase() === 'AIR') { %>
+								"rgba(228, 241, 254, 0.7)",
+							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'SEA') { %>
+								"rgba(68, 108, 179, 0.7)",
+							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'LAND') { %>								
+								"rgba(27, 188, 155, 0.7)",
+							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'QUARANTINE') { %>								
+								"rgba(247, 202, 24, 0.7)",
+							<% } else if (String(deploymentunit.unitType).toUpperCase() === 'CLEANUP') { %>								
+								"rgba(108, 122, 137, 0.7)",
+							<% } %>
+						<% }); %>
 					],
 					label: "Total Deployed"
 			},
-			{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%= deploymentunit.currentUnitSize%>,
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: "Left"
-			},
-			{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%= deploymentunit.unitCasualty%>,
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: "Left"
-			}
+		
+
 					
-				],
+		],
 			labels: [
 				<% data.DeploymentUnit.forEach(deploymentunit => { %>
 				"<%= deploymentunit.unitName %>",
@@ -215,16 +129,17 @@
 						<% }); %>
 					],
 					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
+						<% data.Crisis.forEach(crisis => { 
+							crisis.Enemy.forEach(enemy => {
+								if (String(enemy.enemyType).toUpperCase() === 'AIR') { %>
+									"rgba(228, 241, 254, 0.7)",
+								<% } else if (String(enemy.enemyType).toUpperCase() === 'SEA') { %>
+									"rgba(68, 108, 179, 0.7)",
+								<% } else if (String(enemy.enemyType).toUpperCase() === 'LAND') { %>								
+									"rgba(27, 188, 155, 0.7)",
+								<% } %>
+							<% }); %>							
+						<% }); %>
 					],
 					label: [
 						<% data.Crisis.forEach(crisis => { %>
@@ -236,68 +151,10 @@
 				}],
 			labels: [
 				<% data.Crisis.forEach(crisis => { %>
-							<% crisis.Enemy.forEach(enemy => { %>
-								"<%= enemy.enemyName %>",
-							<% }); %>
-						<% }); %>
-			]},
-			options: {
-				responsive: true,
-				legend: {
-					position: 'top',
-				},
-				title: {
-					display: false,
-					text: 'Deployed Units'
-				},
-				animation: {
-					animateScale: true,
-					animateRotate: true
-				}
-			}
-		}
-	);
-	
-	var ctx = document.getElementById("myLand");
-	var myLineChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			datasets: [{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="LAND"){%>
-							<%= deploymentunit.currentUnitSize%>,
-							<%= deploymentunit.unitCasualty%>,
-						<%}%>
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="LAND"){%>
-							"<%= deploymentunit.unitName%>",
-						<%}%>
-						<% }); %>
-					]
-				}],
-			labels: [
-				<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="LAND"){%>
-							"<%= deploymentunit.unitName%> Remaining",
-							"<%= deploymentunit.unitName%> Casualty",
-						<%}%>
-						<% }); %>
+					<% crisis.Enemy.forEach(enemy => { %>
+						"<%= enemy.enemyName %>",
+					<% }); %>
+				<% }); %>
 			]},
 			options: {
 				responsive: true,
@@ -306,7 +163,7 @@
 				},
 				title: {
 					display: true,
-					text: 'Land'
+					text: 'Total Enemies'
 				},
 				animation: {
 					animateScale: true,
@@ -315,181 +172,7 @@
 			}
 		}
 	);
-	
-	var ctx = document.getElementById("myAir");
-	var myLineChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			datasets: [{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="AIR"){%>
-							<%= deploymentunit.currentUnitSize%>,
-							<%= deploymentunit.unitCasualty%>,
-						<%}%>
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="AIR"){%>
-							"<%= deploymentunit.unitName%>",
-							"<%= deploymentunit.unitName%>",
-						<%}%>
-						<% }); %>
-					]
-				}],
-			labels: [
-				<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="AIR"){%>
-							"<%= deploymentunit.unitName%> Remaining",
-							"<%= deploymentunit.unitName%> Casualty",
-						<%}%>
-						<% }); %>
-			]},
-			options: {
-				responsive: true,
-				legend: {
-					position: 'top',
-				},
-				title: {
-					display: true,
-					text: 'Air'
-				},
-				animation: {
-					animateScale: true,
-					animateRotate: true
-				}
-			}
-		}
-	);
-	
-	var ctx = document.getElementById("myQuanrantine");
-	var myLineChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			datasets: [{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="QUARANTINE"){%>
-							<%= deploymentunit.currentUnitSize%>,
-							<%= deploymentunit.unitCasualty%>,
-						<%}%>
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="QUARANTINE"){%>
-							"<%= deploymentunit.unitName%>",
-						<%}%>
-						<% }); %>
-					]
-				}],
-			labels: [
-				<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="QUARANTINE"){%>
-							"<%= deploymentunit.unitName%> Remaining",
-							"<%= deploymentunit.unitName%> Casualty",
-						<%}%>
-						<% }); %>
-			]},
-			options: {
-				responsive: true,
-				legend: {
-					position: 'top',
-				},
-				title: {
-					display: true,
-					text: 'Quanrantine'
-				},
-				animation: {
-					animateScale: true,
-					animateRotate: true
-				}
-			}
-		}
-	);
-	
-		var ctx = document.getElementById("mySea");
-	var myLineChart = new Chart(ctx, {
-		type: 'doughnut',
-		data: {
-			datasets: [{
-					data: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="SEA"){%>
-							<%= deploymentunit.currentUnitSize%>,
-							<%= deploymentunit.unitCasualty%>,
-						<%}%>
-						<% }); %>
-					],
-					backgroundColor: [
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)",
-						"rgba(0,255,0,0.7)",
-						"rgba(0,0,255,0.7)",
-						"rgba(255,0,0,0.7)"
-					],
-					label: [
-						<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="SEA"){%>
-							"<%= deploymentunit.unitName%>",
-						<%}%>
-						<% }); %>
-					]
-				}],
-			labels: [
-				<% data.DeploymentUnit.forEach(deploymentunit => { %>
-						<%if(deploymentunit.unitType=="SEA"){%>
-							"<%= deploymentunit.unitName%> Remaining",
-							"<%= deploymentunit.unitName%> Casualty",
-						<%}%>
-						<% }); %>
-			]},
-			options: {
-				responsive: true,
-				legend: {
-					position: 'top',
-				},
-				title: {
-					display: true,
-					text: 'Sea'
-				},
-				animation: {
-					animateScale: true,
-					animateRotate: true
-				}
-			}
-		}
-	);
+
 </script>
 
 <% include ./partials/footer %>
