@@ -13,4 +13,4 @@ module.exports = router;
 // Route 							| Method	| Description
 // ---------------------------------------------------------------------------------------------------------------
 // api/mycmo 		 	 			| GET 	 	| Get all status update for crisis, deployment unit, unit, enemy
-// api/status 		 	 			| GET 	 	| Get all status update for crisis, deployment unit, unit, enemy
+// api/mycmo/status 		 	 	| GET 	 	| Get all status update for crisis, deployment unit, unit, enemy
