@@ -27,9 +27,8 @@
                                     <span class="badge badge-secondary green"><%= deploymentplan.id %></span>
                                 <% } else if (String(deploymentplan.crisisCode).toUpperCase() == 'YELLOW') { %>
                                     <span class="badge badge-secondary yellow"><%= deploymentplan.id %></span>
-                                <% } else if (String(crisis.crisisCode).toUpperCase() == 'ORANGE') { %>
-                                    <span class="badge badge-secondary orange"><%= crisis.id %></span>
-                                <% } %>
+                                <% } else if (String(deploymentplan.crisisCode).toUpperCase() == 'ORANGE') { %>
+                                    <span class="badge badge-secondary orange"><%= deploymentplan.id %></span>
                                 <% } else if (String(deploymentplan.crisisCode).toUpperCase() == 'RED') { %>
                                     <span class="badge badge-danger"><%= deploymentplan.id %></span>
                                 <% } %>                                
