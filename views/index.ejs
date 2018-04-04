@@ -47,6 +47,8 @@
 						<span class="badge badge-secondary green"><%= crisis.crisisCode %></span>
 					<% } else if (String(crisis.crisisCode).toUpperCase() == 'YELLOW') { %>
 						<span class="badge badge-secondary yellow"><%= crisis.crisisCode %></span>
+					<% } else if (String(crisis.crisisCode).toUpperCase() == 'ORANGE') { %>
+						<span class="badge badge-secondary orange"><%= crisis.crisisCode %></span>
 					<% } else if (String(crisis.crisisCode).toUpperCase() == 'RED') { %>
 						<span class="badge badge-danger"><%= crisis.crisisCode %></span>
 					<% } %>		
