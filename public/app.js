@@ -28,7 +28,7 @@ function findDeploymentPlanStatus() {
 		.then(res => res.json())
 		.then(data => {				
 			if (data.status) {
-				showNotification('primary', 'New Deployment Plan Arrive');
+				showNotification('warning', 'New Deployment Plan Arrived', false);
 				setDeploymentPlanStatus({
 					status: false
 				});
@@ -53,7 +53,7 @@ function setDeploymentPlanStatus(update) {
 	});
 }
 
-function showNotification(alertType, msg) {
+function showNotification(alertType, msg, autoClose=true) {
     const alertName = (alertType === 'danger') ? 'alert' : alertType;
     const alert = `<div class="notice notice-${alertType} hide">
                         <strong>${upperCaseFirstChar(alertName)}</strong>&nbsp&nbsp ${msg}
@@ -61,9 +61,12 @@ function showNotification(alertType, msg) {
         
     $(".alert-message").append(alert).show();
     $(".notice").delay(500).slideDown();    
-    $(".notice").delay(3000).slideUp(300, () => {
-        $('.alert-message').find('div').first().remove();
-    });
+
+    if (autoClose) {
+        $(".notice").delay(3000).slideUp(300, () => {
+            $('.alert-message').find('div').first().remove();
+        });
+    }
 }
 
 function upperCaseFirstChar(string) {
