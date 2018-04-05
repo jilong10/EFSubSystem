@@ -52,6 +52,15 @@ exports.sendToCmoApi = async (req, res) => {
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
-	
-	res.json(statusObj);
+
+	axios.post(cmoApiUrl, statusObj)
+	.then(response => {				
+		return res.json(response);
+	})
+	.catch(err => {
+		return res.json({
+			success: false,
+			messsage: 'Status Update Failed'
+		});
+	});
 };

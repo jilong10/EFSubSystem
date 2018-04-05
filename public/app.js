@@ -75,7 +75,7 @@ function upperCaseFirstChar(string) {
 
 function updateCrisisWithPlan(plan_id) {
     loader(true);
-	var target = "./api/ef/updatecrisis/"+ plan_id;
+	const target = "./api/ef/updatecrisis/"+ plan_id;
 	$.ajax({
 		url:target,
 		type: 'POST',
@@ -390,4 +390,23 @@ function request(option) {
             showNotification('danger', 'Update Failed');
         }
     });
+}
+
+function sendStatusUpdate() {
+    loader(true);
+
+    fetch('./api/mycmo')
+		.then(res => res.json())
+		.then(data => {		
+            loader(false);
+			if (data.success) {
+				showNotification('success', data.message);				
+			} else {
+                showNotification('danger', data.message);
+            }
+		})
+		.catch(err => {
+            loader(false);
+			console.log('The status update to cmo service is unavailable right now. Please try again later.');
+		});
 }
