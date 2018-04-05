@@ -398,7 +398,7 @@ function sendStatusUpdate() {
     fetch('./api/mycmo')
 		.then(res => res.json())
 		.then(data => {		
-            loader(false);
+            loader(false);            
 			if (data.success) {
 				showNotification('success', data.message);				
 			} else {

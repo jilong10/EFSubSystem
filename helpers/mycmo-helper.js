@@ -55,12 +55,12 @@ exports.sendToCmoApi = async (req, res) => {
 
 	axios.post(cmoApiUrl, statusObj)
 	.then(response => {				
-		return res.json(response);
+		return res.json(response.data);
 	})
 	.catch(err => {
 		return res.json({
 			success: false,
-			messsage: 'Status Update Failed'
+			message: 'Status Update Failed'
 		});
 	});
 };
