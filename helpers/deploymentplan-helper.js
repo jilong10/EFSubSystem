@@ -1,6 +1,4 @@
 const moment = require('moment-timezone');
-const Crisis = require('../models').Crisis;
-const Enemy = require('../models').Enemy;
 const Firebase = require('../config').Firebase;
 const deploymentPlanRef = Firebase.database().ref('DeploymentPlan');
 const deploymentPlanStatusRef = Firebase.database().ref('DeploymentPlanStatus');
