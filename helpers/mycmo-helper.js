@@ -22,6 +22,7 @@ exports.statusUpdate = async (req, res) => {
 	const deploymentUnitCostObj = deploymentUnitCostSnapshot.val();
 
 	statusObj['Crisis'] = crisisObj;
+	statusObj['crisisStatus'] = 'ONGOING';
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
@@ -53,7 +54,7 @@ exports.sendToCmoApi = async (req, res) => {
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
-	console.log(statusObj);
+
 	axios.post(cmoApiUrl, statusObj)
 	.then(response => {				
 		return res.json(response.data);
