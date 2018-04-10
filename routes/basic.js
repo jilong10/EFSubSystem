@@ -34,12 +34,11 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 			
 			const statusArr = {
 				'Crisis': crisisArr,
-				'crisisStatus': response.data.crisisStatus,
 				'DeploymentUnit': deploymentunitArr,				
 				'DeploymentUnitStatus': response.data.DeploymentUnitStatus,
 				'DeploymentUnitCost': response.data.DeploymentUnitCost
 			};
-			
+
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})
 		.catch(err => {
