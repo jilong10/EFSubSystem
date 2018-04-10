@@ -22,6 +22,7 @@ exports.statusUpdate = async (req, res) => {
 	const deploymentUnitCostObj = deploymentUnitCostSnapshot.val();
 
 	statusObj['Crisis'] = crisisObj;
+	statusObj['CrisisStatus'] = 'ONGOING';
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
