@@ -34,7 +34,7 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 			
 			const statusArr = {
 				'Crisis': crisisArr,
-				'CrisisStatus': response.data.CrisisStatus,
+				'crisisStatus': response.data.crisisStatus,
 				'DeploymentUnit': deploymentunitArr,				
 				'DeploymentUnitStatus': response.data.DeploymentUnitStatus,
 				'DeploymentUnitCost': response.data.DeploymentUnitCost

@@ -22,7 +22,7 @@ exports.statusUpdate = async (req, res) => {
 	const deploymentUnitCostObj = deploymentUnitCostSnapshot.val();
 
 	statusObj['Crisis'] = crisisObj;
-	statusObj['CrisisStatus'] = 'ONGOING';
+	statusObj['crisisStatus'] = 'ONGOING';
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
@@ -50,7 +50,7 @@ exports.sendToCmoApi = async (req, res) => {
 	const deploymentUnitCostObj = deploymentUnitCostSnapshot.val();
 
 	statusObj['Crisis'] = crisis[0];
-	statusObj['CrisisStatus'] = 'ONGOING';
+	statusObj['crisisStatus'] = 'ONGOING';
 	statusObj['DeploymentUnit'] = deploymentUnitObj;
 	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
 	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
