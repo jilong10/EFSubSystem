@@ -6,6 +6,9 @@ const crisisRef = Firebase.database().ref('Crisis');
 const deploymentUnitRef = Firebase.database().ref('DeploymentUnit');
 const unitRef = Firebase.database().ref('Unit');
 const deploymentUnitStatusRef = Firebase.database().ref('DeploymentUnitStatus');
+const deploymentUnitCostRef = Firebase.database().ref('DeploymentUnitCost');
+const axios = require('axios');
+const cmoApiUrl = require('../config').Url.cmoapiurl;
 
 exports.readCrisis = (req, res) => {	
 	crisisRef.once('value', snapshot => {		
@@ -76,109 +79,143 @@ exports.editCrisis = (req, res) => {
 		});
 };
 
-exports.deleteCrisis = (req, res) => {
+exports.deleteCrisis = async (req, res) => {
 	const crisisId = req.params.crisis_id;
 
-	crisisRef.child(crisisId)
-		.once('value', snapshot => {
-			if (snapshot.exists()) {
-				crisisRef.child(crisisId)
-					.remove()
-					.then(() => {
-						deploymentUnitRef
-							.once('value', deploymentUnitData => {								
-								if (deploymentUnitData.exists()) {									
-									deploymentUnitData.forEach(deploymentUnitSnapshot => {										
-										if (deploymentUnitSnapshot.exists()) {
-											let totalSize = {
-												'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
-												'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
-												'unitSize': 0
-											};
+	const statusObj = {};
+	const crisisSnapshot = await crisisRef.once('value');
+	const crisisObj = crisisSnapshot.val();
 
-											let unitName = '';
-		
-											// Add currntUnitSize and unitCasualty
-											deploymentUnitSnapshot.forEach(childDeploymentUnitSnapshot => {					
-												if (childDeploymentUnitSnapshot.key === 'currentUnitSize') {
-													totalSize['unitSize'] += childDeploymentUnitSnapshot.val();
-												} else if (childDeploymentUnitSnapshot.key === 'unitName') {
-													unitName = childDeploymentUnitSnapshot.val();
-												}
-											});		
-											
-											unitRef.child(unitName)
-												.once('value', unitSnapshot => {
-													// Add unit size
-													if (unitSnapshot.exists()) {
-														unitSnapshot.forEach(childUnitSnapshot => {
-															if (childUnitSnapshot.key === 'unitSize') {
-																totalSize['unitSize'] += childUnitSnapshot.val();
-															}
-														});
+	const crisis = Object.keys(crisisObj).map(key => {
+		crisisObj[key].id = key;
+		return crisisObj[key];
+	});
 
-														// Update unit size
-														unitRef.child(unitName)
-															.update(totalSize)
-															.then(() => {
-																// Remove deployment unit
-																deploymentUnitRef.child(unitName)
-																.remove()
-																.then(() => {
-																	deploymentUnitRef
-																		.once('value', data => {
-																			if (!data.exists()) {
-																				return;
-																			}
-																		})
-																		.catch(err => res.json({
-																			success: false,
-																			message: 'Deployment Unit Deleted Failed'
-																		}));
+	const deploymentUnitSnapshot = await deploymentUnitRef.once('value');
+	const deploymentUnitObj = deploymentUnitSnapshot.val();
+
+	const deploymentUnitStatusSnapshot = await deploymentUnitStatusRef.once('value');
+	const deploymentUnitStatusObj = deploymentUnitStatusSnapshot.val();
+
+	const deploymentUnitCostSnapshot = await deploymentUnitCostRef.once('value');
+	const deploymentUnitCostObj = deploymentUnitCostSnapshot.val();
+
+	statusObj['Crisis'] = crisis[0];
+	statusObj['crisisStatus'] = 'RESOLVED';
+	statusObj['DeploymentUnit'] = deploymentUnitObj;
+	statusObj['DeploymentUnitStatus'] = deploymentUnitStatusObj;
+	statusObj['DeploymentUnitCost'] = deploymentUnitCostObj;
+
+	axios.post(cmoApiUrl, statusObj)
+		.then(response => {				
+			crisisRef.child(crisisId)
+				.once('value', snapshot => {
+					if (snapshot.exists()) {
+						crisisRef.child(crisisId)
+							.remove()
+							.then(() => {
+								deploymentUnitRef
+									.once('value', deploymentUnitData => {								
+										if (deploymentUnitData.exists()) {									
+											deploymentUnitData.forEach(deploymentUnitSnapshot => {										
+												if (deploymentUnitSnapshot.exists()) {
+													let totalSize = {
+														'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+														'time': moment().tz("Asia/Singapore").format('HH:mm:ss'),
+														'unitSize': 0
+													};
+
+													let unitName = '';
+				
+													// Add currntUnitSize and unitCasualty
+													deploymentUnitSnapshot.forEach(childDeploymentUnitSnapshot => {					
+														if (childDeploymentUnitSnapshot.key === 'currentUnitSize') {
+															totalSize['unitSize'] += childDeploymentUnitSnapshot.val();
+														} else if (childDeploymentUnitSnapshot.key === 'unitName') {
+															unitName = childDeploymentUnitSnapshot.val();
+														}
+													});		
+													
+													unitRef.child(unitName)
+														.once('value', unitSnapshot => {
+															// Add unit size
+															if (unitSnapshot.exists()) {
+																unitSnapshot.forEach(childUnitSnapshot => {
+																	if (childUnitSnapshot.key === 'unitSize') {
+																		totalSize['unitSize'] += childUnitSnapshot.val();
+																	}
 																});
-															})
-															.catch(err => res.json({
-																success: false,
-																message: 'Unit Size Updated Failed'
-															}))
-													} else {
-														return res.json({
-															success: false,
-															message: 'Unit name does not exists'
-														})
-													}
-												});																		
+
+																// Update unit size
+																unitRef.child(unitName)
+																	.update(totalSize)
+																	.then(() => {
+																		// Remove deployment unit
+																		deploymentUnitRef.child(unitName)
+																		.remove()
+																		.then(() => {
+																			deploymentUnitRef
+																				.once('value', data => {
+																					if (!data.exists()) {
+																						return;
+																					}
+																				})
+																				.catch(err => res.json({
+																					success: false,
+																					message: 'Deployment Unit Deleted Failed'
+																				}));
+																		});
+																	})
+																	.catch(err => res.json({
+																		success: false,
+																		message: 'Unit Size Updated Failed'
+																	}))
+															} else {
+																return res.json({
+																	success: false,
+																	message: 'Unit name does not exists'
+																})
+															}
+														});																		
+												} else {
+													return res.json({
+														success: false,
+														message: 'Invalid unit name'
+													});	
+												}
+											});
+
+											return res.json({
+												success: true,
+												message: 'Deployment Unit Deleted Successfully'
+											});
 										} else {
 											return res.json({
-												success: false,
-												message: 'Invalid unit name'
-											});	
+												success: true,
+												message: 'No deployment unit'
+											});
 										}
-									});
-
-									return res.json({
-										success: true,
-										message: 'Deployment Unit Deleted Successfully'
-									});
-								} else {
-									return res.json({
-										success: true,
-										message: 'No deployment unit'
-									});
-								}
-							});							
-					})
-					.catch(err => res.json({
-						success: false,
-						message: 'Crisis Deleted Failed'
-					}));
-			} else {
-				return res.json({
-					success: false,
-					message: 'Invalid crisis id'
-				});	
-			}
-		});
+									});							
+							})
+							.catch(err => res.json({
+								success: false,
+								message: 'Crisis Deleted Failed'
+							}));
+					} else {
+						return res.json({
+							success: false,
+							message: 'Invalid crisis id'
+						});	
+					}
+				});
+		})
+		.catch(err => {
+			console.log(err);
+			return res.json({
+				success: false,
+				message: 'Status Update Failed'
+			});
+		});	
 };
 
 exports.createEnemy = (req, res) => {

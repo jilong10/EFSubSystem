@@ -39,7 +39,7 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 				'DeploymentUnitStatus': response.data.DeploymentUnitStatus,
 				'DeploymentUnitCost': response.data.DeploymentUnitCost
 			};
-			console.log(response.data.CrisisStatus);
+			
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})
 		.catch(err => {
