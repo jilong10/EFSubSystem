@@ -31,13 +31,15 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 				if (a.unitType > b.unitType) return 1;
 				return 0;
 			});	
-			console.log(response.data);
+			
 			const statusArr = {
 				'Crisis': crisisArr,
-				'DeploymentUnit': deploymentunitArr,
+				'CrisisStatus': response.data.CrisisStatus,
+				'DeploymentUnit': deploymentunitArr,				
 				'DeploymentUnitStatus': response.data.DeploymentUnitStatus,
 				'DeploymentUnitCost': response.data.DeploymentUnitCost
 			};
+
 			res.render('index', { message: '', user: req.session.user, data: statusArr });
 		})
 		.catch(err => {
