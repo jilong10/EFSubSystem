@@ -209,3 +209,13 @@ nav {
 .notice-danger>strong {
     color: #d73814;
 }
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.mapholder {
+    width: 100%;
+    height: 400px;
+}

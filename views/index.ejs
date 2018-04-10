@@ -37,6 +37,27 @@
 
 <% if (data.Crisis != null) { %>
 <div class="card mb-3 animated fadeInUpBig">
+	<div class="card-header">		
+		<div class="row">
+			<div class="col-lg-8">
+				<h3>
+					Current Map Status
+				</h3>				
+			</div>					
+		</div>			
+	</div>	
+	<div class="card-body">		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="mapholder">
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card mb-3 animated fadeInUpBig">
 	<div class="card-header">
 		<% data.Crisis.forEach(crisis => { %>	
 		<div class="row">
@@ -68,7 +89,7 @@
 		</div>	
 		<% }); %>			
 	</div>	
-	<div class="card-body">
+	<div class="card-body">		
 		<div class="row">
 			<% if (data.DeploymentUnit != null) { %>
 			<div class="col-md-6">
@@ -103,8 +124,43 @@
 </div>
 <% } %>
 
-<script>
-	<% if (data.DeploymentUnit != null) { %>
+<script>	
+	<% if (data.DeploymentUnit != null) { %>	
+	async function initMap() {
+		var centerOfSingapore = {lat: 1.3521, lng: 103.8198};
+
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 11,
+			center: centerOfSingapore
+		});
+
+		await <% data.Crisis.forEach(crisis => { 
+			crisis.Enemy.forEach((enemy, i) => { %>
+				window.setTimeout(function() {
+					new google.maps.Marker({
+						position: {lat:<%= enemy.coordinateX %> + Math.random()/1000, lng: <%= enemy.coordinateY %> + Math.random()/1000},
+						map: map,
+						animation: google.maps.Animation.DROP,
+						title: '<%= enemy.enemyName %>',
+						label: '<%= enemy.enemySize %>'
+					});
+				}, <%= i %>*1000);
+			<% }); %>							
+		<% }); %>
+
+		await <% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
+			window.setTimeout(function() {
+					new google.maps.Marker({
+						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+						position: {lat:<%= deploymentunit.coordinateX %> + Math.random()/1000, lng: <%= deploymentunit.coordinateY %> + Math.random()/1000},
+						map: map,
+						animation: google.maps.Animation.DROP,
+						title: '<%= deploymentunit.unitName %>'					
+					});
+				}, 2000+<%= i %>*1000);
+		<% }); %>
+	}
+
 	var ctx = document.getElementById("myDoughnutChart");
 	//Total Deployed Units
 	var myLineChart = new Chart(ctx, {
@@ -133,10 +189,7 @@
 						<% }); %>
 					],
 					label: "Total Deployed"
-			},
-		
-
-					
+			},						
 		],
 			labels: [
 				<% data.DeploymentUnit.forEach(deploymentunit => { %>
@@ -227,5 +280,6 @@
 	<% } %>
 
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyIdfs0vc-3YxmgtoSgMGRhoeo8Xmd620&callback=initMap"></script>
 
 <% include ./partials/footer %>
