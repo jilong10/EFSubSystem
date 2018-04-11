@@ -637,6 +637,43 @@ exports.editSingleDeploymentUnit = (req, res) => {
 		});
 };
 
+exports.editSingleDeploymentUnitCoordinate = (req, res) => {
+	const unitName = req.params.unit_name;
+	const coordinateX = Number(req.body.coordinate_x);
+	const coordinateY = Number(req.body.coordinate_y);
+	const date = moment().tz("Asia/Singapore").format('DD/MM/YYYY');
+	const time = moment().tz("Asia/Singapore").format('HH:mm:ss');
+
+	deploymentUnitRef.child(unitName)
+		.once('value', snapshot => {
+			// Check unit name
+			if (!snapshot.exists()) {
+				return res.json({
+					success: false,
+					message: 'Invalid unit name'
+				});
+			}
+
+			const singleDeploymentUnit = {
+				'coordinateX': coordinateX,
+				'coordinateY': coordinateY,
+				'date': date,
+				'time': time
+			}
+
+			deploymentUnitRef.child(unitName)
+				.update(singleDeploymentUnit)
+				.then(() => res.json({
+					success: true,
+					message: 'Update Successfully'
+				}))
+				.catch(err => res.json({
+					success: false,
+					message: 'Update Failed'
+				}));
+		});
+};
+
 exports.statusRequester = (req, res) => {
 	const requested = Number(req.body.requested);
 	const status = {		

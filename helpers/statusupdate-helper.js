@@ -294,6 +294,46 @@ exports.editEnemy = (req, res) => {
 		});
 };
 
+exports.editEnemyCoordinate = (req, res) => {
+	const crisisId = req.params.crisis_id;
+	const enemyName = req.params.enemy_name;	
+	const coordinateX = Number(req.body.coordinate_x);
+	const coordinateY = Number(req.body.coordinate_y);
+	
+	const timestamp = {
+		'date': moment().tz("Asia/Singapore").format('DD/MM/YYYY'),
+		'time': moment().tz("Asia/Singapore").format(' HH:mm:ss')
+	};
+
+	crisisRef.child(crisisId).child('Enemy').child(enemyName)
+		.once('value', snapshot => {			
+			if (snapshot.exists()) {
+				crisisRef.child(crisisId).update(timestamp);
+
+				const enemy = {
+					'coordinateX': coordinateX,
+					'coordinateY': coordinateY
+				}
+	
+				crisisRef.child(crisisId).child('Enemy').child(enemyName)
+					.update(enemy)
+					.then(() => res.json({
+						success: true,
+						message: 'Update Successfully'
+					}))
+					.catch(err => res.json({
+						success: false,
+						message: 'Update Failed'
+					}));
+			} else {
+				return res.json({
+					success: false,
+					message: 'Invalid crisis id or enemy name'
+				});
+			}
+		});
+};
+
 exports.deleteEnemy = (req, res) => {
 	const crisisId = req.params.crisis_id;
 	const enemyName = req.params.enemy_name;

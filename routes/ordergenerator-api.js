@@ -38,6 +38,9 @@ router.route('/deploymentunit/:unit_name/increasecasualty')
 router.route('/deploymentunit/:unit_name/updatestatus')
 	.put(orderGeneratorHelper.updateDeploymentUnitStatus);
 
+router.route('/deploymentunit/:unit_name/updatecoordinate')
+	.put(orderGeneratorHelper.editSingleDeploymentUnitCoordinate);
+
 module.exports = router;
 
 // Route 															| Method	| Description
@@ -54,5 +57,6 @@ module.exports = router;
 // api/ordergenerator/deploymentunit/:unit_name/increasesize 		| PUT 		| Increase deployment unit size
 // api/ordergenerator/deploymentunit/:unit_name/increasecasualty 	| PUT 		| Increase deployment unit casualty
 // api/ordergenerator/deploymentunit/:unit_name/updatestatus	 	| PUT 		| Update deployment unit status
+// api/ordergenerator/deploymentunit/:unit_name/updatecoordinate	| PUT 		| Update deployment unit coordinate
 // api/ordergenerator/deploymentunit/requested 					 	| GET 		| Get for deploymen unit request status
 // api/ordergenerator/deploymentunit/requested 					 	| PUT 		| Request for backup (1) or cleanup (2)

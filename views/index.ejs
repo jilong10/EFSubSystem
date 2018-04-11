@@ -126,38 +126,142 @@
 
 <script>	
 	<% if (data.DeploymentUnit != null) { %>	
-	async function initMap() {
-		var centerOfSingapore = {lat: 1.3521, lng: 103.8198};
+	function smoothZoom (map, max, cnt) {
+		if (cnt >= max) {
+			return;
+		}
+		else {
+			z = google.maps.event.addListener(map, 'zoom_changed', function(event){
+				google.maps.event.removeListener(z);
+				smoothZoom(map, max, cnt + 1);
+			});
+			setTimeout(function(){map.setZoom(cnt)}, 80);
+		}
+	}  
 
-		var map = new google.maps.Map(document.getElementById('map'), {
+	function initMap() {
+		let centerOfSingapore = {lat: 1.3521, lng: 103.8198};
+
+		let map = new google.maps.Map(document.getElementById('map'), {
 			zoom: 11,
 			center: centerOfSingapore
-		});
+		});		
 
-		await <% data.Crisis.forEach(crisis => { 
+		<% data.Crisis.forEach(crisis => { 
 			crisis.Enemy.forEach((enemy, i) => { %>
 				window.setTimeout(function() {
-					new google.maps.Marker({
-						position: {lat:<%= enemy.coordinateX %> + Math.random()/1000, lng: <%= enemy.coordinateY %> + Math.random()/1000},
+					let coordinate = {lat: <%= enemy.coordinateX %>, lng: <%= enemy.coordinateY %>};
+					let marker = new google.maps.Marker({
+						position: coordinate,
 						map: map,
+						draggable: true,
 						animation: google.maps.Animation.DROP,
-						title: '<%= enemy.enemyName %>',
-						label: '<%= enemy.enemySize %>'
+						title: `<%= enemy.enemyName %> (<%= enemy.enemySize %>)`
+					});
+
+					let infowindow = new google.maps.InfoWindow({
+						content: `<h6><%= enemy.enemyName %> <span class="badge badge-secondary"><%= enemy.enemyType %></span></h6>
+									<p>Enemy Size: <%= enemy.enemySize %></p>`
+					});
+
+					marker.addListener('click', function() {
+						infowindow.open(map, marker);
+					});
+
+					marker.addListener('rightclick', function() {
+						map = marker.getMap();	
+						map.setCenter(coordinate);
+						smoothZoom(map, 19, map.getZoom());						
+					});
+
+					let affectAreaCircle = new google.maps.Circle({
+						strokeColor: '#FF0000',
+						strokeOpacity: 0.8,
+						strokeWeight: 2,
+						fillColor: '#FF0000',
+						fillOpacity: 0.35,
+						map: map,
+						draggable: true,
+						center: coordinate,
+						radius: <%= enemy.affectArea %>
+					});					
+
+					marker.bindTo('position', affectAreaCircle, 'center');
+
+					marker.addListener('dragend', function(e) {
+						let latLng = e.latLng;
+						let target = `./api/statusupdate/crisis/<%= crisis.id %>/<%= enemy.enemyName %>/updatecoordinate`;
+						
+						$.ajax({
+							url: target,
+							type: 'PUT',
+							data: { coordinate_x: latLng.lat(), coordinate_y: latLng.lng() },
+							success: function(msg) {            
+								if (msg.success) {
+									//to check return message to confirm successful
+									showNotification('success', msg.message);
+								} else {
+									showNotification('danger', msg.message);
+								}            
+							},
+							error: function() {
+								showNotification('danger', 'Update Failed');
+							}
+						});
 					});
 				}, <%= i %>*1000);
 			<% }); %>							
 		<% }); %>
 
-		await <% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
+		<% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
 			window.setTimeout(function() {
-					new google.maps.Marker({
+					let coordinate = {lat:<%= deploymentunit.coordinateX %>, lng: <%= deploymentunit.coordinateY %>};
+					let marker = new google.maps.Marker({
 						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-						position: {lat:<%= deploymentunit.coordinateX %> + Math.random()/1000, lng: <%= deploymentunit.coordinateY %> + Math.random()/1000},
+						position: coordinate,
+						draggable: true,
 						map: map,
 						animation: google.maps.Animation.DROP,
-						title: '<%= deploymentunit.unitName %>'					
+						title: `<%= deploymentunit.unitName %> (<%= deploymentunit.currentUnitSize %>)`
 					});
-				}, 2000+<%= i %>*1000);
+
+					let infowindow = new google.maps.InfoWindow({
+						content: `<h6><%= deploymentunit.unitName %> <span class="badge badge-secondary"><%= deploymentunit.unitType %></span></h6>
+									<p>Current Unit Size: <%= deploymentunit.currentUnitSize %></p>`
+					});
+
+					marker.addListener('click', function() {						
+						infowindow.open(map, marker);
+					});
+
+					marker.addListener('rightclick', function() {
+						map = marker.getMap();
+						map.setCenter(coordinate);
+						smoothZoom(map, 19, map.getZoom());						
+					});
+			
+					marker.addListener('dragend', function(e) {
+						let latLng = e.latLng;
+						let target = `./api/ordergenerator/deploymentunit/<%= deploymentunit.unitName %>/updatecoordinate`;
+						
+						$.ajax({
+							url: target,
+							type: 'PUT',
+							data: { coordinate_x: latLng.lat(), coordinate_y: latLng.lng() },
+							success: function(msg) {            
+								if (msg.success) {
+									//to check return message to confirm successful
+									showNotification('success', msg.message);
+								} else {
+									showNotification('danger', msg.message);
+								}            
+							},
+							error: function() {
+								showNotification('danger', 'Update Failed');
+							}
+						});
+					});
+				}, <%= i %>*1000);
 		<% }); %>
 	}
 

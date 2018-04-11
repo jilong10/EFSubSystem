@@ -15,6 +15,9 @@ router.route('/crisis/:crisis_id/:enemy_name')
 	.put(statusupdateHelper.editEnemy)
 	.delete(statusupdateHelper.deleteEnemy);
 
+router.route('/crisis/:crisis_id/:enemy_name/updatecoordinate')	
+	.put(statusupdateHelper.editEnemyCoordinate)
+
 router.route('/deploymentunit')
 	.get(statusupdateHelper.readDeploymentUnit);
 
@@ -23,14 +26,15 @@ router.route('/unit')
 
 module.exports = router;
 
-// Route 												| Method	| Description
+// Route 															| Method	| Description
 // -------------------------------------------------------------------------------------------------------
-// api/statusupdate/crisis 								| GET 	 	| Display crisis
-// api/statusupdate/crisis 								| POST 	 	| New crisis
-// api/statusupdate/crisis/:crisis_id 					| PUT 	 	| Edit crisis
-// api/statusupdate/crisis/:crisis_id 					| DELETE 	| Delete crisis
-// api/statusupdate/crisis/:crisis_id			 		| POST 	 	| New crisis enemy
-// api/statusupdate/crisis/:crisis_id/:enemy_name 		| PUT 	 	| Edit crisis enemy
-// api/statusupdate/crisis/:crisis_id/:enemy_name 		| DELETE 	| Delete crisis enemy
-// api/statusupdate/deploymentunit 						| GET 		| Display deployment unit status
-// api/statusupdate/unit 								| GET 		| Display unit status
+// api/statusupdate/crisis 											| GET 	 	| Display crisis
+// api/statusupdate/crisis 											| POST 	 	| New crisis
+// api/statusupdate/crisis/:crisis_id 								| PUT 	 	| Edit crisis
+// api/statusupdate/crisis/:crisis_id 								| DELETE 	| Delete crisis
+// api/statusupdate/crisis/:crisis_id			 					| POST 	 	| New crisis enemy
+// api/statusupdate/crisis/:crisis_id/:enemy_name 					| PUT 	 	| Edit crisis enemy
+// api/statusupdate/crisis/:crisis_id/:enemy_name 					| DELETE 	| Delete crisis enemy
+// api/statusupdate/crisis/:crisis_id/:enemy_name/updatecoordinate 	| PUT 	 	| Update crisis enemy coordinate
+// api/statusupdate/deploymentunit 									| GET 		| Display deployment unit status
+// api/statusupdate/unit 											| GET 		| Display unit status
