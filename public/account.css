@@ -20,7 +20,7 @@ html,body{height:100%;margin:0;padding:0}
     transform: translate(-50%, -50%);
     border:0px solid #ffffff;
     padding: 40px 40px;
-    min-width: 200px;
+    min-width: 400px;
     background-color: rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
     -moz-box-shadow: -1px 4px 26px 11px rgba(0,0,0,0.75);
