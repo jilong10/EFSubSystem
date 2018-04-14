@@ -32,7 +32,32 @@ app.use('/api/ordergenerator', indexRoute.OrderGeneratorApiRoute);		// For Deplo
 app.use('/api/ef', indexRoute.EFApiRoute); 								// For Deployment plan
 app.use('/api/mycmo', indexRoute.MyCmoApiRoute);						// For Send Status Update to CMOAPI
 
-io.on('connection', socket => {
+let users = [];
+
+// io.sockets.on('connect', client => {
+//     clients.push(client); 
+
+//     client.on('disconnect', () => clients.splice(clients.indexOf(client), 1));
+// });
+
+io.on('connection', socket => {		
+	socket.on('disconnect', () => {
+		io.emit('reinitialize user', true);		
+	});
+
+	socket.on('user', user => {
+		if (users.indexOf(user) === -1) {
+			users.push(user);
+		}		
+		io.emit('get users', users);
+	});
+
+	socket.on('reinitialize user', user => {
+		users = [];
+		users.push(user);
+		io.emit('get users', users);
+	});
+
 	socket.on('coordinate changed', msg => {
 		socket.broadcast.emit('coordinate changed', msg);
 	});
