@@ -39,10 +39,10 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 				'DeploymentUnitCost': response.data.DeploymentUnitCost
 			};
 
-			res.render('index', { message: '', user: req.session.user, data: statusArr });
+			res.render('index', { message: '', user: req.session.name, data: statusArr });
 		})
 		.catch(err => {
-			res.render('index', { message: '', user: req.session.user, data: [] });	
+			res.render('index', { message: '', user: req.session.name, data: [] });	
 		});	
 });
 
@@ -76,6 +76,8 @@ router.route('/login')
 		.then(response => {			
 			if (response.data.success) {
 				req.session.user = req.body.username;
+				req.session.name = response.data.name;
+				
 				res.redirect('/');
 			} else {
 				res.render('login', { message: response.data.message });
@@ -100,10 +102,10 @@ router.route('/deploymentplan')
 					response.data[key].Enemy = enemyArr;
 					return response.data[key];
 				});										
-				res.render('deploymentplan', { message: '', user: req.session.user, data: deploymentPlanArr.reverse() });
+				res.render('deploymentplan', { message: '', user: req.session.name, data: deploymentPlanArr.reverse() });
 			})
 			.catch(err => {
-				res.render('deploymentplan', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
+				res.render('deploymentplan', { message: 'Error occurs. Please try again.', user: req.session.name, data: [] });
 			});	
 	});
 
@@ -118,10 +120,10 @@ router.route('/crisis')
 					response.data[key].Enemy = enemyArr;
 					return response.data[key];
 				});	
-				res.render('crisis', { message: '', user: req.session.user, data: crisisArr.reverse() });
+				res.render('crisis', { message: '', user: req.session.name, data: crisisArr.reverse() });
 			})
 			.catch(err => {
-				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
+				res.render('crisis', { message: 'Error occurs. Please try again.', user: req.session.name, data: [] });
 			});	
 	});
 
@@ -142,10 +144,10 @@ router.route('/deploymentunit')
 					'deploymentunit': deploymentunitArr
 				}
 				
-				res.render('deploymentunit', { message: '', user: req.session.user, data: obj });
+				res.render('deploymentunit', { message: '', user: req.session.name, data: obj });
 			})
 			.catch(err => {
-				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
+				res.render('deploymentunit', { message: 'Error occurs. Please try again.', user: req.session.name, data: [] });
 			});	
 	});
 
@@ -160,10 +162,10 @@ router.route('/unit')
 					if (a.unitType > b.unitType) return 1;
 					return 0;
 				});					
-				res.render('unit', { message: '', user: req.session.user, data: unitArr });
+				res.render('unit', { message: '', user: req.session.name, data: unitArr });
 			})
 			.catch(err => {
-				res.render('unit', { message: 'Error occurs. Please try again.', user: req.session.user, data: [] });
+				res.render('unit', { message: 'Error occurs. Please try again.', user: req.session.name, data: [] });
 			});	
 	});
 

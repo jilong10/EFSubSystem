@@ -60,14 +60,20 @@ exports.login = (req, res) => {
 		});
 	}
 
+	let name = '';
+
 	userRef.child(username)
 		.once('value', snapshot => {
 			snapshot.forEach(childSnapshot => {
-				if (childSnapshot.key === 'password') {	
+				if (childSnapshot.key === 'name') {
+					name = childSnapshot.val();
+				} else if (childSnapshot.key === 'password') {	
 					if (User.validPassword(password, childSnapshot.val())) {
+
 						return res.json({
 							success: true,
-							message: 'Login Successfully'						
+							message: 'Login Successfully',
+							name: name
 						});
 					} else {
 						return res.json({
