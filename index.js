@@ -36,6 +36,14 @@ io.on('connection', socket => {
 	socket.on('coordinate changed', msg => {
 		socket.broadcast.emit('coordinate changed', msg);
 	});
+
+	socket.on('lock marker', msg => {
+		socket.broadcast.emit('lock marker', msg);
+	});
+
+	socket.on('release marker', msg => {
+		socket.broadcast.emit('release marker', msg);
+	});
 });
 
 // Sever Listening

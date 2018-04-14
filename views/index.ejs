@@ -128,7 +128,7 @@
 	let enemyMarkerArr = [];
 	let troopMarkerArr = [];
 	let socket = io();
-	
+
 	socket.on('coordinate changed', msg => {		
 		if (msg.type === 'ENEMY') {
 			enemyMarkerArr.forEach(marker => {
@@ -210,6 +210,26 @@
 
 					marker.bindTo('position', affectAreaCircle, 'center');
 
+					marker.addListener('dragstart', function(e) {
+						socket.on('lock marker', msg => {
+							enemyMarkerArr.forEach(marker => {
+								if (marker.id === msg) {
+									marker.setDraggable(false);
+								}
+							});
+						});
+
+						socket.on('release marker', msg => {
+							enemyMarkerArr.forEach(marker => {
+								if (marker.id === msg) {
+									marker.setDraggable(true);
+								}
+							});
+						});
+
+						socket.emit('lock marker', marker.id);
+					});
+
 					marker.addListener('dragend', function(e) {
 						let latLng = e.latLng;
 						let target = `./api/statusupdate/crisis/<%= crisis.id %>/<%= enemy.enemyName %>/updatecoordinate`;
@@ -228,7 +248,7 @@
 									};
 
 									socket.emit('coordinate changed', markerMsg);	
-
+									socket.emit('release marker', marker.id);
 									//to check return message to confirm successful
 									showNotification('success', msg.message);
 								} else {
