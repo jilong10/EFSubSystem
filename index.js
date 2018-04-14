@@ -37,12 +37,20 @@ io.on('connection', socket => {
 		socket.broadcast.emit('coordinate changed', msg);
 	});
 
-	socket.on('lock marker', msg => {
-		socket.broadcast.emit('lock marker', msg);
+	socket.on('lock enemy marker', msg => {
+		socket.broadcast.emit('lock enemy marker', msg);
 	});
 
-	socket.on('release marker', msg => {
-		socket.broadcast.emit('release marker', msg);
+	socket.on('release enemy marker', msg => {
+		socket.broadcast.emit('release enemy marker', msg);
+	});
+
+	socket.on('lock troop marker', msg => {
+		socket.broadcast.emit('lock troop marker', msg);
+	});
+
+	socket.on('release troop marker', msg => {
+		socket.broadcast.emit('release troop marker', msg);
 	});
 });
 

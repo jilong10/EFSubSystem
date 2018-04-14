@@ -211,15 +211,16 @@
 					marker.bindTo('position', affectAreaCircle, 'center');
 
 					marker.addListener('dragstart', function(e) {
-						socket.on('lock marker', msg => {
+						socket.on('lock enemy marker', msg => {
 							enemyMarkerArr.forEach(marker => {
 								if (marker.id === msg) {
+									showNotification('danger', 'Others are updating');
 									marker.setDraggable(false);
 								}
 							});
 						});
 
-						socket.on('release marker', msg => {
+						socket.on('release enemy marker', msg => {
 							enemyMarkerArr.forEach(marker => {
 								if (marker.id === msg) {
 									marker.setDraggable(true);
@@ -227,7 +228,7 @@
 							});
 						});
 
-						socket.emit('lock marker', marker.id);
+						socket.emit('lock enemy marker', marker.id);
 					});
 
 					marker.addListener('dragend', function(e) {
@@ -248,7 +249,8 @@
 									};
 
 									socket.emit('coordinate changed', markerMsg);	
-									socket.emit('release marker', marker.id);
+									socket.emit('release enemy marker', marker.id);
+
 									//to check return message to confirm successful
 									showNotification('success', msg.message);
 								} else {
@@ -270,7 +272,7 @@
 			window.setTimeout(function() {
 					let coordinate = {lat:<%= deploymentunit.coordinateX %>, lng: <%= deploymentunit.coordinateY %>};
 					let marker = new google.maps.Marker({
-						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+						icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
 						id: `<%= deploymentunit.unitName %>`.toUpperCase().replace(/\s/g, ''),
 						position: coordinate,
 						draggable: true,
@@ -293,6 +295,27 @@
 						map.setCenter(coordinate);
 						smoothZoom(map, 19, map.getZoom());						
 					});
+
+					marker.addListener('dragstart', function(e) {
+						socket.on('lock troop marker', msg => {
+							troopMarkerArr.forEach(marker => {
+								if (marker.id === msg) {
+									showNotification('danger', 'Others are updating');
+									marker.setDraggable(false);
+								}
+							});
+						});
+
+						socket.on('release troop marker', msg => {
+							troopMarkerArr.forEach(marker => {
+								if (marker.id === msg) {
+									marker.setDraggable(true);
+								}
+							});
+						});
+
+						socket.emit('lock troop marker', marker.id);
+					});
 			
 					marker.addListener('dragend', function(e) {
 						let latLng = e.latLng;
@@ -312,6 +335,7 @@
 									};
 
 									socket.emit('coordinate changed', markerMsg);
+									socket.emit('release troop marker', marker.id);
 
 									//to check return message to confirm successful
 									showNotification('success', msg.message);
