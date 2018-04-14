@@ -142,10 +142,11 @@
 
 	socket.on('get users', users => {
 		$(".users").empty();		
-		$(".users").append(`<h5 class="users-header">Online Users: ${users.length}</h5>`);
+		$(".users").append(`<h5 class="users-header">Online Users: ${users.length}</h5>
+							<div class="userlist"></div>`);
 		
 		users.forEach(user => {			
-			$(".users").append(`<p class="user"><i class="fas fa-user"></i>&nbsp ${user}</p>`);
+			$(".userlist").append(`<p class="user"><i class="fas fa-user"></i>&nbsp ${user}</p>`);
 		});
 	});
 
