@@ -211,10 +211,15 @@
 					marker.bindTo('position', affectAreaCircle, 'center');
 
 					marker.addListener('dragstart', function(e) {
+						if (marker.getDraggable()) {
+							socket.emit('lock enemy marker', marker.id);
+						} else {
+							showNotification('danger', 'Others are updating');
+						}
+
 						socket.on('lock enemy marker', msg => {
 							enemyMarkerArr.forEach(marker => {
-								if (marker.id === msg) {
-									showNotification('danger', 'Others are updating');
+								if (marker.id === msg) {									
 									marker.setDraggable(false);
 								}
 							});
@@ -226,9 +231,7 @@
 									marker.setDraggable(true);
 								}
 							});
-						});
-
-						socket.emit('lock enemy marker', marker.id);
+						});						
 					});
 
 					marker.addListener('dragend', function(e) {
@@ -297,10 +300,15 @@
 					});
 
 					marker.addListener('dragstart', function(e) {
+						if (marker.getDraggable()) {
+							socket.emit('lock troop marker', marker.id);
+						} else {
+							showNotification('danger', 'Others are updating');
+						}
+
 						socket.on('lock troop marker', msg => {
 							troopMarkerArr.forEach(marker => {
-								if (marker.id === msg) {
-									showNotification('danger', 'Others are updating');
+								if (marker.id === msg) {									
 									marker.setDraggable(false);
 								}
 							});
@@ -312,9 +320,7 @@
 									marker.setDraggable(true);
 								}
 							});
-						});
-
-						socket.emit('lock troop marker', marker.id);
+						});						
 					});
 			
 					marker.addListener('dragend', function(e) {
