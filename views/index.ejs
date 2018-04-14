@@ -233,24 +233,10 @@
 					marker.addListener('dragstart', function(e) {
 						if (marker.getDraggable()) {
 							socket.emit('lock enemy marker', marker.id);
-						}
-
-						socket.on('lock enemy marker', msg => {
-							enemyMarkerArr.forEach(marker => {
-								if (marker.id === msg) {									
-									marker.setDraggable(false);
-								}
-							});
-						});
-
-						socket.on('release enemy marker', msg => {
-							enemyMarkerArr.forEach(marker => {
-								if (marker.id === msg) {
-									marker.setDraggable(true);
-								}
-							});
-						});						
-					});
+						} else {
+							showNotification('danger', 'Others are editing');
+						}											
+					});					
 
 					marker.addListener('dragend', function(e) {
 						let latLng = e.latLng;
@@ -286,8 +272,24 @@
 
 					enemyMarkerArr.push(marker);
 				}, <%= i %>*1000);
-			<% }); %>							
+			<% }); %>										
 		<% }); %>
+
+		socket.on('lock enemy marker', msg => {
+			enemyMarkerArr.forEach(marker => {
+				if (marker.id === msg) {									
+					marker.setDraggable(false);
+				}
+			});
+		});
+
+		socket.on('release enemy marker', msg => {
+			enemyMarkerArr.forEach(marker => {
+				if (marker.id === msg) {
+					marker.setDraggable(true);
+				}
+			});
+		});
 		
 		await <% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
 			window.setTimeout(function() {
@@ -320,24 +322,10 @@
 				marker.addListener('dragstart', function(e) {
 					if (marker.getDraggable()) {
 						socket.emit('lock troop marker', marker.id);
-					}
-
-					socket.on('lock troop marker', msg => {
-						troopMarkerArr.forEach(marker => {
-							if (marker.id === msg) {									
-								marker.setDraggable(false);
-							}
-						});
-					});
-
-					socket.on('release troop marker', msg => {
-						troopMarkerArr.forEach(marker => {
-							if (marker.id === msg) {
-								marker.setDraggable(true);
-							}
-						});
-					});						
-				});
+					} else {
+						showNotification('danger', 'Others are editing');
+					}										
+				});				
 		
 				marker.addListener('dragend', function(e) {
 					let latLng = e.latLng;
@@ -372,8 +360,24 @@
 				});
 
 				troopMarkerArr.push(marker);
-			}, <%= i %>*1000);
+			}, <%= i %>*1000);			
 		<% }); %>
+
+		socket.on('lock troop marker', msg => {
+			troopMarkerArr.forEach(marker => {
+				if (marker.id === msg) {									
+					marker.setDraggable(false);
+				}
+			});
+		});
+
+		socket.on('release troop marker', msg => {
+			troopMarkerArr.forEach(marker => {
+				if (marker.id === msg) {
+					marker.setDraggable(true);
+				}
+			});
+		});	
 	}
 
 	var ctx = document.getElementById("myDoughnutChart");
