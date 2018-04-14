@@ -4,7 +4,9 @@ const express = require('express'),
 	port = process.env.PORT || 3000,
 	bodyParser = require('body-parser'),
 	cookieParser = require('cookie-parser'),
-	session = require('express-session');
+	session = require('express-session')
+	http = require('http').Server(app),
+	io = require('socket.io')(http);
 
 // Routes Setup
 const indexRoute = require('./routes');
@@ -30,5 +32,11 @@ app.use('/api/ordergenerator', indexRoute.OrderGeneratorApiRoute);		// For Deplo
 app.use('/api/ef', indexRoute.EFApiRoute); 								// For Deployment plan
 app.use('/api/mycmo', indexRoute.MyCmoApiRoute);						// For Send Status Update to CMOAPI
 
+io.on('connection', socket => {
+	socket.on('coordinate changed', msg => {
+		socket.broadcast.emit('coordinate changed', msg);
+	});
+});
+
 // Sever Listening
-app.listen(port, () => console.log('App is running on port ' + port));
+http.listen(port, () => console.log('App is running on port ' + port));

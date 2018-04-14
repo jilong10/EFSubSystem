@@ -19,6 +19,7 @@
     "express-session": "^1.15.6",
     "firebase": "^4.10.1",
     "method-override": "^2.3.10",
-    "moment-timezone": "^0.5.14"
+    "moment-timezone": "^0.5.14",
+    "socket.io": "^2.1.0"
   }
 }

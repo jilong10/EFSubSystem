@@ -125,6 +125,28 @@
 <% } %>
 
 <script>	
+	let enemyMarkerArr = [];
+	let troopMarkerArr = [];
+	let socket = io();
+	
+	socket.on('coordinate changed', msg => {		
+		if (msg.type === 'ENEMY') {
+			enemyMarkerArr.forEach(marker => {
+				if (marker.id === msg.id) {				
+					marker.setPosition(msg.coordinate);									
+					showNotification('warning', 'Enemy Coordinate Updated');					
+				}
+			});
+		} else if (msg.type === 'TROOP') {
+			troopMarkerArr.forEach(marker => {
+				if (marker.id === msg.id) {				
+					marker.setPosition(msg.coordinate);									
+					showNotification('warning', 'Troop Coordinate Updated');
+				}
+			});
+		}
+	});
+
 	<% if (data.DeploymentUnit != null) { %>	
 	function smoothZoom (map, max, cnt) {
 		if (cnt >= max) {
@@ -139,7 +161,7 @@
 		}
 	}  
 
-	function initMap() {
+	async function initMap() {
 		let centerOfSingapore = {lat: 1.3521, lng: 103.8198};
 
 		let map = new google.maps.Map(document.getElementById('map'), {
@@ -147,11 +169,12 @@
 			center: centerOfSingapore
 		});		
 
-		<% data.Crisis.forEach(crisis => { 
+		await <% data.Crisis.forEach(crisis => { 
 			crisis.Enemy.forEach((enemy, i) => { %>
 				window.setTimeout(function() {
 					let coordinate = {lat: <%= enemy.coordinateX %>, lng: <%= enemy.coordinateY %>};
 					let marker = new google.maps.Marker({
+						id: `<%= enemy.enemyName %>`.toUpperCase().replace(/\s/g, ''),
 						position: coordinate,
 						map: map,
 						draggable: true,
@@ -190,13 +213,22 @@
 					marker.addListener('dragend', function(e) {
 						let latLng = e.latLng;
 						let target = `./api/statusupdate/crisis/<%= crisis.id %>/<%= enemy.enemyName %>/updatecoordinate`;
-						
+						let coordinate = { lat: latLng.lat(), lng: latLng.lng() };
+
 						$.ajax({
 							url: target,
 							type: 'PUT',
 							data: { coordinate_x: latLng.lat(), coordinate_y: latLng.lng() },
 							success: function(msg) {            
 								if (msg.success) {
+									markerMsg = {										
+										'id': marker.id,
+										'type': 'ENEMY',
+										'coordinate': coordinate
+									};
+
+									socket.emit('coordinate changed', markerMsg);	
+
 									//to check return message to confirm successful
 									showNotification('success', msg.message);
 								} else {
@@ -208,15 +240,18 @@
 							}
 						});
 					});
+
+					enemyMarkerArr.push(marker);
 				}, <%= i %>*1000);
 			<% }); %>							
 		<% }); %>
-
-		<% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
+		
+		await <% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
 			window.setTimeout(function() {
 					let coordinate = {lat:<%= deploymentunit.coordinateX %>, lng: <%= deploymentunit.coordinateY %>};
 					let marker = new google.maps.Marker({
 						icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+						id: `<%= deploymentunit.unitName %>`.toUpperCase().replace(/\s/g, ''),
 						position: coordinate,
 						draggable: true,
 						map: map,
@@ -242,13 +277,22 @@
 					marker.addListener('dragend', function(e) {
 						let latLng = e.latLng;
 						let target = `./api/ordergenerator/deploymentunit/<%= deploymentunit.unitName %>/updatecoordinate`;
-						
+						let coordinate = { lat: latLng.lat(), lng: latLng.lng() };
+
 						$.ajax({
 							url: target,
 							type: 'PUT',
 							data: { coordinate_x: latLng.lat(), coordinate_y: latLng.lng() },
 							success: function(msg) {            
 								if (msg.success) {
+									markerMsg = {										
+										'id': marker.id,
+										'type': 'TROOP',
+										'coordinate': coordinate
+									};
+
+									socket.emit('coordinate changed', markerMsg);
+
 									//to check return message to confirm successful
 									showNotification('success', msg.message);
 								} else {
@@ -260,6 +304,8 @@
 							}
 						});
 					});
+
+					troopMarkerArr.push(marker);
 				}, <%= i %>*1000);
 		<% }); %>
 	}
@@ -380,8 +426,7 @@
 			}
 		}
 	);
-	<% } %>
-
+	<% } %>	
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyIdfs0vc-3YxmgtoSgMGRhoeo8Xmd620&callback=initMap"></script>
 
