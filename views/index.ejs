@@ -537,6 +537,8 @@
 	);
 	<% } %>	
 </script>
+<% if (data.DeploymentUnit != null) { %>	
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyIdfs0vc-3YxmgtoSgMGRhoeo8Xmd620&callback=initMap"></script>
+<% } %>
 
 <% include ./partials/footer %>
