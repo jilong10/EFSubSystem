@@ -1,4 +1,5 @@
 <% include ./partials/header %>
+<% include ./util/geturl %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 <div class="row">
@@ -231,8 +232,14 @@
 		await <% data.Crisis.forEach(crisis => { 
 			crisis.Enemy.forEach((enemy, i) => { %>
 				window.setTimeout(function() {
-					let coordinate = {lat: <%= enemy.coordinateX %>, lng: <%= enemy.coordinateY %>};
+					let coordinate = {lat: <%= enemy.coordinateX %>, lng: <%= enemy.coordinateY %>};					
+					let iconImage = {
+						url: '<%= getZombieImgUrl(enemy.enemyName) %>', // url
+						scaledSize: new google.maps.Size(40 + 1 * (<%= enemy.enemySize %> - 1), 70 + 1 * (<%= enemy.enemySize %> - 1)), // scaled size
+					};
+
 					let marker = new google.maps.Marker({
+						icon: iconImage,
 						id: `<%= enemy.enemyName %>`.toUpperCase().replace(/\s/g, ''),
 						position: coordinate,
 						map: map,
@@ -250,7 +257,7 @@
 						infowindow.open(map, marker);
 					});
 
-					marker.addListener('rightclick', function() {
+					marker.addListener('rightclick', function() {						
 						map = marker.getMap();	
 						map.setCenter(coordinate);
 						smoothZoom(map, 19, map.getZoom());						
@@ -333,8 +340,13 @@
 		await <% data.DeploymentUnit.forEach((deploymentunit, i) => { %>
 			window.setTimeout(function() {
 				let coordinate = {lat:<%= deploymentunit.coordinateX %>, lng: <%= deploymentunit.coordinateY %>};
+				let iconImage = {
+					url: '<%= getPlantImgUrl(deploymentunit.unitName) %>', // url
+					scaledSize: new google.maps.Size(50 + 1 * (<%= deploymentunit.currentUnitSize %> - 1), 50 + 1 * (<%= deploymentunit.currentUnitSize %> - 1)), // scaled size
+				};
+
 				let marker = new google.maps.Marker({
-					icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+					icon: iconImage,
 					id: `<%= deploymentunit.unitName %>`.toUpperCase().replace(/\s/g, ''),
 					position: coordinate,
 					draggable: true,

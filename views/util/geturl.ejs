@@ -8,18 +8,43 @@
             imgLocation = "./images/unit_icon/zombie_balloon.png";
         }else if(zombieName == "BucketHead Zombie".toUpperCase().replace(/\s/g, '')) {
             imgLocation = "./images/unit_icon/zombie_buckethead.png";
-        }else if(zombieName == "BackupDancer Zombie".toUpperCase().replace(/\s/g, '')) {
-            imgLocation = "./images/unit_icon/zombie_dancer.png";
         }else if(zombieName == "Dolphin Rider Zombie".toUpperCase().replace(/\s/g, '')) {
             imgLocation = "./images/unit_icon/zombie_dolphinrider.png";
         }else if(zombieName == "Ducky Tube Zombie".toUpperCase().replace(/\s/g, '')) {
             imgLocation = "./images/unit_icon/zombie_duckytube.png";
         }else if(zombieName == "Gargantuar Zombie".toUpperCase().replace(/\s/g, '')) {
             imgLocation = "./images/unit_icon/zombie_gargantuar.png"
-        }else if(zombieName == "Ladder Zombie".toUpperCase().replace(/\s/g, '')) {
-            imgLocation = "./images/unit_icon/zombie_ladder.png";
         }else if(zombieName == "Snorkel Zombie".toUpperCase().replace(/\s/g, '')) {
             imgLocation = "./images/unit_icon/zombie_snorkel.png";
+        }
+
+        return imgLocation;
+    };    
+
+    getPlantImgUrl = function(plantName){
+        plantName = plantName.toUpperCase().replace(/\s/g, '');
+        var imgLocation = "./images/unit_icon/zombie_normal.png";
+
+        if(plantName == "Blover".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/blover.png";
+        }else if(plantName == "Cactus".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/cactus.png";
+        }else if(plantName == "Chomper".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/chomper.png";
+        }else if(plantName == "Sunflower".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/sunflower.png";
+        }else if(plantName == "Cob Cannon".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/cob_cannon.png";
+        }else if(plantName == "Repeater".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/repeater.png"
+        }else if(plantName == "Winter Melon".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/winter_melon.png";
+        }else if(plantName == "Tall Nut".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/tall_nut.png";
+        }else if(plantName == "Wall Nut".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/wall_nut.png";
+        }else if(plantName == "Sea Shroom".toUpperCase().replace(/\s/g, '')) {
+            imgLocation = "./images/unit_icon/sea_shroom.png";
         }
 
         return imgLocation;
