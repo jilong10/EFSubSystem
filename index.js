@@ -77,6 +77,10 @@ io.on('connection', socket => {
 	socket.on('release troop marker', msg => {
 		socket.broadcast.emit('release troop marker', msg);
 	});
+
+	socket.on('deployment unit status', msg => {
+		socket.broadcast.emit('deployment unit status', msg);
+	});
 });
 
 // Sever Listening
