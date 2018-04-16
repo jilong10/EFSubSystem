@@ -203,9 +203,8 @@
 		} else if (msg === 2) {
 			showNotification('warning', 'Cleanup is requested');
 		}
-		setTimeout(() => {
-			window.location.reload(true);
-		}, 1500);
+		
+		window.location.reload(true);
 	});
 
 	function smoothZoom (map, max, cnt) {
@@ -235,7 +234,7 @@
 					let coordinate = {lat: <%= enemy.coordinateX %>, lng: <%= enemy.coordinateY %>};					
 					let iconImage = {
 						url: '<%= getZombieImgUrl(enemy.enemyName) %>', // url
-						scaledSize: new google.maps.Size(40 + 1 * (<%= enemy.enemySize %> - 1), 70 + 1 * (<%= enemy.enemySize %> - 1)), // scaled size
+						scaledSize: new google.maps.Size(40 + 0.5 * (<%= enemy.enemySize %> - 1), 70 + 0.5 * (<%= enemy.enemySize %> - 1)), // scaled size
 					};
 
 					let marker = new google.maps.Marker({
@@ -342,7 +341,7 @@
 				let coordinate = {lat:<%= deploymentunit.coordinateX %>, lng: <%= deploymentunit.coordinateY %>};
 				let iconImage = {
 					url: '<%= getPlantImgUrl(deploymentunit.unitName) %>', // url
-					scaledSize: new google.maps.Size(50 + 1 * (<%= deploymentunit.currentUnitSize %> - 1), 50 + 1 * (<%= deploymentunit.currentUnitSize %> - 1)), // scaled size
+					scaledSize: new google.maps.Size(50 + 0.5 * (<%= deploymentunit.currentUnitSize %> - 1), 50 + 0.5 * (<%= deploymentunit.currentUnitSize %> - 1)), // scaled size
 				};
 
 				let marker = new google.maps.Marker({
